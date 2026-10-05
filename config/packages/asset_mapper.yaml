@@ -4,6 +4,9 @@ framework:
         paths:
             - assets/
         missing_import_mode: strict
+        # Pas de polyfill es-module-shims : il serait chargé depuis un CDN externe (ga.jspm.io).
+        # Les rares navigateurs sans importmap affichent simplement le site sans JS (menu déplié).
+        importmap_polyfill: false
 
 when@prod:
     framework:

@@ -1,0 +1,46 @@
+{#
+ # En-tête : logo + navigation principale.
+ # Chaque lien est marqué aria-current="page" quand la route courante commence par son préfixe
+ # (ex. app_offre_show active « Offres »).
+ #}
+{% set route = app.current_route ?? '' %}
+{% set liens = [
+    {libelle: 'nav.offres', route: 'app_offre_index', prefixe: 'app_offre'},
+    {libelle: 'nav.realisations', route: 'app_realisation_index', prefixe: 'app_realisation'},
+    {libelle: 'nav.zones', route: 'app_zone_index', prefixe: 'app_zone'},
+    {libelle: 'nav.a_propos', route: 'app_about', prefixe: 'app_about'},
+] %}
+
+<header class="entete" data-controller="menu">
+    <div class="conteneur entete__barre">
+        <a class="logo" href="{{ path('app_home') }}" aria-label="{{ 'layout.retour_accueil'|trans({'%nom%': site.nom}) }}"{% if route == 'app_home' %} aria-current="page"{% endif %}>
+            {# Logotype provisoire, à remplacer par le logo SVG définitif #}
+            <span class="logo__point" aria-hidden="true"></span>
+            <span>{{ site.nom }}</span>
+        </a>
+
+        <button class="menu-bouton" type="button" hidden
+                aria-expanded="false" aria-controls="nav-principale"
+                data-menu-target="bouton" data-action="menu#basculer">
+            <span class="menu-bouton__icone" aria-hidden="true"></span>
+            {{ 'layout.menu'|trans }}
+        </button>
+
+        <nav id="nav-principale" class="nav-principale" aria-label="{{ 'layout.nav_principale'|trans }}" data-menu-target="nav">
+            <ul class="nav-principale__liste">
+                {% for lien in liens %}
+                    <li>
+                        <a class="nav-principale__lien" href="{{ path(lien.route) }}"{% if route starts with lien.prefixe %} aria-current="page"{% endif %}>
+                            {{- lien.libelle|trans -}}
+                        </a>
+                    </li>
+                {% endfor %}
+                <li class="nav-principale__item--devis">
+                    <twig:Bouton href="{{ path('app_contact') }}" :aria-current="route == 'app_contact' ? 'page' : false">
+                        {{ 'nav.devis'|trans }}
+                    </twig:Bouton>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</header>

@@ -1,24 +1,50 @@
+{#
+ # Layout principal du site public.
+ #
+ # Blocs à surcharger dans les pages :
+ #   title / meta_description : balises SEO (valeurs par défaut traduites)
+ #   body                     : contenu principal, placé dans <main id="contenu">
+ #
+ # Variable facultative :
+ #   fil_ariane : liste d'éléments {libelle, url} sans l'accueil (ajouté automatiquement).
+ #               Le dernier élément est la page courante : son url peut être omise.
+ #}
 <!DOCTYPE html>
-<html>
+<html lang="{{ app.request.locale }}">
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{% block title %}{{ 'layout.titre_defaut'|trans({'%nom%': site.nom}) }}{% endblock %}</title>
+        <meta name="description" content="{% block meta_description %}{{ 'layout.description_defaut'|trans }}{% endblock %}">
+        <meta name="theme-color" content="#2E5E4E">
+
+        <link rel="icon" href="{{ asset('images/favicon.svg') }}" type="image/svg+xml">
+        <link rel="preload" href="{{ asset('fonts/atkinson-hyperlegible-latin-400-normal.woff2') }}" as="font" type="font/woff2" crossorigin>
+        <link rel="preload" href="{{ asset('fonts/bitter-latin-700-normal.woff2') }}" as="font" type="font/woff2" crossorigin>
+
         {% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
         {% endblock %}
 
         {% block javascripts %}
             {% block importmap %}{{ importmap('app') }}{% endblock %}
         {% endblock %}
-
-        {% set frankenphp_hot_reload = app.request.server.get('FRANKENPHP_HOT_RELOAD') %}
-        {% if frankenphp_hot_reload %}
-        <meta name="frankenphp-hot-reload:url" content="{{ frankenphp_hot_reload }}">
-        <script src="https://cdn.jsdelivr.net/npm/idiomorph"></script>
-        <script src="https://cdn.jsdelivr.net/npm/frankenphp-hot-reload/+esm" type="module"></script>
-        {% endif %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        <a class="lien-evitement" href="#contenu">{{ 'layout.lien_evitement'|trans }}</a>
+
+        {{ include('partials/_entete.html.twig') }}
+
+        <main id="contenu" tabindex="-1">
+            {% if fil_ariane is defined %}
+                <div class="conteneur">
+                    <twig:FilAriane :elements="fil_ariane" />
+                </div>
+            {% endif %}
+
+            {% block body %}{% endblock %}
+        </main>
+
+        {{ include('partials/_pied.html.twig') }}
     </body>
 </html>

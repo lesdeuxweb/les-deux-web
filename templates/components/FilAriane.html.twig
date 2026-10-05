@@ -1,0 +1,26 @@
+{#
+ # Fil d'Ariane visible (toutes les pages sauf l'accueil).
+ # Rendu automatiquement par base.html.twig quand la page définit la variable fil_ariane :
+ #
+ #   {% set fil_ariane = [
+ #       {libelle: 'Offres', url: path('app_offre_index')},
+ #       {libelle: offre.nom},
+ #   ] %}
+ #
+ # L'accueil est ajouté en premier ; le dernier élément est la page courante.
+ #}
+{% props elements = [] %}
+<nav class="fil-ariane" aria-label="{{ 'fil_ariane.label'|trans }}">
+    <ol class="fil-ariane__liste">
+        <li class="fil-ariane__element"><a href="{{ path('app_home') }}">{{ 'nav.accueil'|trans }}</a></li>
+        {% for element in elements %}
+            <li class="fil-ariane__element">
+                {%- if loop.last -%}
+                    <span aria-current="page">{{ element.libelle }}</span>
+                {%- else -%}
+                    <a href="{{ element.url }}">{{ element.libelle }}</a>
+                {%- endif -%}
+            </li>
+        {% endfor %}
+    </ol>
+</nav>

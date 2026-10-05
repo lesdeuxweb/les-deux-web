@@ -1,0 +1,29 @@
+{# Accueil, version provisoire (phase 2) : hero + appel à l'action. Sections complètes en phase 3. #}
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <section class="hero">
+        <div class="conteneur hero__grille">
+            <div class="hero__texte">
+                <p class="hero__sur-titre">{{ 'accueil.hero.sur_titre'|trans({'%ville%': site.ville}) }}</p>
+                <h1>{{ 'accueil.hero.titre'|trans }}</h1>
+                <p class="hero__sous-titre">{{ 'accueil.hero.sous_titre'|trans({'%ville%': site.ville, '%region%': site.region}) }}</p>
+                <div class="groupe-boutons">
+                    <twig:Bouton href="{{ path('app_contact') }}">{{ 'nav.devis'|trans }}</twig:Bouton>
+                    <twig:Bouton href="{{ path('app_realisation_index') }}" variante="secondaire">{{ 'accueil.hero.voir_realisations'|trans }}</twig:Bouton>
+                </div>
+            </div>
+
+            <ul class="hero__garanties" role="list">
+                <li>{{ 'accueil.hero.garantie_proximite'|trans({'%rayon%': site.rayon_km}) }}</li>
+                <li>{{ 'accueil.hero.garantie_interlocuteurs'|trans }}</li>
+                <li>{{ 'accueil.hero.garantie_hebergement'|trans }}</li>
+                <li>{{ 'accueil.hero.garantie_propriete'|trans }}</li>
+            </ul>
+        </div>
+    </section>
+
+    <div class="conteneur section">
+        <twig:AppelAction />
+    </div>
+{% endblock %}

@@ -1,0 +1,54 @@
+# Textes fixes du site (hors contenus gérés en back-office).
+# Une future version anglaise ajoutera messages.en.yaml avec les mêmes clés.
+
+layout:
+    lien_evitement: 'Aller au contenu'
+    retour_accueil: '%nom%, retour à l''accueil'
+    menu: 'Menu'
+    nav_principale: 'Navigation principale'
+    titre_defaut: '%nom% | Création de sites internet à Limoges et en Nouvelle-Aquitaine'
+    description_defaut: 'Deux développeurs basés à Limoges créent des sites internet clairs, rapides et hébergés en France pour les artisans, commerçants, gîtes et communes de Nouvelle-Aquitaine.'
+
+nav:
+    accueil: 'Accueil'
+    offres: 'Offres'
+    realisations: 'Réalisations'
+    zones: 'Zones d''intervention'
+    a_propos: 'Qui sommes-nous'
+    contact: 'Contact'
+    devis: 'Demander un devis'
+
+fil_ariane:
+    label: 'Fil d''Ariane'
+
+pied:
+    presentation: 'Deux développeurs basés à %ville%. On se déplace dans un rayon d''environ %rayon% km, et en visio partout en France.'
+    titre_contact: 'Nous contacter'
+    titre_site: 'Le site'
+    titre_infos: 'Informations'
+    telephone: 'Téléphone'
+    email: 'Email'
+    mentions_legales: 'Mentions légales'
+    confidentialite: 'Politique de confidentialité'
+    hebergement: 'Site hébergé en France, sans cookie publicitaire.'
+    droits: '© %annee% %nom%'
+
+commun:
+    a_completer: 'À compléter'
+    en_construction: 'Cette page sera complétée prochainement.'
+
+appel_action:
+    titre: 'Un projet de site ? Parlons-en.'
+    texte: 'Décrivez-nous votre besoin, on vous répond pour en discuter, sans engagement. À %ville%, chez vous ou en visio.'
+    bouton: 'Demander un devis'
+
+accueil:
+    hero:
+        sur_titre: 'Création de sites internet · %ville%'
+        titre: 'Des sites internet faits à Limoges, pour les gens d''ici'
+        sous_titre: 'Basés à %ville%, on crée des sites internet pour les entreprises et communes de %region% et de toute la France.'
+        voir_realisations: 'Voir nos réalisations'
+        garantie_proximite: 'On se déplace chez vous, jusqu''à %rayon% km autour de Limoges'
+        garantie_interlocuteurs: 'Deux interlocuteurs, du premier café à la mise en ligne'
+        garantie_hebergement: 'Hébergement en France, conforme au RGPD'
+        garantie_propriete: 'Votre site vous appartient, sans abonnement imposé'

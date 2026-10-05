@@ -25,3 +25,7 @@
 
 # Fichiers envoyés depuis le back-office
 /public/uploads/
+
+###> Claude Code (réglages locaux) ###
+/.claude/settings.local.json
+###< Claude Code ###

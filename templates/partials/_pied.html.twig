@@ -1,0 +1,52 @@
+{# Pied de page : présentation, coordonnées, liens. #}
+{% macro coordonnee(valeur, lien) %}
+    {%- if valeur starts with '[' -%}
+        <span class="a-completer">{{ valeur }}</span>
+    {%- else -%}
+        <a href="{{ lien }}">{{ valeur }}</a>
+    {%- endif -%}
+{% endmacro %}
+
+<footer class="pied">
+    <div class="conteneur">
+        <div class="pied__grille">
+            <div>
+                <p class="pied__titre">{{ site.nom }}</p>
+                <p>{{ 'pied.presentation'|trans({'%ville%': site.ville, '%rayon%': site.rayon_km}) }}</p>
+            </div>
+
+            <div>
+                <p class="pied__titre">{{ 'pied.titre_contact'|trans }}</p>
+                <ul class="pied__liste">
+                    <li>{{ 'pied.telephone'|trans }} : {{ _self.coordonnee(site.telephone, 'tel:' ~ site.telephone|replace({' ': '', '.': ''})) }}</li>
+                    <li>{{ 'pied.email'|trans }} : {{ _self.coordonnee(site.email, 'mailto:' ~ site.email) }}</li>
+                    <li><a href="{{ path('app_contact') }}">{{ 'nav.devis'|trans }}</a></li>
+                </ul>
+            </div>
+
+            <nav aria-labelledby="pied-titre-site">
+                <p class="pied__titre" id="pied-titre-site">{{ 'pied.titre_site'|trans }}</p>
+                <ul class="pied__liste">
+                    <li><a href="{{ path('app_offre_index') }}">{{ 'nav.offres'|trans }}</a></li>
+                    <li><a href="{{ path('app_realisation_index') }}">{{ 'nav.realisations'|trans }}</a></li>
+                    <li><a href="{{ path('app_zone_index') }}">{{ 'nav.zones'|trans }}</a></li>
+                    <li><a href="{{ path('app_about') }}">{{ 'nav.a_propos'|trans }}</a></li>
+                    <li><a href="{{ path('app_contact') }}">{{ 'nav.contact'|trans }}</a></li>
+                </ul>
+            </nav>
+
+            <nav aria-labelledby="pied-titre-infos">
+                <p class="pied__titre" id="pied-titre-infos">{{ 'pied.titre_infos'|trans }}</p>
+                <ul class="pied__liste">
+                    <li><a href="{{ path('app_legal') }}">{{ 'pied.mentions_legales'|trans }}</a></li>
+                    <li><a href="{{ path('app_privacy') }}">{{ 'pied.confidentialite'|trans }}</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="pied__bas">
+            <p>{{ 'pied.droits'|trans({'%annee%': 'now'|date('Y'), '%nom%': site.nom}) }}</p>
+            <p>{{ 'pied.hebergement'|trans }}</p>
+        </div>
+    </div>
+</footer>

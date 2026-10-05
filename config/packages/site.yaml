@@ -1,0 +1,16 @@
+# Identité du site, utilisée dans le layout (en-tête, pied de page) et plus tard dans le JSON-LD.
+# Pour dupliquer le socle chez un client : modifier ce fichier et assets/styles/app.css (section 2).
+# Les valeurs entre crochets sont affichées comme « à compléter » sur le site.
+parameters:
+    site:
+        nom: 'Les deux web'
+        slogan: 'Création de sites internet à Limoges'
+        ville: 'Limoges'
+        region: 'Nouvelle-Aquitaine'
+        rayon_km: 200
+        telephone: '[À COMPLÉTER]'
+        email: '[À COMPLÉTER]'
+
+twig:
+    globals:
+        site: '%site%'

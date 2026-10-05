@@ -1,0 +1,18 @@
+{#
+ # Bouton ou lien stylé en bouton.
+ #
+ #   <twig:Bouton href="{{ path('app_contact') }}">Demander un devis</twig:Bouton>
+ #   <twig:Bouton variante="secondaire" href="...">Voir nos réalisations</twig:Bouton>
+ #   <twig:Bouton type="submit">Envoyer</twig:Bouton>
+ #
+ # variante : principal (défaut), secondaire, accent (sur fond sombre)
+ # Avec href : rend un <a>. Sans href : rend un <button>.
+ # Tout autre attribut (id, aria-*, data-*) est transmis tel quel.
+ #}
+{% props href = null, variante = 'principal', type = 'button' %}
+{% set classes = 'bouton bouton--' ~ variante %}
+{% if href %}
+    <a href="{{ href }}" {{ attributes.defaults({class: classes}) }}>{% block content %}{% endblock %}</a>
+{% else %}
+    <button type="{{ type }}" {{ attributes.defaults({class: classes}) }}>{{ block('content') }}</button>
+{% endif %}
