@@ -11,7 +11,10 @@
     <div class="conteneur">
         <div class="pied__grille">
             <div>
-                <p class="pied__titre">{{ site.nom }}</p>
+                <p class="pied__logo">
+                    <img src="{{ asset('images/logo/embleme-160.webp') }}" width="56" height="56" alt="">
+                    <img src="{{ asset('images/logo/texte-clair-96.webp') }}" width="97" height="48" alt="{{ site.nom }}">
+                </p>
                 <p>{{ 'pied.presentation'|trans({'%ville%': site.ville, '%rayon%': site.rayon_km}) }}</p>
             </div>
 

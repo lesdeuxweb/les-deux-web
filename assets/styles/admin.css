@@ -10,15 +10,11 @@
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    font-weight: 700;
-    color: #2E5E4E;
 }
 
-.admin-logo__point {
-    width: 0.7rem;
-    height: 0.7rem;
-    border-radius: 50%;
-    background: #F2C14E;
+.admin-logo img:last-child {
+    width: auto;
+    height: 32px;
 }
 
 /* --- Tableau de bord --- */

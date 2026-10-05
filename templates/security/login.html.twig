@@ -6,15 +6,15 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="robots" content="noindex, nofollow">
         <title>{{ 'admin.connexion.titre'|trans }} | {{ site.nom }}</title>
-        <link rel="icon" href="{{ asset('images/favicon.svg') }}" type="image/svg+xml">
+        <link rel="icon" href="{{ asset('images/logo/favicon-48.png') }}" type="image/png">
         <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
         {{ importmap('app') }}
     </head>
     <body class="page-connexion">
         <main id="contenu" class="connexion">
             <a class="logo" href="{{ path('app_home') }}" aria-label="{{ 'layout.retour_accueil'|trans({'%nom%': site.nom}) }}">
-                <span class="logo__point" aria-hidden="true"></span>
-                <span>{{ site.nom }}</span>
+                <img class="logo__embleme" src="{{ asset('images/logo/embleme-160.webp') }}" width="64" height="64" alt="">
+                <img class="logo__texte" src="{{ asset('images/logo/texte-clair-96.webp') }}" width="105" height="52" alt="">
             </a>
 
             <div class="connexion__carte">

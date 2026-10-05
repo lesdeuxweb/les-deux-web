@@ -16,6 +16,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+use Symfony\Component\Asset\Packages;
 use Symfony\Component\HttpFoundation\Response;
 
 #[AdminDashboard(routePath: '/admin', routeName: 'admin')]
@@ -25,6 +26,7 @@ class DashboardController extends AbstractDashboardController
         private readonly MessageContactRepository $messageContactRepository,
         private readonly EntityManagerInterface $entityManager,
         private readonly AdminUrlGenerator $adminUrlGenerator,
+        private readonly Packages $assets,
     ) {
     }
 
@@ -61,8 +63,12 @@ class DashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('<span class="admin-logo"><span class="admin-logo__point"></span>Les deux web</span>')
-            ->setFaviconPath('images/favicon.svg')
+            ->setTitle(sprintf(
+                '<span class="admin-logo"><img src="%s" width="36" height="36" alt=""><img src="%s" width="65" height="32" alt="Les deux web"></span>',
+                $this->assets->getUrl('images/logo/embleme-96.webp'),
+                $this->assets->getUrl('images/logo/texte-96.webp'),
+            ))
+            ->setFaviconPath('images/logo/favicon-48.png')
             ->setLocales(['fr'])
             ->disableDarkMode();
     }

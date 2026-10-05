@@ -14,9 +14,8 @@
 <header class="entete" data-controller="menu">
     <div class="conteneur entete__barre">
         <a class="logo" href="{{ path('app_home') }}" aria-label="{{ 'layout.retour_accueil'|trans({'%nom%': site.nom}) }}"{% if route == 'app_home' %} aria-current="page"{% endif %}>
-            {# Logotype provisoire, à remplacer par le logo SVG définitif #}
-            <span class="logo__point" aria-hidden="true"></span>
-            <span>{{ site.nom }}</span>
+            <img class="logo__embleme" src="{{ asset('images/logo/embleme-160.webp') }}" width="52" height="52" alt="">
+            <img class="logo__texte" src="{{ asset('images/logo/texte-96.webp') }}" width="89" height="44" alt="">
         </a>
 
         <button class="menu-bouton" type="button" hidden
