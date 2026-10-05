@@ -1,0 +1,11 @@
+framework:
+    messenger:
+        # Aucun transport asynchrone : un hébergement mutualisé OVH ne permet pas
+        # de faire tourner un worker Messenger en continu. Les messages (dont les
+        # emails) sont donc traités de façon synchrone.
+        default_bus: messenger.bus.default
+
+        buses:
+            messenger.bus.default: []
+
+        routing: {}

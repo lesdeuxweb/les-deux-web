@@ -1,0 +1,26 @@
+
+services:
+###> doctrine/doctrine-bundle ###
+  # MySQL 8.0 : même moteur que les bases SQL des hébergements mutualisés OVH.
+  database:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-lesdeuxweb}
+      MYSQL_USER: ${MYSQL_USER:-app}
+      # Mot de passe de développement uniquement.
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-app}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-p${MYSQL_ROOT_PASSWORD:-root}"]
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    volumes:
+      - database_data:/var/lib/mysql:rw
+      - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+###< doctrine/doctrine-bundle ###
+
+volumes:
+###> doctrine/doctrine-bundle ###
+  database_data:
+###< doctrine/doctrine-bundle ###
