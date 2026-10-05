@@ -6,6 +6,9 @@ parameters:
         nom: 'Les deux web'
         slogan: 'Création de sites internet à Limoges'
         ville: 'Limoges'
+        # Adresse (mentions légales, données structurées). Les valeurs entre crochets sont omises du JSON-LD.
+        adresse: '[À COMPLÉTER : numéro et rue]'
+        code_postal: '[À COMPLÉTER]'
         region: 'Nouvelle-Aquitaine'
         rayon_km: 200
         telephone: '[À COMPLÉTER]'

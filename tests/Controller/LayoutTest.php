@@ -57,11 +57,21 @@ class LayoutTest extends WebTestCase
     {
         $crawler = $this->client->request('GET', $url);
 
-        $ressources = $crawler->filter('link[href], script[src], img[src], iframe[src], source[src]')
+        // Ressources réellement chargées par le navigateur (les liens canonical / og:url ne le sont pas)
+        $ressources = $crawler->filter('link[rel="stylesheet"], link[rel="icon"], link[rel="apple-touch-icon"], link[rel="preload"], link[rel="modulepreload"], script[src], img[src], iframe[src], source[src]')
             ->each(fn (Crawler $n) => $n->attr('href') ?? $n->attr('src'));
+        self::assertNotEmpty($ressources);
 
         foreach ($ressources as $ressource) {
-            self::assertMatchesRegularExpression('#^/(?!/)#', $ressource, sprintf('Ressource externe chargée : %s', $ressource));
+            self::assertMatchesRegularExpression('#^(/(?!/)|http://localhost/)#', $ressource, sprintf('Ressource externe chargée : %s', $ressource));
+        }
+
+        // Les imports JavaScript (importmap) restent eux aussi locaux
+        $importmap = $crawler->filter('script[type="importmap"]');
+        if ($importmap->count()) {
+            foreach (json_decode($importmap->text(), true)['imports'] as $module) {
+                self::assertStringStartsWith('/', $module);
+            }
         }
     }
 

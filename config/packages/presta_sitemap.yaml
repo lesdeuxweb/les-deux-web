@@ -1,0 +1,6 @@
+presta_sitemap:
+    # Pas de lastmod inventé pour les pages fixes : seuls les contenus ont une date réelle.
+    defaults:
+        priority: 0.5
+        changefreq: weekly
+        lastmod: null

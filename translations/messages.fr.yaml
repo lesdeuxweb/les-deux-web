@@ -190,3 +190,12 @@ admin:
         mot_de_passe: 'Mot de passe'
         se_connecter: 'Se connecter'
         retour_site: '← Retour au site'
+
+erreur:
+    titre: 'Une erreur est survenue'
+    texte: 'Le site rencontre un problème momentané. Merci de réessayer dans quelques minutes, ou de nous contacter si le problème persiste.'
+    retour_accueil: 'Retour à l''accueil'
+    404:
+        code: 'Erreur 404'
+        titre: 'Cette page est introuvable'
+        texte: 'Elle a peut-être été déplacée ou supprimée. Vous pouvez repartir de l''accueil, ou nous écrire directement.'

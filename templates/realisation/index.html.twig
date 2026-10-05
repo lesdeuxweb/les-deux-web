@@ -10,6 +10,8 @@
         : 'realisation.index.titre_page'|trans({'%nom%': site.nom}) -}}
 {% endblock %}
 {% block meta_description %}{{ 'realisation.index.description'|trans }}{% endblock %}
+{# Le filtre par secteur donne une page au contenu distinct : il fait partie de l'URL canonique #}
+{% block canonical %}{{ url('app_realisation_index', secteur_actif ? {secteur: secteur_actif.slug} : {}) }}{% endblock %}
 
 {% block body %}
     <div class="conteneur">

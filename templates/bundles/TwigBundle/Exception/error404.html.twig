@@ -1,0 +1,19 @@
+{# Page introuvable (404), affichée en production. #}
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'erreur.404.titre'|trans }} | {{ site.nom }}{% endblock %}
+{% block canonical %}{% endblock %}
+
+{% block body %}
+    <div class="conteneur">
+        <header class="tete-page">
+            <p class="hero__sur-titre">{{ 'erreur.404.code'|trans }}</p>
+            <h1>{{ 'erreur.404.titre'|trans }}</h1>
+            <p class="tete-page__chapeau">{{ 'erreur.404.texte'|trans }}</p>
+            <div class="groupe-boutons">
+                <twig:Bouton href="{{ path('app_home') }}">{{ 'erreur.retour_accueil'|trans }}</twig:Bouton>
+                <twig:Bouton href="{{ path('app_contact') }}" variante="secondaire">{{ 'nav.contact'|trans }}</twig:Bouton>
+            </div>
+        </header>
+    </div>
+{% endblock %}

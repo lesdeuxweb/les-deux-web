@@ -1,0 +1,3 @@
+# /sitemap.xml (index) et /sitemap.{section}.xml, alimentés par App\EventListener\SitemapListener
+presta_sitemap:
+    resource: '@PrestaSitemapBundle/config/routing.php'

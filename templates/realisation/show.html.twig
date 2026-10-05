@@ -7,6 +7,8 @@
 
 {% block title %}{{ realisation.metaTitle ?: realisation.titre ~ ' | ' ~ site.nom }}{% endblock %}
 {% block meta_description %}{{ realisation.metaDescription ?: realisation.resume }}{% endblock %}
+{% block og_type %}article{% endblock %}
+{% block og_image %}{{ realisation.imageName ? absolute_url(vich_uploader_asset(realisation, 'imageFile')) : parent() }}{% endblock %}
 
 {% block body %}
     <div class="conteneur">

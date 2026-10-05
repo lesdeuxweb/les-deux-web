@@ -1,0 +1,17 @@
+{# Page d'erreur générique (500...), affichée en production. #}
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'erreur.titre'|trans }} | {{ site.nom }}{% endblock %}
+{% block canonical %}{% endblock %}
+
+{% block body %}
+    <div class="conteneur">
+        <header class="tete-page">
+            <h1>{{ 'erreur.titre'|trans }}</h1>
+            <p class="tete-page__chapeau">{{ 'erreur.texte'|trans }}</p>
+            <div class="groupe-boutons">
+                <twig:Bouton href="{{ path('app_home') }}">{{ 'erreur.retour_accueil'|trans }}</twig:Bouton>
+            </div>
+        </header>
+    </div>
+{% endblock %}
