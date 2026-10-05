@@ -111,26 +111,11 @@
                             <div class="abonnements">
                                 <twig:SurTitre class="sur-titre--sans-trait">{{ 'accueil.offres.abonnements_sur_titre'|trans }}</twig:SurTitre>
                                 <h3 class="options-carte__titre">{{ 'accueil.offres.abonnements'|trans }}</h3>
-                                <div class="tableau-defilant">
-                                    <table class="tableau-offres">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">{{ 'accueil.offres.colonne_pack'|trans }}</th>
-                                                <th scope="col">{{ 'accueil.offres.colonne_compris'|trans }}</th>
-                                                <th scope="col">{{ 'accueil.offres.colonne_prix'|trans }}</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for offre in abonnements %}
-                                                <tr>
-                                                    <th scope="row"><a href="{{ path('app_home', {offre: offre.slug}) }}#contact">{{ offre.nom }}</a></th>
-                                                    <td>{{ offre.pointsForts|join(', ') }}.</td>
-                                                    <td class="tableau-offres__prix">{{ offre.prixAffiche }}</td>
-                                                </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
+                                <ul class="grille-cartes grille-offres" role="list">
+                                    {% for offre in abonnements %}
+                                        <li><twig:CarteOffre :offre="offre" :numero="loop.index" niveau="4" /></li>
+                                    {% endfor %}
+                                </ul>
                             </div>
                         {% endif %}
                     </div>

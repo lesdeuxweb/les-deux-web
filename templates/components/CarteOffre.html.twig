@@ -5,13 +5,11 @@
  #
  # numero : numéro affiché « 01 », « 02 »... (facultatif)
  # niveau : niveau du titre (3 par défaut ; 2 quand la carte est directement sous le <h1>).
- # Variantes automatiques : fond encre si l'offre a un badge, fond sauge pour un abonnement.
+ # Variante automatique : fond encre si l'offre a un badge (la 3e carte d'une grille est sauge, voir CSS).
  # Toute la carte est cliquable (lien étiré sur le titre), sans imbriquer de liens.
  #}
 {% props offre, numero = null, niveau = 3 %}
-{% set classes = 'carte carte--cliquable carte-offre'
-    ~ (offre.badge ? ' carte-offre--vedette')
-    ~ (offre.abonnement and not offre.badge ? ' carte-offre--abonnement') %}
+{% set classes = 'carte carte--cliquable carte-offre' ~ (offre.badge ? ' carte-offre--vedette') %}
 <article {{ attributes.defaults({class: classes}) }}>
     {% if numero %}<p class="carte-offre__numero" aria-hidden="true">{{ '%02d'|format(numero) }}</p>{% endif %}
     {% if offre.badge %}<p class="carte-offre__badge">{{ offre.badge }}</p>{% endif %}

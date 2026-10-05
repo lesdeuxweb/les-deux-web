@@ -63,7 +63,7 @@ class AccueilTest extends WebTestCase
         $offres = $crawler->filter('#offres');
 
         // Trois cartes, numérotées, avec libellé de prix
-        $cartes = $offres->filter('.grille-offres .carte-offre');
+        $cartes = $offres->filter('.grille-offres')->first()->filter('.carte-offre');
         self::assertCount(3, $cartes);
         self::assertSame(['01', '02', '03'], $cartes->filter('.carte-offre__numero')->each(fn (Crawler $n) => $n->text()));
         $prix = $cartes->filter('.prix')->each(fn (Crawler $n) => trim(preg_replace('/\s+/u', ' ', $n->text())));
@@ -78,8 +78,13 @@ class AccueilTest extends WebTestCase
 
         // Autres offres de création, options, abonnements
         $lignes = $grille->filter('.tableau-offres tbody tr')->each(fn (Crawler $tr) => [$tr->filter('th')->text(), $tr->filter('.tableau-offres__prix')->text()]);
-        self::assertContains(['Site 3 pages', '299 €'], $lignes);
-        self::assertContains(['Pack Évolution', '35 € / mois'], $lignes);
+        self::assertSame([['Site 3 pages', '299 €']], $lignes);
+
+        // Abonnements : cartes dans la grille complète
+        $pack = $grille->filter('.abonnements .carte-offre');
+        self::assertCount(1, $pack);
+        self::assertStringContainsString('Pack Évolution', $pack->text());
+        self::assertSame('Abonnement 35 € / mois', trim(preg_replace('/\s+/u', ' ', $pack->filter('.prix')->text())));
         self::assertSame(['Page supplémentaire', '50 €'], $grille->filter('.options-liste li')->first()->children()->each(fn (Crawler $n) => $n->text()));
 
         // Brouillons masqués, pas de « HT », mention de TVA

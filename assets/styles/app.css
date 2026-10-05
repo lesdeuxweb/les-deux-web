@@ -923,15 +923,9 @@ strong {
     }
 }
 
-/* Variante abonnement, et 3e carte de la sélection (maquette) : fond sauge */
-.carte-offre--abonnement,
+/* 3e carte d'une grille (maquette) : fond sauge */
 .grille-offres > li:nth-child(3) .carte-offre:not(.carte-offre--vedette) {
     background: var(--c-sauge);
-}
-
-/* Fond blanc pour les offres « création » quand la page est déjà porcelaine */
- .carte-offre--abonnement) {
-    background: var(--c-blanc);
 }
 
 /* --- Prix (templates/components/Prix.html.twig) --- */
@@ -1166,7 +1160,7 @@ strong {
 }
 
 .abonnements .options-carte__titre {
-    margin-bottom: var(--e-5);
+    margin-bottom: var(--e-6);
 }
 
 .sur-titre--sans-trait {

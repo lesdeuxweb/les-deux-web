@@ -61,8 +61,6 @@ accueil:
         colonne_offre: 'Offre'
         colonne_contenu: 'Contenu principal'
         colonne_prix: 'Prix'
-        colonne_pack: 'Pack'
-        colonne_compris: 'Ce qui est compris'
         options_sur_titre: 'À la carte'
         options: 'Options supplémentaires'
         abonnements_sur_titre: 'Après la mise en ligne'
