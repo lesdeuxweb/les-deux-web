@@ -70,6 +70,9 @@
     --c-texte-doux: #4E5C56;    /* textes secondaires : 6,5:1 */
     --c-filet: #DCE2DC;
     --c-bocage-pale: #E6EEE9;   /* fonds de sections alternées */
+    --c-bordure-champ: #6B7A73; /* bordure des champs : 4,5:1 sur blanc (minimum 3:1) */
+    --c-erreur: #A3261B;        /* erreurs : 7,4:1 sur blanc */
+    --c-erreur-pale: #FDECEA;
 
     /* Typographie */
     --f-titre: "Bitter", Georgia, "Times New Roman", serif;
@@ -940,6 +943,172 @@ a:hover {
 
 .portrait--grand .portrait__absent {
     font-size: var(--t-0);
+}
+
+/* --- Formulaires (thème : templates/form/theme.html.twig) --- */
+
+.formulaire {
+    display: grid;
+    gap: var(--e-5);
+    justify-items: start;
+}
+
+.formulaire > * {
+    margin: 0;
+    width: 100%;
+}
+
+.formulaire > .bouton {
+    width: auto;
+}
+
+.formulaire__intro {
+    font-size: var(--t-0);
+    color: var(--c-texte-doux);
+}
+
+.formulaire__ligne {
+    display: grid;
+    gap: var(--e-5);
+}
+
+@media (min-width: 40rem) {
+    .formulaire__ligne {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.champ {
+    display: grid;
+    gap: var(--e-2);
+}
+
+.champ label {
+    font-weight: 700;
+}
+
+.champ__obligatoire {
+    font-weight: 400;
+    font-size: var(--t-0);
+    color: var(--c-texte-doux);
+}
+
+.champ__aide {
+    margin: 0;
+    font-size: var(--t-0);
+    color: var(--c-texte-doux);
+}
+
+.champ input:not([type="checkbox"]),
+.champ select,
+.champ textarea {
+    width: 100%;
+    padding: 0.65rem 0.8rem;
+    font: inherit;
+    color: var(--c-encre);
+    background: var(--c-blanc);
+    border: 2px solid var(--c-bordure-champ);
+    border-radius: var(--rayon);
+}
+
+.champ textarea {
+    resize: vertical;
+    min-height: 9rem;
+}
+
+.champ input:focus-visible,
+.champ select:focus-visible,
+.champ textarea:focus-visible {
+    border-color: var(--c-encre);
+}
+
+.champ--erreur input:not([type="checkbox"]),
+.champ--erreur select,
+.champ--erreur textarea {
+    border-color: var(--c-erreur);
+    background: var(--c-erreur-pale);
+}
+
+.champ__erreur {
+    margin: 0;
+    color: var(--c-erreur);
+    font-weight: 700;
+    font-size: var(--t-0);
+}
+
+/* Icône d'erreur dessinée en CSS : l'erreur n'est pas signalée par la seule couleur */
+.champ__erreur::before {
+    content: "!";
+    display: inline-grid;
+    place-items: center;
+    width: 1.1rem;
+    height: 1.1rem;
+    margin-right: var(--e-2);
+    border-radius: 50%;
+    background: var(--c-erreur);
+    color: var(--c-blanc);
+    font-size: 0.75rem;
+    vertical-align: 0.05em;
+}
+
+.champ__case {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--e-3);
+    align-items: start;
+}
+
+.champ__case input {
+    width: 1.35rem;
+    height: 1.35rem;
+    margin: 0.15rem 0 0;
+    accent-color: var(--c-bocage);
+}
+
+.champ__case label {
+    font-weight: 400;
+}
+
+/* Honeypot : retiré de l'écran et de l'arbre d'accessibilité (aria-hidden), pas display:none */
+.champ-piege {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+/* --- Alertes (messages flash, erreurs globales) --- */
+
+.alerte {
+    padding: var(--e-4) var(--e-5);
+    border-radius: var(--rayon);
+    border-left: 4px solid;
+    margin-bottom: var(--e-6);
+}
+
+.alerte > :last-child {
+    margin-bottom: 0;
+}
+
+.alerte--succes {
+    background: var(--c-bocage-pale);
+    border-color: var(--c-bocage);
+}
+
+.alerte--erreur {
+    background: var(--c-erreur-pale);
+    border-color: var(--c-erreur);
+    color: var(--c-erreur);
+    font-weight: 700;
+}
+
+.alerte--erreur ul {
+    margin: var(--e-2) 0 0;
+}
+
+.alerte--erreur a {
+    color: var(--c-erreur);
 }
 
 /* --- Contenu rédigé en back-office (HTML assaini) --- */

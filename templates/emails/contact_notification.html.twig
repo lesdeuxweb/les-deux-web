@@ -1,0 +1,29 @@
+{# Email reçu par l'équipe à chaque demande. Version texte : contact_notification.txt.twig #}
+<!DOCTYPE html>
+<html lang="fr">
+<body style="margin:0;padding:24px;background:#F6F7F3;font-family:Arial,Helvetica,sans-serif;color:#1C2623;font-size:16px;line-height:1.5;">
+    <div style="max-width:600px;margin:0 auto;background:#FFFFFF;border:1px solid #DCE2DC;border-top:4px solid #F2C14E;border-radius:6px;padding:24px;">
+        <h1 style="margin:0 0 16px;font-size:22px;color:#2E5E4E;">Nouvelle demande de contact</h1>
+        <table role="presentation" style="width:100%;border-collapse:collapse;">
+            {% for libelle, valeur in {
+                'Nom': contact.nom,
+                'Email': contact.email,
+                'Téléphone': contact.telephone,
+                'Entreprise': contact.entreprise,
+                'Offre': contact.offre ? contact.offre.nom : null,
+                'Reçu le': contact.createdAt|format_datetime('long', 'short', locale: 'fr'),
+            } %}
+                {% if valeur %}
+                    <tr>
+                        <th scope="row" style="text-align:left;padding:6px 12px 6px 0;color:#4E5C56;font-weight:normal;vertical-align:top;white-space:nowrap;">{{ libelle }}</th>
+                        <td style="padding:6px 0;font-weight:bold;">{{ valeur }}</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </table>
+        <h2 style="margin:24px 0 8px;font-size:18px;">Message</h2>
+        <div style="padding:16px;background:#F6F7F3;border-radius:6px;">{{ contact.message|nl2br }}</div>
+        <p style="margin:24px 0 0;color:#4E5C56;font-size:14px;">Répondez directement à cet email pour écrire à {{ contact.nom }}. Le message est aussi enregistré dans le back-office.</p>
+    </div>
+</body>
+</html>

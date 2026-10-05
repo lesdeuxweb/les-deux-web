@@ -1,0 +1,18 @@
+{% autoescape false %}
+Nouvelle demande de contact
+===========================
+
+Nom : {{ contact.nom }}
+Email : {{ contact.email }}
+{% if contact.telephone %}Téléphone : {{ contact.telephone }}
+{% endif %}{% if contact.entreprise %}Entreprise : {{ contact.entreprise }}
+{% endif %}{% if contact.offre %}Offre : {{ contact.offre.nom }}
+{% endif %}Reçu le : {{ contact.createdAt|format_datetime('long', 'short', locale: 'fr') }}
+
+Message :
+{{ contact.message }}
+
+--
+Répondez directement à cet email pour écrire à {{ contact.nom }}.
+Le message est aussi enregistré dans le back-office.
+{% endautoescape %}

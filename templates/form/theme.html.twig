@@ -1,0 +1,61 @@
+{#
+ # Thème des formulaires du site public (déclaré dans config/packages/twig.yaml).
+ # - erreurs affichées SOUS le champ, reliées par aria-describedby, champ marqué aria-invalid ;
+ # - mention « (obligatoire) » sur les libellés des champs requis.
+ #}
+{% extends 'form_div_layout.html.twig' %}
+
+{%- block form_row -%}
+    {%- set a_erreur = errors|length > 0 -%}
+    {%- set decrit_par = [help ? id ~ '_help', a_erreur ? id ~ '_erreur']|filter(v => v)|join(' ') -%}
+    {%- set widget_attr = {attr: attr|merge(a_erreur ? {'aria-invalid': 'true'} : {})|merge(decrit_par ? {'aria-describedby': decrit_par} : {})} -%}
+    <div{% with {attr: row_attr|merge({class: ('champ ' ~ (row_attr.class ?? '') ~ (a_erreur ? ' champ--erreur'))|trim})} %}{{ block('attributes') }}{% endwith %}>
+        {{- form_label(form) -}}
+        {{- form_help(form) -}}
+        {{- form_widget(form, widget_attr) -}}
+        {{- form_errors(form) -}}
+    </div>
+{%- endblock form_row -%}
+
+{%- block checkbox_row -%}
+    {%- set a_erreur = errors|length > 0 -%}
+    {%- set widget_attr = {attr: attr|merge(a_erreur ? {'aria-invalid': 'true', 'aria-describedby': id ~ '_erreur'} : {})} -%}
+    <div{% with {attr: row_attr|merge({class: ('champ champ--case ' ~ (row_attr.class ?? '') ~ (a_erreur ? ' champ--erreur'))|trim})} %}{{ block('attributes') }}{% endwith %}>
+        <div class="champ__case">
+            {{- form_widget(form, widget_attr) -}}
+            {{- form_label(form) -}}
+        </div>
+        {{- form_errors(form) -}}
+    </div>
+{%- endblock checkbox_row -%}
+
+{# Le libellé d'une case à cocher est rendu à part (voir checkbox_row), pas dans le widget #}
+{%- block checkbox_widget -%}
+    <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
+{%- endblock checkbox_widget -%}
+
+{%- block form_label_content -%}
+    {{- parent() -}}
+    {%- if required %} <span class="champ__obligatoire">{{ 'formulaire.obligatoire'|trans({}, 'messages') }}</span>{% endif -%}
+{%- endblock form_label_content -%}
+
+{%- block form_errors -%}
+    {%- if errors|length > 0 -%}
+        {%- if compound -%}
+            {# Erreurs globales du formulaire (CSRF, trop d'envois...) #}
+            <div class="alerte alerte--erreur" role="alert">
+                {%- for error in errors %}<p>{{ error.message }}</p>{% endfor -%}
+            </div>
+        {%- else -%}
+            <p class="champ__erreur" id="{{ id }}_erreur">
+                {%- for error in errors %}{{ error.message }}{% if not loop.last %}<br>{% endif %}{% endfor -%}
+            </p>
+        {%- endif -%}
+    {%- endif -%}
+{%- endblock form_errors -%}
+
+{%- block form_help -%}
+    {%- if help is not empty -%}
+        <p id="{{ id }}_help" class="champ__aide">{{ help|trans(help_translation_parameters, translation_domain) }}</p>
+    {%- endif -%}
+{%- endblock form_help -%}

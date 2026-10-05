@@ -1,0 +1,7 @@
+framework:
+    rate_limiter:
+        # Formulaire de contact : 5 envois par heure et par adresse IP.
+        contact:
+            policy: 'sliding_window'
+            limit: 5
+            interval: '1 hour'

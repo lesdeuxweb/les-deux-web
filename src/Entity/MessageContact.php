@@ -38,6 +38,11 @@ class MessageContact
     #[Assert\Length(max: 150)]
     private ?string $entreprise = null;
 
+    /** Offre choisie dans le formulaire (facultatif ; conservée si l'offre est supprimée ensuite : SET NULL). */
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    private ?Offre $offre = null;
+
     #[ORM\Column(type: Types::TEXT)]
     #[Assert\NotBlank(message: 'Merci de décrire votre projet.')]
     #[Assert\Length(min: 10, max: 5000)]
@@ -110,6 +115,18 @@ class MessageContact
     public function setEntreprise(?string $entreprise): static
     {
         $this->entreprise = $entreprise;
+
+        return $this;
+    }
+
+    public function getOffre(): ?Offre
+    {
+        return $this->offre;
+    }
+
+    public function setOffre(?Offre $offre): static
+    {
+        $this->offre = $offre;
 
         return $this;
     }

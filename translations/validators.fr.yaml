@@ -1,0 +1,4 @@
+# Messages de validation propres au site (les messages standards de Symfony sont déjà traduits).
+contact:
+    form:
+        consentement_requis: 'Merci de cocher cette case pour que nous puissions vous recontacter.'

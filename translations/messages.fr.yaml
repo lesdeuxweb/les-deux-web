@@ -154,3 +154,30 @@ about:
     valeurs: 'Nos valeurs'
     valeurs_a_completer: '[À COMPLÉTER : vos valeurs, avec vos mots. Les quatre engagements ci-dessous sont repris de l''accueil.]'
     cta_titre: 'Envie de nous rencontrer ?'
+
+formulaire:
+    obligatoire: '(obligatoire)'
+
+contact:
+    titre_page: 'Contact et demande de devis | %nom%'
+    description: 'Parlez-nous de votre projet de site internet. Basés à %ville%, on vous répond rapidement, sans engagement.'
+    titre: 'Parlons de votre projet'
+    chapeau: 'Décrivez-nous votre activité et ce que vous attendez de votre site. On vous recontacte pour en discuter, sans engagement.'
+    coordonnees: 'Nos coordonnées'
+    deplacements: 'Basés à %ville%, déplacements dans un rayon d''environ %rayon% km, visio partout en France.'
+    succes: 'Merci, votre message a bien été envoyé. Nous vous répondons rapidement.'
+    trop_d_envois: 'Vous avez envoyé plusieurs messages en peu de temps. Merci de réessayer dans une heure, ou de nous appeler directement.'
+    form:
+        erreurs: '{1} Un champ est à corriger :|]1,Inf[ %count% champs sont à corriger :'
+        intro: 'Les champs marqués « (obligatoire) » doivent être remplis.'
+        nom: 'Nom et prénom'
+        email: 'Adresse email'
+        telephone: 'Téléphone'
+        entreprise: 'Entreprise ou commune'
+        offre: 'Offre qui vous intéresse'
+        offre_aucune: 'Je ne sais pas encore'
+        message: 'Votre projet'
+        message_aide: 'Votre activité, ce que vous attendez du site, vos délais... Quelques lignes suffisent.'
+        consentement: 'J''accepte que les informations saisies soient utilisées pour me recontacter au sujet de ma demande. <a href="%url%">Politique de confidentialité</a>'
+        piege: 'Ne pas remplir ce champ'
+        envoyer: 'Envoyer ma demande'
