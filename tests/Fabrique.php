@@ -3,9 +3,7 @@
 namespace App\Tests;
 
 use App\Entity\Offre;
-use App\Entity\Realisation;
-use App\Entity\Secteur;
-use App\Entity\Zone;
+use App\Entity\OptionTarifaire;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
@@ -18,48 +16,20 @@ final class Fabrique
     {
     }
 
-    public function offre(string $nom, bool $publie = true, ?int $prix = 900): Offre
+    public function offre(string $nom, bool $publie = true, ?int $prix = 399, string $categorie = Offre::CATEGORIE_CREATION): Offre
     {
         return $this->persister((new Offre())
+            ->setCategorie($categorie)
             ->setNom($nom)
             ->setAccroche('Accroche de '.$nom)
-            ->setDescription('<p>Description de '.$nom.'</p>')
             ->setPrixAPartirDe($prix)
             ->setPointsForts(['Premier point fort', 'Deuxième point fort'])
             ->setPublie($publie));
     }
 
-    public function secteur(string $nom, bool $publie = true, ?string $libelleCible = null): Secteur
+    public function option(string $nom, string $prix, bool $publie = true): OptionTarifaire
     {
-        return $this->persister((new Secteur())
-            ->setNom($nom)
-            ->setLibelleCible($libelleCible)
-            ->setAccroche('Accroche du secteur '.$nom)
-            ->setContenu('<p>Contenu du secteur '.$nom.'</p>')
-            ->setPublie($publie));
-    }
-
-    public function zone(string $nom, string $type = Zone::TYPE_DEPARTEMENT, bool $publie = true): Zone
-    {
-        return $this->persister((new Zone())
-            ->setNom($nom)
-            ->setType($type)
-            ->setAccroche('Accroche de la zone '.$nom)
-            ->setContenu('<p>Contenu de la zone '.$nom.'</p>')
-            ->setPublie($publie));
-    }
-
-    public function realisation(string $titre, ?Secteur $secteur = null, ?Zone $zone = null, bool $publie = true, bool $misEnAvant = false): Realisation
-    {
-        return $this->persister((new Realisation())
-            ->setTitre($titre)
-            ->setResume('Résumé de '.$titre)
-            ->setDescription('<p>Description de '.$titre.'</p>')
-            ->setVille('Limoges')
-            ->setSecteur($secteur)
-            ->setZone($zone)
-            ->setPublie($publie)
-            ->setMisEnAvant($misEnAvant));
+        return $this->persister((new OptionTarifaire())->setNom($nom)->setPrix($prix)->setPublie($publie));
     }
 
     public function flush(): void

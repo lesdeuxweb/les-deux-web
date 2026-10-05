@@ -1,4 +1,5 @@
-{# Pied de page : logo, phrase, navigation, maillage métiers / zones, liens légaux. #}
+{# Pied de page (maquette) : logo, phrase, navigation, liens légaux. #}
+{% set accueil = path('app_home') %}
 <footer class="pied">
     <div class="conteneur">
         <div class="pied__haut">
@@ -8,41 +9,12 @@
 
             <nav aria-label="{{ 'pied.titre_site'|trans }}">
                 <ul class="pied__nav">
-                    <li><a href="{{ path('app_offre_index') }}">{{ 'nav.offres'|trans }}</a></li>
-                    <li><a href="{{ path('app_realisation_index') }}">{{ 'nav.realisations'|trans }}</a></li>
-                    <li><a href="{{ path('app_zone_index') }}">{{ 'nav.zones'|trans }}</a></li>
-                    <li><a href="{{ path('app_about') }}">{{ 'nav.a_propos'|trans }}</a></li>
-                    <li><a href="{{ path('app_contact') }}">{{ 'nav.contact'|trans }}</a></li>
+                    <li><a href="{{ accueil }}#offres">{{ 'nav.offres'|trans }}</a></li>
+                    <li><a href="{{ accueil }}#qui-sommes-nous">{{ 'nav.a_propos'|trans }}</a></li>
+                    <li><a href="{{ accueil }}#contact">{{ 'nav.contact'|trans }}</a></li>
                 </ul>
             </nav>
         </div>
-
-        {% set secteurs = secteurs_publies() %}
-        {% set zones = zones_publiees() %}
-        {% if secteurs is not empty or zones is not empty %}
-            <div class="pied__maillage">
-                {% if secteurs is not empty %}
-                    <nav aria-labelledby="pied-titre-secteurs">
-                        <p class="pied__titre" id="pied-titre-secteurs">{{ 'pied.titre_secteurs'|trans }}</p>
-                        <ul class="pied__liste">
-                            {% for secteur in secteurs %}
-                                <li><a href="{{ path('app_secteur_show', {slug: secteur.slug}) }}">{{ secteur.nom }}</a></li>
-                            {% endfor %}
-                        </ul>
-                    </nav>
-                {% endif %}
-                {% if zones is not empty %}
-                    <nav aria-labelledby="pied-titre-zones">
-                        <p class="pied__titre" id="pied-titre-zones">{{ 'pied.titre_zones'|trans }}</p>
-                        <ul class="pied__liste">
-                            {% for zone in zones %}
-                                <li><a href="{{ path('app_zone_show', {slug: zone.slug}) }}">{{ zone.nom }}</a></li>
-                            {% endfor %}
-                        </ul>
-                    </nav>
-                {% endif %}
-            </div>
-        {% endif %}
 
         <div class="pied__bas">
             <p>{{ 'pied.droits'|trans({'%annee%': 'now'|date('Y'), '%nom%': site.nom}) }}</p>

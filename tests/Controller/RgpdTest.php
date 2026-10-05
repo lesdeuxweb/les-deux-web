@@ -61,7 +61,7 @@ class RgpdTest extends WebTestCase
     public function testCaseDeConsentementLieeALaPolitique(): void
     {
         $client = static::createClient();
-        $crawler = $client->request('GET', '/contact');
+        $crawler = $client->request('GET', '/');
 
         self::assertCount(1, $crawler->filter('label[for="contact_consentement"] a[href="/confidentialite"]'));
     }
@@ -71,7 +71,7 @@ class RgpdTest extends WebTestCase
         $client = static::createClient();
         static::getContainer()->get('limiter.contact')->create('127.0.0.1')->reset();
 
-        $crawler = $client->request('GET', '/contact');
+        $crawler = $client->request('GET', '/');
         self::assertSame([], $client->getResponse()->headers->getCookies(), 'Afficher le formulaire ne dépose aucun cookie.');
 
         $client->submit($crawler->selectButton('Envoyer ma demande')->form([

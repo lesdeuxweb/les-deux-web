@@ -29,7 +29,7 @@ class ContactTest extends WebTestCase
 
     public function testFormulaireAffiche(): void
     {
-        $crawler = $this->client->request('GET', '/contact');
+        $crawler = $this->client->request('GET', '/');
 
         self::assertResponseIsSuccessful();
         self::assertSelectorExists('form.formulaire');
@@ -47,7 +47,7 @@ class ContactTest extends WebTestCase
         $fabrique->offre('Boutique en ligne');
         $fabrique->flush();
 
-        $crawler = $this->client->request('GET', '/contact?offre=boutique-en-ligne');
+        $crawler = $this->client->request('GET', '/?offre=boutique-en-ligne');
 
         self::assertSame('boutique-en-ligne', $crawler->filter('#contact_offre option[selected]')->attr('value'));
     }
@@ -61,7 +61,7 @@ class ContactTest extends WebTestCase
         $this->soumettre(['contact[offre]' => 'site-vitrine']);
 
         self::assertResponseStatusCodeSame(303);
-        self::assertResponseRedirects('/contact#contact');
+        self::assertResponseRedirects('/#contact');
 
         // Enregistré en base, avec l'offre choisie
         $messages = $this->repository()->findAll();
@@ -134,7 +134,7 @@ class ContactTest extends WebTestCase
         $this->soumettre(['contact[site_web]' => 'https://spam.example']);
 
         // Le robot voit un succès...
-        self::assertResponseRedirects('/contact#contact');
+        self::assertResponseRedirects('/#contact');
         $this->client->followRedirect();
         self::assertSelectorExists('.alerte--succes');
 
@@ -147,7 +147,7 @@ class ContactTest extends WebTestCase
     {
         for ($i = 1; $i <= 5; ++$i) {
             $this->soumettre();
-            self::assertResponseRedirects('/contact#contact', 303, sprintf('Envoi n°%d refusé.', $i));
+            self::assertResponseRedirects('/#contact', 303, sprintf('Envoi n°%d refusé.', $i));
         }
 
         $crawler = $this->soumettre();
@@ -166,14 +166,14 @@ class ContactTest extends WebTestCase
 
         $this->soumettre();
 
-        self::assertResponseRedirects('/contact#contact');
+        self::assertResponseRedirects('/#contact');
     }
 
     public function testJetonCsrfDUnAutreSiteRefuse(): void
     {
         // Requête forgée depuis un autre site : la protection CSRF « stateless » vérifie l'en-tête Origin
         parse_str(http_build_query($this->donneesValides() + ['contact[_token]' => 'csrf-token']), $donnees);
-        $this->client->request('POST', '/contact', $donnees, server: [
+        $this->client->request('POST', '/', $donnees, server: [
             'HTTP_ORIGIN' => 'https://site-malveillant.example',
         ]);
 
@@ -184,7 +184,7 @@ class ContactTest extends WebTestCase
     /** @param array<string, mixed> $valeurs */
     private function soumettre(array $valeurs = []): Crawler
     {
-        $crawler = $this->client->request('GET', '/contact');
+        $crawler = $this->client->request('GET', '/');
         $form = $crawler->selectButton('Envoyer ma demande')->form();
 
         foreach ($this->donneesValides() + $valeurs as $champ => $valeur) {

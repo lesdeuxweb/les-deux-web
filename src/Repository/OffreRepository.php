@@ -28,12 +28,6 @@ class OffreRepository extends ServiceEntityRepository
         return $this->findBy(['publie' => true, 'categorie' => $categorie], ['position' => 'ASC', 'nom' => 'ASC']);
     }
 
-    /** @return Offre[] Sélection de la page d'accueil */
-    public function findSurAccueil(): array
-    {
-        return $this->findBy(['publie' => true, 'surAccueil' => true], ['categorie' => 'DESC', 'position' => 'ASC']);
-    }
-
     public function findOnePublieBySlug(string $slug): ?Offre
     {
         return $this->findOneBy(['slug' => $slug, 'publie' => true]);

@@ -33,7 +33,7 @@ class BackOfficeTest extends WebTestCase
     {
         yield 'tableau de bord' => ['/admin'];
         yield 'offres' => ['/admin/offre'];
-        yield 'réalisations' => ['/admin/realisation'];
+        yield 'options' => ['/admin/option-tarifaire'];
         yield 'messages' => ['/admin/message-contact'];
     }
 
@@ -124,10 +124,8 @@ class BackOfficeTest extends WebTestCase
     public function testPagesDuBackOffice(string $url): void
     {
         $fabrique = new Fabrique($this->em);
-        $secteur = $fabrique->secteur('Artisans');
-        $zone = $fabrique->zone('Dordogne');
-        $fabrique->offre('Site vitrine');
-        $fabrique->realisation('Menuiserie', $secteur, $zone);
+        $fabrique->offre('Site 5 pages');
+        $fabrique->option('Page supplémentaire', '50 €');
         $fabrique->flush();
 
         $this->client->loginUser($this->creerUtilisateur());
@@ -139,7 +137,7 @@ class BackOfficeTest extends WebTestCase
     /** @return iterable<string, array{string}> */
     public static function pagesCrud(): iterable
     {
-        foreach (['offre', 'realisation', 'secteur', 'zone'] as $crud) {
+        foreach (['offre', 'option-tarifaire'] as $crud) {
             yield $crud.' : liste' => ['/admin/'.$crud];
             yield $crud.' : création' => ['/admin/'.$crud.'/new'];
         }
@@ -162,44 +160,17 @@ class BackOfficeTest extends WebTestCase
         $form = $crawler->filter('form[name="Offre"]')->form([
             'Offre[nom]' => 'Refonte de site',
             'Offre[accroche]' => 'Votre site a besoin d\'un coup de neuf.',
-            'Offre[description]' => '<div>Une description.</div>',
-            'Offre[prixAPartirDe]' => '1200',
+            'Offre[prixAPartirDe]' => '450',
             'Offre[publie]' => '1',
         ]);
         $this->client->submit($form);
 
         self::assertResponseRedirects();
-        $this->client->request('GET', '/offres/refonte-de-site');
-        self::assertResponseIsSuccessful();
-        self::assertSelectorTextContains('h1', 'Refonte de site');
+        $this->client->request('GET', '/');
+        self::assertSelectorTextContains('#offres', 'Refonte de site');
+        self::assertSelectorTextContains('#offres', '450');
     }
 
-    public function testUploadDImageConvertieEnWebp(): void
-    {
-        $photo = tempnam(sys_get_temp_dir(), 'jpg_');
-        imagejpeg(imagecreatetruecolor(2400, 1600), $photo);
-
-        $this->client->loginUser($this->creerUtilisateur());
-        $crawler = $this->client->request('GET', '/admin/realisation/new');
-        $form = $crawler->filter('form[name="Realisation"]')->form([
-            'Realisation[titre]' => 'Projet avec photo',
-            'Realisation[resume]' => 'Un résumé.',
-            'Realisation[description]' => '<div>Une description.</div>',
-            'Realisation[imageAlt]' => 'Capture du site',
-        ]);
-        $form['Realisation[imageFile][file]']->upload($photo);
-        $this->client->submit($form);
-        self::assertResponseRedirects();
-
-        $realisation = $this->em->getRepository(\App\Entity\Realisation::class)->findOneBy(['titre' => 'Projet avec photo']);
-        self::assertStringEndsWith('.webp', $realisation->getImageName());
-        self::assertSame(1600, $realisation->getImageDimensions()[0]);
-
-        $chemin = static::getContainer()->getParameter('kernel.project_dir').'/public/uploads/realisations/'.$realisation->getImageName();
-        self::assertFileExists($chemin);
-        self::assertSame('image/webp', mime_content_type($chemin));
-        unlink($chemin);
-    }
 
     /** @param list<string> $roles */
     private function creerUtilisateur(array $roles = ['ROLE_ADMIN']): User

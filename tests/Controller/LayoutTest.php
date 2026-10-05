@@ -23,11 +23,6 @@ class LayoutTest extends WebTestCase
     public static function pagesPubliques(): iterable
     {
         yield 'accueil' => ['/'];
-        yield 'offres' => ['/offres'];
-        yield 'réalisations' => ['/realisations'];
-        yield 'zones' => ['/zones-d-intervention'];
-        yield 'qui sommes-nous' => ['/qui-sommes-nous'];
-        yield 'contact' => ['/contact'];
         yield 'mentions légales' => ['/mentions-legales'];
         yield 'confidentialité' => ['/confidentialite'];
     }
@@ -90,16 +85,14 @@ class LayoutTest extends WebTestCase
         self::assertSelectorNotExists('nav.fil-ariane');
     }
 
-    public function testFilDArianeEtLienActif(): void
+    public function testFilDArianeDesPagesLegales(): void
     {
-        $crawler = $this->client->request('GET', '/qui-sommes-nous');
+        $crawler = $this->client->request('GET', '/mentions-legales');
 
         $fil = $crawler->filter('nav.fil-ariane li');
         self::assertCount(2, $fil);
         self::assertSame('/', $fil->eq(0)->filter('a')->attr('href'));
-        self::assertSame('Qui sommes-nous', $fil->eq(1)->filter('[aria-current="page"]')->text());
-
-        self::assertSelectorTextSame('.nav-principale a[aria-current="page"]', 'Qui sommes-nous');
+        self::assertSame('Mentions légales', $fil->eq(1)->filter('[aria-current="page"]')->text());
     }
 
     public function testPolicesAutoHebergees(): void

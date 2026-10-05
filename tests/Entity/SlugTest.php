@@ -3,7 +3,6 @@
 namespace App\Tests\Entity;
 
 use App\Entity\Offre;
-use App\Entity\Secteur;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
@@ -57,17 +56,6 @@ class SlugTest extends KernelTestCase
         self::assertSame('maintenance-2', $doublon->getSlug());
     }
 
-    public function testMemeSlugAutoriseEntreDeuxTypesDeContenu(): void
-    {
-        $offre = $this->creerOffre('Artisans');
-        $secteur = (new Secteur())->setNom('Artisans');
-        $this->em->persist($secteur);
-        $this->em->flush();
-
-        self::assertSame('artisans', $offre->getSlug());
-        self::assertSame('artisans', $secteur->getSlug());
-    }
-
     public function testSlugVideEnModificationEstRegenere(): void
     {
         $offre = $this->creerOffre('Sur mesure');
@@ -79,7 +67,6 @@ class SlugTest extends KernelTestCase
 
         $recharge = $this->em->getRepository(Offre::class)->find($offre->getId());
         self::assertSame('projet-sur-mesure', $recharge->getSlug());
-        self::assertNotNull($recharge->getUpdatedAt());
     }
 
     public function testModificationSansChangerLeSlugNeLeSuffixePas(): void
@@ -97,8 +84,7 @@ class SlugTest extends KernelTestCase
     {
         $offre = (new Offre())
             ->setNom($nom)
-            ->setAccroche('Accroche')
-            ->setDescription('Description');
+            ->setAccroche('Accroche');
         $this->em->persist($offre);
 
         return $offre;

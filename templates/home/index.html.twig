@@ -1,4 +1,13 @@
+{# Site en une page (maquette Figma) : hero, manifeste, offres, façon de faire, qui sommes-nous, zones, contact. #}
 {% extends 'base.html.twig' %}
+
+{% macro grille_offres(offres) %}
+    <ul class="grille-cartes grille-offres{{ offres|length % 4 == 0 ? ' grille-cartes--4' }}" role="list">
+        {% for offre in offres %}
+            <li><twig:CarteOffre :offre="offre" :numero="loop.index" /></li>
+        {% endfor %}
+    </ul>
+{% endmacro %}
 
 {% block body %}
     {# --- Hero : accroche à gauche, photo à droite --- #}
@@ -8,8 +17,8 @@
             <h1 id="titre-accueil">{{ 'accueil.hero.titre'|trans }} <em>{{ 'accueil.hero.titre_accent'|trans }}</em></h1>
             <p class="hero__sous-titre">{{ 'accueil.hero.sous_titre'|trans }}</p>
             <div class="groupe-boutons">
-                <twig:Bouton href="#contact">{{ 'appel_action.bouton'|trans }}</twig:Bouton>
-                <twig:Bouton href="{{ path('app_offre_index') }}" variante="lien">{{ 'accueil.hero.voir_offres'|trans }}</twig:Bouton>
+                <twig:Bouton href="#contact">{{ 'accueil.hero.devis'|trans }}</twig:Bouton>
+                <twig:Bouton href="#offres" variante="lien">{{ 'accueil.hero.voir_offres'|trans }}</twig:Bouton>
             </div>
             <ul class="liste-coches liste-coches--ligne hero__garanties" role="list">
                 <li>{{ 'accueil.hero.garantie_interlocuteur'|trans }}</li>
@@ -41,29 +50,51 @@
         </div>
     </section>
 
-    {# --- Offres mises en avant --- #}
-    {% if offres is not empty %}
-        <section class="section" aria-labelledby="titre-offres">
-            <div class="conteneur">
-                <div class="section-tete">
-                    <div>
-                        <twig:SurTitre>{{ 'offre.nos_offres'|trans }}</twig:SurTitre>
-                        <h2 id="titre-offres">{{ 'accueil.offres.titre'|trans }}</h2>
-                    </div>
-                    <p class="section-tete__intro">{{ 'accueil.offres.intro'|trans }}</p>
+    {# --- Nos offres : grille tarifaire complète --- #}
+    <section class="section" id="offres" aria-labelledby="titre-offres">
+        <div class="conteneur">
+            <div class="section-tete">
+                <div>
+                    <twig:SurTitre>{{ 'accueil.offres.sur_titre'|trans }}</twig:SurTitre>
+                    <h2 id="titre-offres">{{ 'accueil.offres.titre'|trans }}</h2>
                 </div>
-                <ul class="grille-cartes grille-offres" role="list">
-                    {% for offre in offres %}
-                        <li><twig:CarteOffre :offre="offre" :numero="loop.index" /></li>
-                    {% endfor %}
-                </ul>
-                <div class="groupe-boutons pied-de-section">
-                    <twig:Bouton href="{{ path('app_offre_index') }}" variante="secondaire">{{ 'accueil.offres.toutes'|trans }}</twig:Bouton>
-                    {% if site.mention_tva %}<p class="mention-tva">{{ site.mention_tva }}</p>{% endif %}
-                </div>
+                <p class="section-tete__intro">{{ 'accueil.offres.intro'|trans }}</p>
             </div>
-        </section>
-    {% endif %}
+
+            {% if creations is not empty %}
+                <h3 class="titre-groupe">{{ 'accueil.offres.creations'|trans }}</h3>
+                {{ _self.grille_offres(creations) }}
+            {% endif %}
+
+            {% if options is not empty %}
+                <div class="deux-colonnes bloc-options">
+                    <div>
+                        <h3 class="titre-groupe">{{ 'accueil.offres.options'|trans }}</h3>
+                        <p class="texte-doux">{{ 'accueil.offres.options_intro'|trans }}</p>
+                    </div>
+                    <div class="tableau-defilant">
+                        <table class="tableau-prix">
+                            <thead>
+                                <tr><th scope="col">{{ 'accueil.offres.option'|trans }}</th><th scope="col">{{ 'accueil.offres.prix'|trans }}</th></tr>
+                            </thead>
+                            <tbody>
+                                {% for option in options %}
+                                    <tr><th scope="row">{{ option.nom }}</th><td>{{ option.prix }}</td></tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if abonnements is not empty %}
+                <h3 class="titre-groupe">{{ 'accueil.offres.abonnements'|trans }}</h3>
+                {{ _self.grille_offres(abonnements) }}
+            {% endif %}
+
+            {% if site.mention_tva %}<p class="mention-tva">{{ site.mention_tva }}</p>{% endif %}
+        </div>
+    </section>
 
     {# --- Notre façon de faire (étapes) --- #}
     <section class="section section--sombre" aria-labelledby="titre-methode">
@@ -72,7 +103,7 @@
                 <twig:SurTitre>{{ 'accueil.methode.sur_titre'|trans }}</twig:SurTitre>
                 <h2 id="titre-methode">{{ 'accueil.methode.titre'|trans }}</h2>
                 <p class="texte-doux">{{ 'accueil.methode.texte'|trans }}</p>
-                <p><twig:Bouton href="{{ path('app_contact') }}" variante="lien">{{ 'accueil.methode.lien'|trans }}</twig:Bouton></p>
+                <p><twig:Bouton href="#contact" variante="lien">{{ 'accueil.methode.lien'|trans }}</twig:Bouton></p>
             </div>
             <ol class="etapes" role="list">
                 {% for i in 1..4 %}
@@ -88,28 +119,8 @@
         </div>
     </section>
 
-    {# --- Réalisations mises en avant --- #}
-    {% if realisations is not empty %}
-        <section class="section" aria-labelledby="titre-realisations">
-            <div class="conteneur">
-                <div class="section-tete">
-                    <div>
-                        <twig:SurTitre>{{ 'nav.realisations'|trans }}</twig:SurTitre>
-                        <h2 id="titre-realisations">{{ 'accueil.realisations.titre'|trans }}</h2>
-                    </div>
-                    <p class="section-tete__intro"><a href="{{ path('app_realisation_index') }}">{{ 'realisation.toutes'|trans }}</a></p>
-                </div>
-                <ul class="grille-cartes" role="list">
-                    {% for realisation in realisations %}
-                        <li><twig:CarteRealisation :realisation="realisation" /></li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </section>
-    {% endif %}
-
     {# --- Qui sommes-nous --- #}
-    <section class="section" aria-labelledby="titre-apropos">
+    <section class="section" id="qui-sommes-nous" aria-labelledby="titre-apropos">
         <div class="conteneur deux-colonnes deux-colonnes--centre">
             <div class="photos-associes">
                 {% for associe in site.associes %}
@@ -137,60 +148,23 @@
                     <li>{{ 'accueil.apropos.valeur_clarte'|trans }}</li>
                     <li>{{ 'accueil.apropos.valeur_savoir_faire'|trans }}</li>
                 </ul>
-                <p class="marge-haut"><twig:Bouton href="{{ path('app_about') }}" variante="lien">{{ 'accueil.apropos.lien'|trans }}</twig:Bouton></p>
             </div>
         </div>
     </section>
 
-    {# --- Ici et ailleurs : zones d'intervention --- #}
-    {% set zones = zones_publiees() %}
+    {# --- Ici et ailleurs --- #}
     <section class="section section--verte" aria-labelledby="titre-zones">
         <div class="conteneur deux-colonnes">
             <div>
                 <twig:SurTitre>{{ 'accueil.zones.sur_titre'|trans }}</twig:SurTitre>
                 <h2 id="titre-zones">{{ 'accueil.zones.titre'|trans }}</h2>
             </div>
-            <div>
-                <p class="ici-ailleurs__texte">{{ 'accueil.zones.texte'|trans({'%ville%': site.ville, '%rayon%': site.rayon_km}) }}</p>
-                {% if zones is not empty %}
-                    <ul class="liste-liens" role="list">
-                        {% for zone in zones %}
-                            <li><a class="pastille-lien" href="{{ path('app_zone_show', {slug: zone.slug}) }}">{{ zone.nom }}</a></li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            </div>
+            <p class="ici-ailleurs__texte">{{ 'accueil.zones.texte'|trans({'%ville%': site.ville, '%rayon%': site.rayon_km}) }}</p>
         </div>
     </section>
 
-    {# --- Secteurs (métiers) --- #}
-    {% set secteurs = secteurs_publies() %}
-    {% if secteurs is not empty %}
-        <section class="section" aria-labelledby="titre-secteurs">
-            <div class="conteneur deux-colonnes">
-                <div>
-                    <twig:SurTitre>{{ 'accueil.secteurs.sur_titre'|trans }}</twig:SurTitre>
-                    <h2 id="titre-secteurs">{{ 'accueil.secteurs.titre'|trans }}</h2>
-                    <p class="texte-doux">{{ 'accueil.secteurs.texte'|trans }}</p>
-                </div>
-                <ul class="liste-editoriale" role="list">
-                    {% for secteur in secteurs %}
-                        <li>
-                            <a href="{{ path('app_secteur_show', {slug: secteur.slug}) }}">
-                                <span>
-                                    <span class="liste-editoriale__nom">{{ 'secteur.show.titre'|trans({'%cible%': secteur.libelleCible ?: secteur.nom|lower}) }}</span>
-                                    {% if secteur.accroche %}<span class="liste-editoriale__texte">{{ secteur.accroche|resume_meta(110) }}</span>{% endif %}
-                                </span>
-                            </a>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </section>
-    {% endif %}
-
-    {# --- Contact : formulaire intégré --- #}
-    <section class="section" aria-labelledby="titre-contact" id="contact">
+    {# --- Contact --- #}
+    <section class="section" id="contact" aria-labelledby="titre-contact">
         <div class="conteneur">
             {{ include('contact/_bloc.html.twig', {niveau_titre: 2}) }}
         </div>

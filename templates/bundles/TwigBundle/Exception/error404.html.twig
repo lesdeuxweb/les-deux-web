@@ -12,7 +12,7 @@
             <p class="tete-page__chapeau">{{ 'erreur.404.texte'|trans }}</p>
             <div class="groupe-boutons">
                 <twig:Bouton href="{{ path('app_home') }}">{{ 'erreur.retour_accueil'|trans }}</twig:Bouton>
-                <twig:Bouton href="{{ path('app_contact') }}" variante="secondaire">{{ 'nav.contact'|trans }}</twig:Bouton>
+                <twig:Bouton href="{{ path('app_home') }}#contact" variante="secondaire">{{ 'nav.contact'|trans }}</twig:Bouton>
             </div>
         </header>
     </div>

@@ -7,16 +7,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 /**
- * Pages au contenu fixe : qui sommes-nous, mentions légales, confidentialité.
+ * Pages légales : mentions légales et politique de confidentialité.
  */
 class PageController extends AbstractController
 {
-    #[Route('/qui-sommes-nous', name: 'app_about', methods: ['GET'])]
-    public function about(): Response
-    {
-        return $this->render('page/about.html.twig');
-    }
-
     #[Route('/mentions-legales', name: 'app_legal', methods: ['GET'])]
     public function legal(): Response
     {

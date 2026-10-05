@@ -12,6 +12,8 @@ parameters:
         code_postal: '[À COMPLÉTER]'
         region: 'Nouvelle-Aquitaine'
         rayon_km: 100
+        # Départements desservis en présentiel (données structurées pour Google)
+        departements: ['Haute-Vienne', 'Dordogne', 'Charente', 'Corrèze', 'Creuse', 'Vienne', 'Indre']
         telephone: '[À COMPLÉTER]'
         email: 'bonjour@lesdeuxweb.fr'
         # Mention affichée sous les tarifs (franchise en base de TVA). Vide si les prix sont HT/TTC.

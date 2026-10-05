@@ -2,11 +2,8 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\MessageContact;
 use App\Entity\Offre;
-use App\Entity\Realisation;
-use App\Entity\Secteur;
-use App\Entity\Zone;
+use App\Entity\OptionTarifaire;
 use App\Repository\MessageContactRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
@@ -35,9 +32,7 @@ class DashboardController extends AbstractDashboardController
         $compteurs = [];
         foreach ([
             'Offres publiées' => [Offre::class, OffreCrudController::class],
-            'Réalisations publiées' => [Realisation::class, RealisationCrudController::class],
-            'Secteurs publiés' => [Secteur::class, SecteurCrudController::class],
-            'Zones publiées' => [Zone::class, ZoneCrudController::class],
+            'Options publiées' => [OptionTarifaire::class, OptionTarifaireCrudController::class],
         ] as $libelle => [$entite, $crud]) {
             $repository = $this->entityManager->getRepository($entite);
             $compteurs[] = [
@@ -54,7 +49,6 @@ class DashboardController extends AbstractDashboardController
                 'filters' => ['traite' => ['comparison' => '=', 'value' => '0']],
             ]),
             'url_tous_messages' => $this->urlCrud(MessageContactCrudController::class),
-            'url_nouvelle_realisation' => $this->urlCrud(RealisationCrudController::class, action: Action::NEW),
             'url_nouvelle_offre' => $this->urlCrud(OffreCrudController::class, action: Action::NEW),
             'compteurs' => $compteurs,
         ]);
@@ -91,9 +85,6 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::section('Contenus du site');
         yield MenuItem::linkTo(OffreCrudController::class, 'Offres', 'fa fa-tags');
         yield MenuItem::linkTo(OptionTarifaireCrudController::class, 'Options en supplément', 'fa fa-puzzle-piece');
-        yield MenuItem::linkTo(RealisationCrudController::class, 'Réalisations', 'fa fa-images');
-        yield MenuItem::linkTo(SecteurCrudController::class, 'Secteurs (métiers)', 'fa fa-briefcase');
-        yield MenuItem::linkTo(ZoneCrudController::class, 'Zones d\'intervention', 'fa fa-map-location-dot');
 
         yield MenuItem::section();
         yield MenuItem::linkToRoute('Voir le site', 'fa fa-arrow-up-right-from-square', 'app_home');

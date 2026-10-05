@@ -2,9 +2,7 @@
 
 namespace App\Entity;
 
-use App\Entity\Trait\SeoTrait;
 use App\Entity\Trait\SluggableTrait;
-use App\Entity\Trait\TimestampableTrait;
 use App\Repository\OffreRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,16 +10,16 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Offre commerciale : création de site (prix unique) ou abonnement (prix mensuel).
+ * Offre commerciale affichée dans la section « Nos offres » de l'accueil :
+ * création de site (prix unique) ou abonnement (prix mensuel).
+ * Le slug sert à pré-sélectionner l'offre dans le formulaire de contact (?offre={slug}).
  */
 #[ORM\Entity(repositoryClass: OffreRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-#[UniqueEntity('slug', message: 'Ce slug est déjà utilisé.')]
+#[UniqueEntity('slug', message: 'Cette adresse est déjà utilisée par une autre offre.')]
 class Offre
 {
     use SluggableTrait;
-    use SeoTrait;
-    use TimestampableTrait;
 
     public const CATEGORIE_CREATION = 'creation';
     public const CATEGORIE_ABONNEMENT = 'abonnement';
@@ -49,9 +47,6 @@ class Offre
     #[Assert\Length(max: 30)]
     private ?string $badge = null;
 
-    /** Affichée dans la sélection d'offres de la page d'accueil. */
-    #[ORM\Column]
-    private bool $surAccueil = false;
 
     #[ORM\Column(length: 100)]
     #[Assert\NotBlank]
@@ -63,9 +58,6 @@ class Offre
     #[Assert\Length(max: 255)]
     private ?string $accroche = null;
 
-    #[ORM\Column(type: Types::TEXT)]
-    #[Assert\NotBlank]
-    private ?string $description = null;
 
     /** Prix en euros (mention de TVA : config/packages/site.yaml). Laisser vide pour "sur devis". */
     #[ORM\Column(name: 'prix_a_partir_de', nullable: true)]
@@ -156,17 +148,6 @@ class Offre
         return $this;
     }
 
-    public function isSurAccueil(): bool
-    {
-        return $this->surAccueil;
-    }
-
-    public function setSurAccueil(bool $surAccueil): static
-    {
-        $this->surAccueil = $surAccueil;
-
-        return $this;
-    }
 
     public function isAPartirDe(): bool
     {
@@ -209,17 +190,6 @@ class Offre
         return $this;
     }
 
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(string $description): static
-    {
-        $this->description = $description;
-
-        return $this;
-    }
 
     public function getPrixAPartirDe(): ?int
     {

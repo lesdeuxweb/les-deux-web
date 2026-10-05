@@ -23,7 +23,6 @@
         "symfony/flex": "^2.11",
         "symfony/form": "7.4.*",
         "symfony/framework-bundle": "7.4.*",
-        "symfony/html-sanitizer": "7.4.*",
         "symfony/http-client": "7.4.*",
         "symfony/intl": "7.4.*",
         "symfony/mailer": "7.4.*",
@@ -46,8 +45,7 @@
         "symfony/yaml": "7.4.*",
         "twig/extra-bundle": "^2.12|^3.0",
         "twig/intl-extra": "^3.30",
-        "twig/twig": "^2.12|^3.0",
-        "vich/uploader-bundle": "^2.10"
+        "twig/twig": "^2.12|^3.0"
     },
     "config": {
         "allow-plugins": {

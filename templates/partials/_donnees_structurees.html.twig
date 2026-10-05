@@ -11,10 +11,7 @@
 {% if site.adresse and not (site.adresse starts with '[') %}{% set adresse = adresse|merge({streetAddress: site.adresse}) %}{% endif %}
 {% if site.code_postal and not (site.code_postal starts with '[') %}{% set adresse = adresse|merge({postalCode: site.code_postal}) %}{% endif %}
 
-{% set zones_desservies = zones_publiees()|map(z => {
-    '@type': z.type == 'ville' ? 'City' : 'AdministrativeArea',
-    name: z.nom,
-}) %}
+{% set zones_desservies = [{'@type': 'City', name: site.ville}]|merge(site.departements|map(d => {'@type': 'AdministrativeArea', name: d})) %}
 
 {% set entreprise = {
     '@context': 'https://schema.org',

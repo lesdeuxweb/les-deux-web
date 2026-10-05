@@ -10,13 +10,14 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
+/**
+ * Offres de la section « Nos offres » de l'accueil.
+ */
 class OffreCrudController extends AbstractCrudController
 {
-    use ChampsContenuTrait;
-
     public static function getEntityFqcn(): string
     {
         return Offre::class;
@@ -28,7 +29,8 @@ class OffreCrudController extends AbstractCrudController
             ->setEntityLabelInSingular('Offre')
             ->setEntityLabelInPlural('Offres')
             ->setDefaultSort(['categorie' => 'ASC', 'position' => 'ASC'])
-            ->setSearchFields(['nom', 'accroche']);
+            ->setSearchFields(['nom', 'accroche'])
+            ->setHelp(Crud::PAGE_INDEX, 'Section « Nos offres » de l\'accueil : créations de site puis abonnements, dans l\'ordre d\'affichage.');
     }
 
     public function configureFields(string $pageName): iterable
@@ -39,10 +41,15 @@ class OffreCrudController extends AbstractCrudController
         yield TextField::new('surTitre', 'Sur-titre')
             ->setHelp('Petit texte au-dessus du nom sur la carte, ex. « Pour bien démarrer ».')
             ->hideOnIndex();
-        yield TextField::new('accroche', 'Accroche')
-            ->setHelp('Une phrase affichée sur la carte de l\'offre.')
+        yield TextareaField::new('accroche', 'Description courte')
+            ->setHelp('Une ou deux phrases affichées sur la carte.')
+            ->setFormTypeOption('attr', ['maxlength' => 255, 'rows' => 3])
             ->hideOnIndex();
-        yield TextEditorField::new('description', 'Description')->hideOnIndex();
+        yield ArrayField::new('pointsForts', 'Ce qui est compris')
+            ->setHelp('Un point par ligne, affichés en liste à coches sur la carte.')
+            ->hideOnIndex();
+
+        yield FormField::addTab('Prix', 'fa fa-euro-sign');
         yield IntegerField::new('prixAPartirDe', 'Prix (€)')
             ->setHelp('Montant entier, sans « € ». Laisser vide pour afficher « Sur devis ».')
             ->hideOnIndex();
@@ -50,19 +57,16 @@ class OffreCrudController extends AbstractCrudController
             ->setHelp('À cocher si le prix est indicatif (ex. Site métier). Décoché : prix fixe.')
             ->hideOnIndex();
         yield TextField::new('prixSuffixe', 'Suffixe du prix')
-            ->setHelp('Ex. « /mois » pour un abonnement. Vide pour un prix unique.')
+            ->setHelp('Ex. « / mois » pour un abonnement. Vide pour un prix unique.')
             ->hideOnIndex();
         yield TextField::new('prixAffiche', 'Prix affiché')->onlyOnIndex();
-        yield ArrayField::new('pointsForts', 'Points forts')
-            ->setHelp('Un point par ligne. Les trois premiers apparaissent sur la carte de l\'offre.')
-            ->hideOnIndex();
 
-        yield from $this->ongletSeo('nom');
-        yield from $this->ongletPublication();
-        yield BooleanField::new('surAccueil', 'Afficher sur l\'accueil')
-            ->setHelp('Sélection d\'offres de la page d\'accueil (3 conseillées).');
+        yield FormField::addTab('Publication', 'fa fa-eye');
+        yield BooleanField::new('publie', 'Publiée')
+            ->setHelp('Décochée : l\'offre n\'apparaît pas sur le site.');
+        yield IntegerField::new('position', 'Ordre d\'affichage')
+            ->setHelp('Les plus petits nombres s\'affichent en premier.');
         yield TextField::new('badge', 'Badge')
-            ->setHelp('Pastille sur la carte, ex. « Notre conseil ». Vide : aucune pastille.')
-            ->hideOnIndex();
+            ->setHelp('Pastille qui met la carte en avant (fond sombre), ex. « Notre conseil ». Vide : carte normale.');
     }
 }

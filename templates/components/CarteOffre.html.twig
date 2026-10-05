@@ -1,5 +1,6 @@
 {#
- # Carte d'une offre (accueil, page Offres, pages secteur et zone).
+ # Carte d'une offre (section « Nos offres » de l'accueil).
+ # La carte mène au formulaire de contact avec l'offre pré-sélectionnée (/?offre={slug}#contact).
  #   <twig:CarteOffre :offre="offre" :numero="loop.index" />
  #
  # numero : numéro affiché « 01 », « 02 »... (facultatif)
@@ -16,12 +17,12 @@
     {% if offre.badge %}<p class="carte-offre__badge">{{ offre.badge }}</p>{% endif %}
     {% if offre.surTitre %}<p class="carte-offre__sur-titre">{{ offre.surTitre }}</p>{% endif %}
     <h{{ niveau }} class="carte__titre">
-        <a class="carte__lien" href="{{ path('app_offre_show', {slug: offre.slug}) }}">{{ offre.nom }}</a>
+        <a class="carte__lien" href="{{ path('app_home', {offre: offre.slug}) }}#contact">{{ offre.nom }}<span class="visuellement-cache"> : {{ 'offre.demander'|trans }}</span></a>
     </h{{ niveau }}>
     <p class="carte__texte">{{ offre.accroche }}</p>
     {% if offre.pointsForts is not empty %}
         <ul class="liste-coches">
-            {% for point in offre.pointsForts|slice(0, 5) %}
+            {% for point in offre.pointsForts %}
                 <li>{{ point }}</li>
             {% endfor %}
         </ul>

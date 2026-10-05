@@ -218,10 +218,6 @@ strong {
     padding-block: var(--e-8);
 }
 
-.section--alt {
-    background: var(--c-sauge);
-}
-
 .section--sombre {
     background: var(--c-encre);
     color: var(--c-porcelaine);
@@ -477,37 +473,6 @@ strong {
 }
 
 /* Maillage interne : métiers et zones */
-.pied__maillage {
-    margin-top: var(--e-7);
-    padding-top: var(--e-6);
-    border-top: 1px solid var(--c-filet-sombre);
-    display: grid;
-    gap: var(--e-6);
-}
-
-@media (min-width: 48rem) {
-    .pied__maillage {
-        grid-template-columns: 1fr 1fr;
-    }
-}
-
-.pied__titre {
-    margin: 0 0 var(--e-3);
-    font-size: 0.75rem;
-    font-weight: 900;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--c-genet);
-}
-
-.pied__liste {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--e-2) var(--e-5);
-}
 
 .pied__bas {
     margin-top: var(--e-7);
@@ -609,10 +574,6 @@ strong {
     mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M1 8h13M9 3l5 5-5 5' fill='none' stroke='%23000' stroke-width='1.8'/%3E%3C/svg%3E") center / contain no-repeat;
 }
 
-.bouton--sans-fleche::after {
-    display: none;
-}
-
 .bouton--principal {
     background: var(--c-bocage);
     color: var(--c-blanc);
@@ -643,14 +604,6 @@ strong {
 }
 
 /* Sur fond sombre */
-.bouton--accent {
-    background: var(--c-genet);
-    color: var(--c-encre);
-}
-
-.bouton--accent:hover {
-    background: var(--c-blanc);
-}
 
 /* Lien souligné épais (« Découvrir nos offres ») */
 .bouton--lien {
@@ -666,8 +619,7 @@ strong {
 }
 
 .section--sombre .bouton--lien,
-.section--verte .bouton--lien,
-.appel-action .bouton--lien {
+.section--verte .bouton--lien {
     color: var(--c-blanc);
 }
 
@@ -757,31 +709,6 @@ strong {
     color: var(--c-texte-clair);
 }
 
-/* --- Appel à l'action (templates/components/AppelAction.html.twig) --- */
-
-.appel-action {
-    background: var(--c-encre);
-    color: var(--c-porcelaine);
-    padding: clamp(var(--e-6), 5vw, 5rem);
-    display: grid;
-    gap: var(--e-5);
-    justify-items: start;
-}
-
-.appel-action__titre {
-    color: var(--c-porcelaine);
-    margin: 0;
-    max-width: 22ch;
-    font-size: clamp(1.9rem, 1.3rem + 2.4vw, 3.4rem);
-}
-
-.appel-action__texte {
-    margin: 0;
-    max-width: 56ch;
-    color: var(--c-texte-clair);
-    font-size: var(--t-2);
-}
-
 /* --- Cartes --- */
 
 .grille-cartes {
@@ -856,14 +783,6 @@ strong {
 
 .carte__texte {
     color: var(--c-texte-doux);
-}
-
-.carte__meta {
-    font-size: 0.75rem;
-    font-weight: 900;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--c-chataigne);
 }
 
 /* Carte entièrement cliquable : le lien du titre est étiré sur toute la carte */
@@ -1010,7 +929,7 @@ strong {
 }
 
 /* Fond blanc pour les offres « création » quand la page est déjà porcelaine */
-.grille-offres--blanches .carte-offre:not(.carte-offre--vedette, .carte-offre--abonnement) {
+ .carte-offre--abonnement) {
     background: var(--c-blanc);
 }
 
@@ -1033,10 +952,6 @@ strong {
     font-size: clamp(1.75rem, 1.4rem + 1vw, 2.25rem);
     letter-spacing: -0.01em;
     white-space: nowrap;
-}
-
-.prix--grand .prix__montant {
-    font-size: clamp(2.2rem, 1.6rem + 2vw, 3.2rem);
 }
 
 .mention-tva {
@@ -1080,221 +995,6 @@ strong {
     font-weight: 700;
 }
 
-/* --- Carte de réalisation (templates/components/CarteRealisation.html.twig) --- */
-
-.carte-realisation {
-    padding: 0 0 var(--e-6);
-    overflow: hidden;
-}
-
-.carte-realisation > :not(.carte-realisation__visuel) {
-    margin-inline: var(--e-6);
-}
-
-.carte-realisation__visuel {
-    order: -1;
-    aspect-ratio: 16 / 10;
-    background: var(--c-sauge);
-    margin-bottom: var(--e-2) !important;
-}
-
-.carte-realisation__visuel img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.visuel-absent {
-    display: grid;
-    place-items: center;
-    height: 100%;
-    font-family: var(--f-titre);
-    font-size: 4.5rem;
-    font-style: italic;
-    color: var(--c-bocage);
-    opacity: 0.4;
-}
-
-/* --- Liens en pastilles (filtres, zones) --- */
-
-.liste-liens,
-.filtres__liste {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--e-2);
-}
-
-.pastille-lien {
-    display: inline-block;
-    padding: var(--e-2) var(--e-4);
-    background: transparent;
-    color: var(--c-encre);
-    font-weight: 700;
-    text-decoration: none;
-    border: 1.5px solid var(--c-encre);
-}
-
-.pastille-lien:hover,
-.pastille-lien[aria-current="page"] {
-    background: var(--c-encre);
-    color: var(--c-blanc);
-}
-
-.section--verte .pastille-lien,
-.section--sombre .pastille-lien {
-    color: var(--c-blanc);
-    border-color: var(--c-blanc);
-}
-
-.section--verte .pastille-lien:hover,
-.section--sombre .pastille-lien:hover {
-    background: var(--c-blanc);
-    color: var(--c-encre);
-}
-
-.filtres {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--e-3) var(--e-4);
-    margin-bottom: var(--e-6);
-}
-
-.filtres__titre {
-    margin: 0;
-    font-weight: 900;
-}
-
-/* --- Liste éditoriale de liens (secteurs) : grand texte serif + flèche --- */
-
-.liste-editoriale {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    border-top: 1px solid var(--c-filet);
-}
-
-.liste-editoriale a {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--e-5);
-    padding-block: var(--e-5);
-    border-bottom: 1px solid var(--c-filet);
-    color: var(--c-encre);
-    text-decoration: none;
-}
-
-.liste-editoriale__nom {
-    display: block;
-    font-family: var(--f-titre);
-    font-size: var(--t-3);
-    line-height: 1.2;
-    letter-spacing: -0.015em;
-}
-
-.liste-editoriale__texte {
-    display: block;
-    margin-top: var(--e-1);
-    font-size: var(--t-0);
-    color: var(--c-texte-doux);
-}
-
-.liste-editoriale a::after {
-    content: "→";
-    font-weight: 900;
-    font-size: 1.25rem;
-    transition: transform 0.15s;
-}
-
-.liste-editoriale a:hover .liste-editoriale__nom {
-    font-style: italic;
-    color: var(--c-chataigne);
-}
-
-.liste-editoriale a:hover::after {
-    transform: translateX(0.3rem);
-}
-
-/* --- Blocs de contenu --- */
-
-.bloc {
-    margin-top: var(--e-8);
-}
-
-.bloc__tete {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: var(--e-2) var(--e-5);
-    margin-bottom: var(--e-6);
-}
-
-.bloc__tete h2 {
-    margin: 0;
-    font-size: clamp(1.9rem, 1.3rem + 2.4vw, 3.4rem);
-}
-
-.bloc__tete a {
-    font-weight: 900;
-    color: var(--c-encre);
-}
-
-.encadre {
-    background: var(--c-sauge);
-    padding: clamp(var(--e-5), 4vw, var(--e-7));
-}
-
-.encadre > :last-child {
-    margin-bottom: 0;
-}
-
-/* --- Page détail : texte + encart latéral --- */
-
-.detail {
-    display: grid;
-    gap: var(--e-6);
-    align-items: start;
-}
-
-@media (min-width: 56rem) {
-    .detail {
-        grid-template-columns: minmax(0, 1fr) minmax(17rem, 24rem);
-        gap: var(--e-8);
-    }
-
-    .detail__encart {
-        position: sticky;
-        top: var(--e-5);
-    }
-}
-
-.detail__encart {
-    background: var(--c-blanc);
-    padding: clamp(var(--e-5), 3vw, var(--e-6));
-    display: grid;
-    gap: var(--e-5);
-    justify-items: start;
-    box-shadow: var(--ombre);
-}
-
-.detail__encart > * {
-    margin: 0;
-}
-
-.detail__encart-titre {
-    font-size: 0.8rem;
-    font-family: var(--f-texte);
-    font-weight: 900;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--c-chataigne);
-}
-
 .fiche {
     display: grid;
     gap: var(--e-3);
@@ -1333,13 +1033,6 @@ strong {
         gap: var(--e-4);
         align-items: baseline;
     }
-}
-
-.visuel-principal {
-    width: 100%;
-    max-height: 36rem;
-    object-fit: cover;
-    margin-bottom: var(--e-8);
 }
 
 /* --- Tableau de prix (options en supplément) --- */
@@ -1428,32 +1121,6 @@ strong {
     color: var(--c-texte-clair);
 }
 
-/* --- Arguments / valeurs --- */
-
-.grille-arguments {
-    list-style: none;
-    padding: 0;
-    margin: var(--e-5) 0 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
-    gap: var(--e-6) var(--e-5);
-}
-
-.argument {
-    padding-top: var(--e-4);
-    border-top: 1px solid var(--c-encre);
-}
-
-.argument__titre {
-    font-size: var(--t-2);
-    margin-bottom: var(--e-2);
-}
-
-.argument p {
-    margin: 0;
-    color: var(--c-texte-doux);
-}
-
 .valeurs {
     list-style: none;
     margin: var(--e-6) 0 0;
@@ -1539,38 +1206,6 @@ strong {
 }
 
 /* Portrait rond (pages intérieures) */
-.portrait {
-    flex: none;
-    width: 4rem;
-    aspect-ratio: 1;
-    border-radius: 50%;
-    overflow: hidden;
-    background: var(--c-sauge);
-}
-
-.portrait--grand {
-    width: 9rem;
-}
-
-.portrait img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.portrait__absent {
-    display: grid;
-    place-items: center;
-    height: 100%;
-    padding: var(--e-1);
-    text-align: center;
-    font-size: 0.7rem;
-    line-height: 1.2;
-    color: var(--c-texte-doux);
-    outline: 1px dashed var(--c-bordure-champ);
-    outline-offset: -6px;
-    border-radius: 50%;
-}
 
 /* --- Formulaires (thème : templates/form/theme.html.twig) --- */
 
@@ -1768,7 +1403,7 @@ strong {
     color: var(--c-erreur);
 }
 
-/* --- Contenu rédigé en back-office (HTML assaini) --- */
+/* --- Texte long (pages légales) --- */
 
 .prose {
     max-width: var(--largeur-texte);
@@ -1817,16 +1452,22 @@ strong {
     border: 0;
 }
 
-.pied-de-section {
-    margin-top: var(--e-7);
+/* Titres des groupes d'offres (« Création de site », « En supplément »...) */
+.titre-groupe {
+    margin: var(--e-8) 0 var(--e-6);
+    font-size: clamp(1.6rem, 1.2rem + 1.4vw, 2.4rem);
 }
 
-.pied-de-section .mention-tva {
-    margin: 0;
+.section-tete + .titre-groupe {
+    margin-top: 0;
 }
 
-.marge-haut {
-    margin-top: var(--e-6);
+.bloc-options {
+    margin-top: var(--e-8);
+}
+
+.bloc-options .titre-groupe {
+    margin-top: 0;
 }
 
 /* ========== 7. Pages ========== */
@@ -2112,76 +1753,6 @@ strong {
     margin: 0;
     font-size: var(--t-0);
     color: var(--c-texte-doux);
-}
-
-/* --- Zones d'intervention --- */
-
-.grille-zones {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
-    gap: var(--e-3);
-}
-
-.zone-lien {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--e-3);
-    padding: var(--e-5);
-    background: var(--c-blanc);
-    color: var(--c-encre);
-    text-decoration: none;
-    border: 1px solid var(--c-filet);
-}
-
-.zone-lien:hover {
-    border-color: var(--c-encre);
-}
-
-.zone-lien__nom {
-    font-family: var(--f-titre);
-    font-size: var(--t-3);
-}
-
-.zone-lien__code {
-    font-weight: 900;
-    font-size: var(--t-0);
-    color: var(--c-chataigne);
-    font-variant-numeric: tabular-nums;
-}
-
-/* --- Qui sommes-nous (page) --- */
-
-.associes {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr));
-    gap: var(--e-7);
-}
-
-.associe {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--e-5);
-    align-items: flex-start;
-}
-
-.associe__texte {
-    flex: 1 1 14rem;
-}
-
-.associe__nom {
-    margin-bottom: var(--e-1);
-}
-
-.associe__role {
-    font-weight: 900;
-    color: var(--c-chataigne);
 }
 
 /* --- Connexion au back-office --- */

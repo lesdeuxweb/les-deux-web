@@ -1,5 +1,5 @@
-{# Formulaire de contact (ContactType). Toujours envoyé vers /contact (Post/Redirect/Get). #}
-{{ form_start(form, {action: path('app_contact') ~ '#contact', attr: {class: 'formulaire'}}) }}
+{# Formulaire de contact (ContactType), envoyé vers l'accueil (Post/Redirect/Get vers /#contact). #}
+{{ form_start(form, {attr: {class: 'formulaire'}}) }}
     {{ form_errors(form) }}
 
     {# Récapitulatif des erreurs de champ, avec liens vers chaque champ (RGAA 11.10) #}
