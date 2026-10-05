@@ -366,6 +366,12 @@ a:hover {
     gap: var(--e-6);
 }
 
+@media (min-width: 56rem) {
+    .pied__grille {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
 .pied__titre {
     font-family: var(--f-titre);
     font-size: var(--t-2);
@@ -516,12 +522,49 @@ a:hover {
     opacity: 0.92;
 }
 
-/* --- Carte générique (offres, réalisations) --- */
+/* --- Cartes (CarteOffre, CarteRealisation) --- */
+
+.grille-cartes {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--e-5);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+@media (min-width: 36rem) {
+    .grille-cartes {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* 3 colonnes par défaut, 4 avec .grille-cartes--4 (ex. 4 offres) : jamais de carte orpheline */
+@media (min-width: 64rem) {
+    .grille-cartes {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .grille-cartes--4 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 72rem) {
+    .grille-cartes--4 {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+
+.grille-cartes > li {
+    display: flex;
+}
 
 .carte {
+    position: relative;
+    flex: 1;
     background: var(--c-blanc);
     border: 1px solid var(--c-filet);
-    border-top: 4px solid var(--c-genet);
     border-radius: var(--rayon);
     padding: var(--e-5);
     display: flex;
@@ -529,13 +572,374 @@ a:hover {
     gap: var(--e-3);
 }
 
-.grille-cartes {
+.carte > * {
+    margin: 0;
+}
+
+.carte__titre {
+    font-size: var(--t-3);
+}
+
+.carte__texte {
+    color: var(--c-texte-doux);
+}
+
+.carte__meta {
+    font-size: var(--t-0);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--c-chataigne);
+}
+
+/* Carte entièrement cliquable : le lien du titre est étiré sur toute la carte */
+.carte--cliquable {
+    transition: box-shadow 0.15s, transform 0.15s;
+}
+
+.carte__lien {
+    color: inherit;
+    text-decoration: none;
+}
+
+.carte__lien::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: var(--rayon);
+}
+
+.carte__lien:focus-visible {
+    outline: none;
+    box-shadow: none;
+}
+
+.carte__lien:focus-visible::after {
+    outline: 3px solid var(--c-genet);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 5px var(--c-encre);
+}
+
+.carte--cliquable:hover {
+    box-shadow: var(--ombre);
+    transform: translateY(-2px);
+}
+
+.carte--cliquable:hover .carte__lien {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.2em;
+}
+
+.carte__suite {
+    margin-top: auto;
+    padding-top: var(--e-2);
+    font-weight: 700;
+    color: var(--c-bocage);
+}
+
+.carte__suite::after {
+    content: " →";
+}
+
+.carte-offre {
+    border-top: 4px solid var(--c-genet);
+}
+
+/* Réalisation : image en haut, sans marge intérieure */
+.carte-realisation {
+    padding: 0 0 var(--e-5);
+    overflow: hidden;
+}
+
+.carte-realisation > :not(.carte-realisation__visuel) {
+    margin-inline: var(--e-5);
+}
+
+.carte-realisation__visuel {
+    order: -1;
+    aspect-ratio: 16 / 10;
+    background: var(--c-bocage-pale);
+    border-bottom: 1px solid var(--c-filet);
+    margin-bottom: var(--e-2);
+}
+
+.carte-realisation__visuel img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.visuel-absent {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
-    gap: var(--e-5);
+    place-items: center;
+    height: 100%;
+    font-family: var(--f-titre);
+    font-size: 4rem;
+    font-weight: 700;
+    color: var(--c-bocage);
+    opacity: 0.35;
+}
+
+/* --- Prix (templates/components/Prix.html.twig) --- */
+
+.prix {
+    font-weight: 700;
+    color: var(--c-bocage);
+}
+
+.prix__montant {
+    font-family: var(--f-titre);
+    font-size: 1.6em;
+    font-variant-numeric: tabular-nums;
+}
+
+.prix--grand {
+    font-size: var(--t-2);
+}
+
+/* --- Liste à coches (points forts) : coche dessinée en CSS --- */
+
+.liste-coches {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: var(--e-2);
+}
+
+.liste-coches li {
+    display: grid;
+    grid-template-columns: 1.25rem 1fr;
+    gap: var(--e-2);
+    align-items: start;
+}
+
+.liste-coches li::before {
+    content: "";
+    width: 0.5rem;
+    height: 0.9rem;
+    margin: 0.2rem 0 0 0.3rem;
+    border: solid var(--c-bocage);
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+}
+
+/* --- Liens en pastilles (filtres, secteurs, zones) --- */
+
+.liste-liens,
+.filtres__liste {
     list-style: none;
     padding: 0;
     margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--e-2);
+}
+
+.pastille-lien {
+    display: inline-block;
+    padding: var(--e-2) var(--e-4);
+    background: var(--c-blanc);
+    color: var(--c-encre);
+    font-weight: 700;
+    text-decoration: none;
+    border: 1px solid var(--c-filet);
+    border-radius: 999px;
+}
+
+.pastille-lien:hover {
+    border-color: var(--c-bocage);
+    color: var(--c-bocage);
+}
+
+.pastille-lien[aria-current="page"] {
+    background: var(--c-bocage);
+    border-color: var(--c-bocage);
+    color: var(--c-blanc);
+}
+
+.filtres {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--e-3) var(--e-4);
+    margin-bottom: var(--e-6);
+}
+
+.filtres__titre {
+    margin: 0;
+    font-weight: 700;
+}
+
+/* --- Blocs de contenu --- */
+
+.bloc {
+    margin-top: var(--e-7);
+}
+
+.bloc__tete {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--e-2) var(--e-5);
+    margin-bottom: var(--e-5);
+}
+
+.bloc__tete h2 {
+    margin: 0;
+}
+
+.bloc__tete a {
+    font-weight: 700;
+}
+
+.encadre {
+    background: var(--c-bocage-pale);
+    border-radius: var(--rayon);
+    padding: clamp(var(--e-5), 3vw, var(--e-6));
+}
+
+.encadre > :last-child {
+    margin-bottom: 0;
+}
+
+/* --- Page détail : texte + encart latéral --- */
+
+.detail {
+    display: grid;
+    gap: var(--e-6);
+    align-items: start;
+}
+
+@media (min-width: 56rem) {
+    .detail {
+        grid-template-columns: minmax(0, 1fr) minmax(16rem, 22rem);
+        gap: var(--e-7);
+    }
+
+    .detail__encart {
+        position: sticky;
+        top: var(--e-5);
+    }
+}
+
+.detail__encart {
+    background: var(--c-blanc);
+    border: 1px solid var(--c-filet);
+    border-top: 4px solid var(--c-genet);
+    border-radius: var(--rayon);
+    padding: var(--e-5);
+    display: grid;
+    gap: var(--e-4);
+    justify-items: start;
+}
+
+.detail__encart > * {
+    margin: 0;
+}
+
+.detail__encart-titre {
+    font-size: var(--t-2);
+}
+
+.fiche {
+    display: grid;
+    gap: var(--e-3);
+    width: 100%;
+}
+
+.fiche > div {
+    display: grid;
+    gap: 0.1rem;
+    padding-bottom: var(--e-3);
+    border-bottom: 1px solid var(--c-filet);
+}
+
+.fiche dt {
+    font-size: var(--t-0);
+    color: var(--c-texte-doux);
+}
+
+.fiche dd {
+    margin: 0;
+    font-weight: 700;
+}
+
+.visuel-principal {
+    width: 100%;
+    max-height: 32rem;
+    object-fit: cover;
+    border-radius: var(--rayon);
+    border: 1px solid var(--c-filet);
+    margin-bottom: var(--e-7);
+}
+
+/* --- Arguments (« Pourquoi nous ») --- */
+
+.grille-arguments {
+    list-style: none;
+    padding: 0;
+    margin: var(--e-5) 0 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+    gap: var(--e-6) var(--e-5);
+}
+
+.argument {
+    padding-top: var(--e-4);
+    border-top: 3px solid var(--c-genet);
+}
+
+.argument__titre {
+    font-size: var(--t-2);
+    margin-bottom: var(--e-2);
+}
+
+.argument p {
+    margin: 0;
+    color: var(--c-texte-doux);
+}
+
+/* --- Portrait des associés --- */
+
+.portrait {
+    flex: none;
+    width: 4rem;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--c-bocage-pale);
+    border: 3px solid var(--c-blanc);
+    box-shadow: 0 0 0 1px var(--c-filet);
+}
+
+.portrait--grand {
+    width: 9rem;
+}
+
+.portrait img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.portrait__absent {
+    display: grid;
+    place-items: center;
+    height: 100%;
+    padding: var(--e-1);
+    text-align: center;
+    font-size: 0.7rem;
+    line-height: 1.2;
+    color: var(--c-texte-doux);
+    outline: 2px dashed var(--c-chataigne);
+    outline-offset: -6px;
+    border-radius: 50%;
+}
+
+.portrait--grand .portrait__absent {
+    font-size: var(--t-0);
 }
 
 /* --- Contenu rédigé en back-office (HTML assaini) --- */
@@ -621,33 +1025,141 @@ a:hover {
     margin-bottom: var(--e-5);
 }
 
-.hero__garanties {
-    list-style: none;
-    margin: 0;
-    padding: var(--e-5);
-    display: grid;
-    gap: var(--e-4);
+/* Encart « Vos deux interlocuteurs » */
+.hero__equipe {
     background: var(--c-porcelaine);
     border-left: 4px solid var(--c-genet);
     border-radius: 0 var(--rayon) var(--rayon) 0;
-}
-
-.hero__garanties li {
+    padding: var(--e-5);
     display: grid;
-    grid-template-columns: 1.25rem 1fr;
-    gap: var(--e-3);
-    align-items: start;
-    font-weight: 700;
-    line-height: 1.4;
+    gap: var(--e-4);
 }
 
-/* Coche dessinée en CSS : aucune image ni police d'icônes à charger */
-.hero__garanties li::before {
-    content: "";
-    width: 0.55rem;
-    height: 1rem;
-    margin: 0.05rem 0 0 0.35rem;
-    border: solid var(--c-bocage);
-    border-width: 0 3px 3px 0;
-    transform: rotate(45deg);
+.hero__equipe > * {
+    margin: 0;
+}
+
+.hero__equipe-titre {
+    font-family: var(--f-titre);
+    font-size: var(--t-2);
+    font-weight: 600;
+    color: var(--c-bocage);
+}
+
+.hero__associes {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: var(--e-4);
+}
+
+.hero__associe {
+    display: flex;
+    align-items: center;
+    gap: var(--e-4);
+    line-height: 1.35;
+}
+
+.hero__associe-role {
+    display: block;
+    font-size: var(--t-0);
+    color: var(--c-texte-doux);
+}
+
+.hero__equipe-contact {
+    padding-top: var(--e-4);
+    border-top: 1px solid var(--c-filet);
+    font-weight: 700;
+}
+
+/* Secteurs et zones */
+.maillage {
+    display: grid;
+    gap: var(--e-7);
+}
+
+@media (min-width: 56rem) {
+    .maillage {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.maillage p {
+    color: var(--c-texte-doux);
+}
+
+/* --- Zones d'intervention --- */
+
+.grille-zones {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr));
+    gap: var(--e-3);
+}
+
+.zone-lien {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--e-3);
+    padding: var(--e-4) var(--e-5);
+    background: var(--c-blanc);
+    border: 1px solid var(--c-filet);
+    border-radius: var(--rayon);
+    color: var(--c-encre);
+    text-decoration: none;
+}
+
+.zone-lien:hover {
+    border-color: var(--c-bocage);
+}
+
+.zone-lien__nom {
+    font-family: var(--f-titre);
+    font-size: var(--t-2);
+    font-weight: 600;
+    color: var(--c-bocage);
+}
+
+.zone-lien__code {
+    font-weight: 700;
+    font-size: var(--t-0);
+    color: var(--c-chataigne);
+    border: 1px solid currentColor;
+    border-radius: 4px;
+    padding: 0.05rem 0.4rem;
+    font-variant-numeric: tabular-nums;
+}
+
+/* --- Qui sommes-nous --- */
+
+.associes {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr));
+    gap: var(--e-6);
+}
+
+.associe {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--e-5);
+    align-items: flex-start;
+}
+
+.associe__texte {
+    flex: 1 1 14rem;
+}
+
+.associe__nom {
+    margin-bottom: var(--e-1);
+}
+
+.associe__role {
+    font-weight: 700;
+    color: var(--c-chataigne);
 }

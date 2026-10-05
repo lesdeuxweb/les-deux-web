@@ -1,0 +1,14 @@
+{# Réalisations liées à un secteur ou une zone. Variables : realisations, titre, lien_tout. #}
+{% if realisations is not empty %}
+    <section class="bloc" aria-labelledby="realisations-liees">
+        <div class="bloc__tete">
+            <h2 id="realisations-liees">{{ titre }}</h2>
+            <a href="{{ lien_tout }}">{{ 'realisation.toutes'|trans }}</a>
+        </div>
+        <ul class="grille-cartes" role="list">
+            {% for realisation in realisations %}
+                <li><twig:CarteRealisation :realisation="realisation" /></li>
+            {% endfor %}
+        </ul>
+    </section>
+{% endif %}

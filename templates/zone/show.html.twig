@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% set titre = 'zone.show.titre'|trans({'%lieu%': zone.lieuAvecPreposition}) %}
+{% set fil_ariane = [
+    {libelle: 'nav.zones'|trans, url: path('app_zone_index')},
+    {libelle: zone.nom},
+] %}
+
+{% block title %}{{ zone.metaTitle ?: titre ~ ' | ' ~ site.nom }}{% endblock %}
+{% block meta_description %}{{ zone.metaDescription ?: zone.accroche ?: 'zone.show.description'|trans({'%lieu%': zone.lieuAvecPreposition}) }}{% endblock %}
+
+{% block body %}
+    <div class="conteneur">
+        <header class="tete-page">
+            <h1>{{ titre }}</h1>
+            {% if zone.accroche %}<p class="tete-page__chapeau">{{ zone.accroche }}</p>{% endif %}
+            <div class="groupe-boutons">
+                <twig:Bouton href="{{ path('app_contact') }}">{{ 'nav.devis'|trans }}</twig:Bouton>
+            </div>
+        </header>
+
+        {% if zone.contenu %}
+            <div class="prose">{{ zone.contenu|contenu_html }}</div>
+        {% endif %}
+
+        {{ include('partials/_realisations_liees.html.twig', {
+            titre: 'zone.show.realisations'|trans({'%lieu%': zone.lieuAvecPreposition}),
+            lien_tout: path('app_realisation_index'),
+        }) }}
+
+        {{ include('partials/_offres_liees.html.twig') }}
+
+        <div class="section">
+            <twig:AppelAction texte="{{ 'zone.show.cta_texte'|trans({'%lieu%': zone.lieuAvecPreposition}) }}" />
+        </div>
+
+        {% if autres_zones is not empty %}
+            <nav aria-labelledby="autres-zones">
+                <h2 id="autres-zones">{{ 'zone.show.autres'|trans }}</h2>
+                <ul class="liste-liens" role="list">
+                    {% for autre in autres_zones %}
+                        <li><a class="pastille-lien" href="{{ path('app_zone_show', {slug: autre.slug}) }}">{{ autre.nom }}</a></li>
+                    {% endfor %}
+                </ul>
+            </nav>
+        {% endif %}
+    </div>
+{% endblock %}

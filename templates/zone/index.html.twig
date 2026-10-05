@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% set fil_ariane = [{libelle: 'nav.zones'|trans}] %}
+
+{% block title %}{{ 'zone.index.titre_page'|trans({'%nom%': site.nom}) }}{% endblock %}
+{% block meta_description %}{{ 'zone.index.description'|trans({'%ville%': site.ville, '%rayon%': site.rayon_km}) }}{% endblock %}
+
+{% macro liste_zones(zones) %}
+    <ul class="grille-zones" role="list">
+        {% for zone in zones %}
+            <li>
+                <a class="zone-lien" href="{{ path('app_zone_show', {slug: zone.slug}) }}">
+                    <span class="zone-lien__nom">{{ zone.nom }}</span>
+                    {% if zone.codeDepartement %}<span class="zone-lien__code">{{ zone.codeDepartement }}</span>{% endif %}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endmacro %}
+
+{% block body %}
+    <div class="conteneur">
+        <header class="tete-page">
+            <h1>{{ 'zone.index.titre'|trans }}</h1>
+            <p class="tete-page__chapeau">{{ 'zone.index.chapeau'|trans({'%ville%': site.ville, '%rayon%': site.rayon_km}) }}</p>
+        </header>
+
+        {% if departements is not empty %}
+            <section class="bloc" aria-labelledby="titre-departements">
+                <h2 id="titre-departements">{{ 'zone.index.departements'|trans }}</h2>
+                {{ _self.liste_zones(departements) }}
+            </section>
+        {% endif %}
+
+        {% if villes is not empty %}
+            <section class="bloc" aria-labelledby="titre-villes">
+                <h2 id="titre-villes">{{ 'zone.index.villes'|trans }}</h2>
+                {{ _self.liste_zones(villes) }}
+            </section>
+        {% endif %}
+
+        <section class="bloc encadre" aria-labelledby="titre-distance">
+            <h2 id="titre-distance">{{ 'zone.index.distance_titre'|trans }}</h2>
+            <p>{{ 'zone.index.distance_texte'|trans }}</p>
+        </section>
+
+        <div class="section">
+            <twig:AppelAction />
+        </div>
+    </div>
+{% endblock %}

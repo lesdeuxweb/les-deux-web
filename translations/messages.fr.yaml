@@ -1,5 +1,6 @@
 # Textes fixes du site (hors contenus gérés en back-office).
 # Une future version anglaise ajoutera messages.en.yaml avec les mêmes clés.
+# Typographie : espace insécable (U+00A0) avant ? ! : ; (appliquée dans ce fichier).
 
 layout:
     lien_evitement: 'Aller au contenu'
@@ -25,6 +26,8 @@ pied:
     presentation: 'Deux développeurs basés à %ville%. On se déplace dans un rayon d''environ %rayon% km, et en visio partout en France.'
     titre_contact: 'Nous contacter'
     titre_site: 'Le site'
+    titre_secteurs: 'Sites par métier'
+    titre_zones: 'Zones d''intervention'
     titre_infos: 'Informations'
     telephone: 'Téléphone'
     email: 'Email'
@@ -36,11 +39,27 @@ pied:
 commun:
     a_completer: 'À compléter'
     en_construction: 'Cette page sera complétée prochainement.'
+    nouvel_onglet: '(s''ouvre dans un nouvel onglet)'
 
 appel_action:
     titre: 'Un projet de site ? Parlons-en.'
     texte: 'Décrivez-nous votre besoin, on vous répond pour en discuter, sans engagement. À %ville%, chez vous ou en visio.'
     bouton: 'Demander un devis'
+
+# Arguments « Pourquoi nous » (accueil, qui sommes-nous)
+arguments:
+    proximite:
+        titre: 'On vient vous voir'
+        texte: 'Basés à %ville%, on se déplace chez vous dans un rayon d''environ %rayon% km. Ailleurs en France, on travaille en visio.'
+    interlocuteurs:
+        titre: 'Deux interlocuteurs, pas un standard'
+        texte: 'Vous parlez directement aux personnes qui conçoivent et construisent votre site, du premier rendez-vous à la mise en ligne.'
+    hebergement:
+        titre: 'Hébergé en France'
+        texte: 'Votre site est hébergé chez OVH, en France, et respecte le RGPD. Aucun outil Google imposé, aucun cookie publicitaire.'
+    propriete:
+        titre: 'Votre site vous appartient'
+        texte: 'Le nom de domaine, les textes, les images et le code sont à vous. Vous restez libre de changer de prestataire.'
 
 accueil:
     hero:
@@ -48,7 +67,90 @@ accueil:
         titre: 'Des sites internet faits à Limoges, pour les gens d''ici'
         sous_titre: 'Basés à %ville%, on crée des sites internet pour les entreprises et communes de %region% et de toute la France.'
         voir_realisations: 'Voir nos réalisations'
-        garantie_proximite: 'On se déplace chez vous, jusqu''à %rayon% km autour de Limoges'
-        garantie_interlocuteurs: 'Deux interlocuteurs, du premier café à la mise en ligne'
-        garantie_hebergement: 'Hébergement en France, conforme au RGPD'
-        garantie_propriete: 'Votre site vous appartient, sans abonnement imposé'
+        vos_interlocuteurs: 'Vos deux interlocuteurs'
+        appelez: 'Appelez-nous'
+    realisations: 'Quelques réalisations'
+    pourquoi: 'Pourquoi travailler avec nous'
+    maillage: 'Métiers et territoires'
+    secteurs: 'Des sites pensés pour votre métier'
+    secteurs_texte: 'Chaque métier a ses besoins : réservations, catalogue, horaires, démarches en ligne...'
+    zones: 'Nos zones d''intervention'
+    zones_texte: 'On se déplace dans un rayon d''environ %rayon% km autour de %ville%, et en visio partout en France.'
+
+offre:
+    sur_devis: 'Sur devis'
+    a_partir_de: 'À partir de'
+    voir: 'Voir l''offre'
+    nos_offres: 'Nos offres'
+    toutes: 'Toutes nos offres'
+    index:
+        titre_page: 'Nos offres et tarifs | %nom%'
+        description: 'Site vitrine, boutique en ligne, projet sur mesure, hébergement et maintenance : nos offres et nos prix, clairement affichés.'
+        titre: 'Nos offres'
+        chapeau: 'Des prix clairs, affichés dès le départ. Chaque projet commence par un échange pour comprendre votre activité, puis un devis détaillé.'
+        aucune: 'Nos offres seront bientôt présentées ici. En attendant, contactez-nous pour en parler.'
+        cta_titre: 'Vous hésitez entre deux offres ? On vous conseille.'
+    show:
+        en_bref: 'En bref'
+        demander: 'Demander un devis pour cette offre'
+        cta_titre: 'Votre projet de %offre% ? Parlons-en.'
+        autres: 'Nos autres offres'
+
+realisation:
+    toutes: 'Toutes nos réalisations'
+    index:
+        titre_page: 'Nos réalisations | %nom%'
+        titre_page_secteur: 'Nos réalisations : %secteur% | %nom%'
+        description: 'Des sites internet créés pour des artisans, commerçants, gîtes, producteurs et communes de Nouvelle-Aquitaine et d''ailleurs.'
+        titre: 'Nos réalisations'
+        titre_secteur: 'Nos réalisations : %secteur%'
+        chapeau: 'Quelques sites que nous avons créés, avec les personnes qui les font vivre.'
+        filtrer: 'Filtrer par métier'
+        tous: 'Tous'
+        aucune: 'Aucune réalisation à afficher pour le moment.'
+        cta_titre: 'Et si la prochaine, c''était la vôtre ?'
+    show:
+        le_projet: 'Le projet'
+        client: 'Client'
+        ville: 'Ville'
+        secteur: 'Métier'
+        zone: 'Zone'
+        date: 'Mise en ligne'
+        voir_site: 'Voir le site'
+        cta_titre: 'Un projet similaire ? Parlons-en.'
+
+secteur:
+    show:
+        titre: 'Site internet pour %cible%'
+        description: 'Création de site internet pour %cible% : un site clair, rapide et facile à mettre à jour, conçu par deux développeurs basés à Limoges.'
+        realisations: 'Exemples de sites pour %cible%'
+
+zone:
+    index:
+        titre_page: 'Zones d''intervention | %nom%'
+        description: 'Basés à %ville%, nous intervenons en présentiel dans un rayon d''environ %rayon% km, et partout en France en visio.'
+        titre: 'Zones d''intervention'
+        chapeau: 'Basés à %ville%, on se déplace chez vous dans un rayon d''environ %rayon% km : Haute-Vienne, Charente, Dordogne, Corrèze, Creuse, Vienne, Indre...'
+        departements: 'Départements'
+        villes: 'Villes'
+        distance_titre: 'Ailleurs en France ? On travaille aussi à distance.'
+        distance_texte: 'Rendez-vous en visio, échanges par téléphone et par email : la plupart des projets se mènent très bien à distance.'
+    show:
+        titre: 'Création de site internet %lieu%'
+        description: 'Création de site internet %lieu% pour les entreprises, commerces, gîtes et communes. Deux développeurs basés à Limoges, qui se déplacent chez vous.'
+        realisations: 'Nos réalisations %lieu%'
+        cta_texte: 'On se déplace %lieu% pour vous rencontrer, ou on en parle en visio. Sans engagement.'
+        autres: 'Nous intervenons aussi'
+
+about:
+    titre_page: 'Qui sommes-nous | %nom%'
+    description: 'Deux développeurs de %ville%, l''un au développement, l''autre à la gestion de projet. Découvrez qui se cache derrière Les deux web.'
+    titre: 'Qui sommes-nous'
+    chapeau: 'Deux associés basés à %ville%, avec une idée simple : des sites internet faits avec les gens, pas pour eux.'
+    equipe: 'L''équipe'
+    photo_a_venir: 'Photo à venir'
+    histoire: 'Notre histoire'
+    histoire_a_completer: '[À COMPLÉTER : comment vous vous êtes rencontrés, pourquoi Les deux web, pourquoi Limoges.]'
+    valeurs: 'Nos valeurs'
+    valeurs_a_completer: '[À COMPLÉTER : vos valeurs, avec vos mots. Les quatre engagements ci-dessous sont repris de l''accueil.]'
+    cta_titre: 'Envie de nous rencontrer ?'

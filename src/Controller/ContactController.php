@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class ContactController extends AbstractController
 {
-    // Page provisoire (phase 2) : contenu réel en phase 3.
+    // Page provisoire : formulaire de contact en phase 4.
     #[Route('/contact', name: 'app_contact', methods: ['GET'])]
     public function index(): Response
     {

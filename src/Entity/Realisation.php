@@ -53,12 +53,16 @@ class Realisation
     #[Assert\Url(requireTld: true)]
     private ?string $url = null;
 
-    #[Vich\UploadableField(mapping: 'realisations', fileNameProperty: 'imageName')]
+    #[Vich\UploadableField(mapping: 'realisations', fileNameProperty: 'imageName', dimensions: 'imageDimensions')]
     #[Assert\Image(maxSize: '4M', mimeTypes: ['image/jpeg', 'image/png', 'image/webp'])]
     private ?File $imageFile = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $imageName = null;
+
+    /** [largeur, hauteur] en pixels, renseigné par Vich à l'upload (attributs width/height). */
+    #[ORM\Column(type: Types::SIMPLE_ARRAY, nullable: true)]
+    private ?array $imageDimensions = null;
 
     #[ORM\Column(length: 150, nullable: true)]
     private ?string $imageAlt = null;
@@ -191,6 +195,19 @@ class Realisation
     public function setImageName(?string $imageName): static
     {
         $this->imageName = $imageName;
+
+        return $this;
+    }
+
+    /** @return array{0: int, 1: int}|null */
+    public function getImageDimensions(): ?array
+    {
+        return $this->imageDimensions ? array_map('intval', $this->imageDimensions) : null;
+    }
+
+    public function setImageDimensions(?array $imageDimensions): static
+    {
+        $this->imageDimensions = $imageDimensions;
 
         return $this;
     }

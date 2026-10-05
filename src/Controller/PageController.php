@@ -11,13 +11,13 @@ use Symfony\Component\Routing\Attribute\Route;
  */
 class PageController extends AbstractController
 {
-    // Pages provisoires (phase 2) : contenu réel en phases 3 et 7.
     #[Route('/qui-sommes-nous', name: 'app_about', methods: ['GET'])]
     public function about(): Response
     {
-        return $this->render('page/provisoire.html.twig', ['cle_titre' => 'nav.a_propos']);
+        return $this->render('page/about.html.twig');
     }
 
+    // Pages provisoires : contenu réel en phase 7 (légal et RGPD).
     #[Route('/mentions-legales', name: 'app_legal', methods: ['GET'])]
     public function legal(): Response
     {

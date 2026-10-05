@@ -1,0 +1,23 @@
+{#
+ # Carte d'une offre (liste des offres, accueil, pages secteur et zone).
+ #   <twig:CarteOffre :offre="offre" />
+ #
+ # niveau : niveau du titre (3 par défaut ; 2 quand la carte est directement sous le <h1>).
+ # Toute la carte est cliquable (lien étiré sur le titre), sans imbriquer de liens.
+ #}
+{% props offre, niveau = 3 %}
+<article {{ attributes.defaults({class: 'carte carte--cliquable carte-offre'}) }}>
+    <h{{ niveau }} class="carte__titre">
+        <a class="carte__lien" href="{{ path('app_offre_show', {slug: offre.slug}) }}">{{ offre.nom }}</a>
+    </h{{ niveau }}>
+    <p class="carte__texte">{{ offre.accroche }}</p>
+    <twig:Prix :offre="offre" />
+    {% if offre.pointsForts is not empty %}
+        <ul class="liste-coches">
+            {% for point in offre.pointsForts|slice(0, 3) %}
+                <li>{{ point }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <span class="carte__suite" aria-hidden="true">{{ 'offre.voir'|trans }}</span>
+</article>

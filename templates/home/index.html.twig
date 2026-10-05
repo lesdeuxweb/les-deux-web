@@ -1,7 +1,7 @@
-{# Accueil, version provisoire (phase 2) : hero + appel à l'action. Sections complètes en phase 3. #}
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    {# --- Hero --- #}
     <section class="hero">
         <div class="conteneur hero__grille">
             <div class="hero__texte">
@@ -14,15 +14,112 @@
                 </div>
             </div>
 
-            <ul class="hero__garanties" role="list">
-                <li>{{ 'accueil.hero.garantie_proximite'|trans({'%rayon%': site.rayon_km}) }}</li>
-                <li>{{ 'accueil.hero.garantie_interlocuteurs'|trans }}</li>
-                <li>{{ 'accueil.hero.garantie_hebergement'|trans }}</li>
-                <li>{{ 'accueil.hero.garantie_propriete'|trans }}</li>
+            {# Visages : rassurer dès le premier écran #}
+            <div class="hero__equipe">
+                <p class="hero__equipe-titre">{{ 'accueil.hero.vos_interlocuteurs'|trans }}</p>
+                <ul class="hero__associes" role="list">
+                    {% for associe in site.associes %}
+                        <li class="hero__associe">
+                            <twig:Portrait :associe="associe" />
+                            <span>
+                                <strong><twig:ACompleter :valeur="associe.prenom" /></strong>
+                                <span class="hero__associe-role">{{ associe.role }}</span>
+                            </span>
+                        </li>
+                    {% endfor %}
+                </ul>
+                <p class="hero__equipe-contact">
+                    {{ 'accueil.hero.appelez'|trans }}&nbsp;: <twig:ACompleter :valeur="site.telephone" />
+                </p>
+            </div>
+        </div>
+    </section>
+
+    {# --- Offres --- #}
+    {% if offres is not empty %}
+        <section class="section" aria-labelledby="titre-offres">
+            <div class="conteneur">
+                <div class="bloc__tete">
+                    <h2 id="titre-offres">{{ 'offre.nos_offres'|trans }}</h2>
+                    <a href="{{ path('app_offre_index') }}">{{ 'offre.toutes'|trans }}</a>
+                </div>
+                <ul class="grille-cartes{{ offres|length % 4 == 0 ? ' grille-cartes--4' }}" role="list">
+                    {% for offre in offres %}
+                        <li><twig:CarteOffre :offre="offre" /></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </section>
+    {% endif %}
+
+    {# --- Réalisations mises en avant --- #}
+    {% if realisations is not empty %}
+        <section class="section section--alt" aria-labelledby="titre-realisations">
+            <div class="conteneur">
+                <div class="bloc__tete">
+                    <h2 id="titre-realisations">{{ 'accueil.realisations'|trans }}</h2>
+                    <a href="{{ path('app_realisation_index') }}">{{ 'realisation.toutes'|trans }}</a>
+                </div>
+                <ul class="grille-cartes" role="list">
+                    {% for realisation in realisations %}
+                        <li><twig:CarteRealisation :realisation="realisation" /></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </section>
+    {% endif %}
+
+    {# --- Pourquoi nous --- #}
+    <section class="section" aria-labelledby="titre-pourquoi">
+        <div class="conteneur">
+            <h2 id="titre-pourquoi">{{ 'accueil.pourquoi'|trans }}</h2>
+            <ul class="grille-arguments" role="list">
+                {% for cle in ['proximite', 'interlocuteurs', 'hebergement', 'propriete'] %}
+                    <li class="argument">
+                        <h3 class="argument__titre">{{ ('arguments.' ~ cle ~ '.titre')|trans }}</h3>
+                        <p>{{ ('arguments.' ~ cle ~ '.texte')|trans({'%ville%': site.ville, '%rayon%': site.rayon_km}) }}</p>
+                    </li>
+                {% endfor %}
             </ul>
         </div>
     </section>
 
+    {# --- Secteurs et zones --- #}
+    {% set secteurs = secteurs_publies() %}
+    {% set zones = zones_publiees() %}
+    {% if secteurs is not empty or zones is not empty %}
+        <section class="section section--alt" aria-labelledby="titre-maillage">
+            <div class="conteneur">
+                <h2 id="titre-maillage" class="visuellement-cache">{{ 'accueil.maillage'|trans }}</h2>
+                <div class="maillage">
+                    {% if secteurs is not empty %}
+                        <div>
+                            <h3>{{ 'accueil.secteurs'|trans }}</h3>
+                            <p>{{ 'accueil.secteurs_texte'|trans }}</p>
+                            <ul class="liste-liens" role="list">
+                                {% for secteur in secteurs %}
+                                    <li><a class="pastille-lien" href="{{ path('app_secteur_show', {slug: secteur.slug}) }}">{{ secteur.nom }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+                    {% if zones is not empty %}
+                        <div>
+                            <h3>{{ 'accueil.zones'|trans }}</h3>
+                            <p>{{ 'accueil.zones_texte'|trans({'%ville%': site.ville, '%rayon%': site.rayon_km}) }}</p>
+                            <ul class="liste-liens" role="list">
+                                {% for zone in zones %}
+                                    <li><a class="pastille-lien" href="{{ path('app_zone_show', {slug: zone.slug}) }}">{{ zone.nom }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </section>
+    {% endif %}
+
+    {# --- Appel à l'action final --- #}
     <div class="conteneur section">
         <twig:AppelAction />
     </div>

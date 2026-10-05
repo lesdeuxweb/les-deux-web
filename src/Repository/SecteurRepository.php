@@ -22,6 +22,23 @@ class SecteurRepository extends ServiceEntityRepository
         return $this->findBy(['publie' => true], ['position' => 'ASC', 'nom' => 'ASC']);
     }
 
+    /**
+     * Secteurs publiés ayant au moins une réalisation publiée (filtre de la page Réalisations).
+     *
+     * @return Secteur[]
+     */
+    public function findPubliesAvecRealisations(): array
+    {
+        return $this->createQueryBuilder('s')
+            ->innerJoin('s.realisations', 'r', 'WITH', 'r.publie = true')
+            ->andWhere('s.publie = true')
+            ->groupBy('s.id')
+            ->orderBy('s.position', 'ASC')
+            ->addOrderBy('s.nom', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findOnePublieBySlug(string $slug): ?Secteur
     {
         return $this->findOneBy(['slug' => $slug, 'publie' => true]);

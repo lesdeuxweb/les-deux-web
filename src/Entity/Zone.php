@@ -46,6 +46,14 @@ class Zone
     #[ORM\Column(length: 3, nullable: true)]
     private ?string $codeDepartement = null;
 
+    /**
+     * Lieu précédé de sa préposition, pour les titres : « dans l'Indre », « aux Eyzies »...
+     * Laisser vide pour la règle par défaut (« à » pour une ville, « en » pour un département).
+     */
+    #[ORM\Column(length: 120, nullable: true)]
+    #[Assert\Length(max: 120)]
+    private ?string $lieu = null;
+
     /** Paragraphe d'introduction en haut de page. */
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\Length(max: 255)]
@@ -119,6 +127,28 @@ class Zone
         $this->codeDepartement = $codeDepartement;
 
         return $this;
+    }
+
+    public function getLieu(): ?string
+    {
+        return $this->lieu;
+    }
+
+    public function setLieu(?string $lieu): static
+    {
+        $this->lieu = $lieu;
+
+        return $this;
+    }
+
+    /** Ex. « à Limoges », « en Dordogne », ou la valeur saisie dans $lieu. */
+    public function getLieuAvecPreposition(): string
+    {
+        if (null !== $this->lieu && '' !== trim($this->lieu)) {
+            return trim($this->lieu);
+        }
+
+        return (self::TYPE_VILLE === $this->type ? 'à ' : 'en ').$this->nom;
     }
 
     public function getAccroche(): ?string

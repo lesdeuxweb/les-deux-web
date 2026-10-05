@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% set fil_ariane = secteur_actif
+    ? [{libelle: 'nav.realisations'|trans, url: path('app_realisation_index')}, {libelle: secteur_actif.nom}]
+    : [{libelle: 'nav.realisations'|trans}] %}
+
+{% block title %}
+    {{- secteur_actif
+        ? 'realisation.index.titre_page_secteur'|trans({'%secteur%': secteur_actif.nom, '%nom%': site.nom})
+        : 'realisation.index.titre_page'|trans({'%nom%': site.nom}) -}}
+{% endblock %}
+{% block meta_description %}{{ 'realisation.index.description'|trans }}{% endblock %}
+
+{% block body %}
+    <div class="conteneur">
+        <header class="tete-page">
+            <h1>
+                {{- secteur_actif
+                    ? 'realisation.index.titre_secteur'|trans({'%secteur%': secteur_actif.nom})
+                    : 'realisation.index.titre'|trans -}}
+            </h1>
+            <p class="tete-page__chapeau">{{ 'realisation.index.chapeau'|trans }}</p>
+        </header>
+
+        {% if secteurs|length > 1 or secteur_actif %}
+            <nav class="filtres" aria-labelledby="filtres-titre">
+                <p class="filtres__titre" id="filtres-titre">{{ 'realisation.index.filtrer'|trans }}</p>
+                <ul class="filtres__liste" role="list">
+                    <li>
+                        <a class="pastille-lien" href="{{ path('app_realisation_index') }}"{% if not secteur_actif %} aria-current="page"{% endif %}>
+                            {{- 'realisation.index.tous'|trans -}}
+                        </a>
+                    </li>
+                    {% for secteur in secteurs %}
+                        <li>
+                            <a class="pastille-lien" href="{{ path('app_realisation_index', {secteur: secteur.slug}) }}"{% if secteur is same as(secteur_actif) %} aria-current="page"{% endif %}>
+                                {{- secteur.nom -}}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </nav>
+        {% endif %}
+
+        {% if realisations is empty %}
+            <p>{{ 'realisation.index.aucune'|trans }}</p>
+        {% else %}
+            <ul class="grille-cartes" role="list">
+                {% for realisation in realisations %}
+                    <li><twig:CarteRealisation :realisation="realisation" niveau="2" :prioritaire="loop.index <= 3" /></li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <div class="section">
+            <twig:AppelAction titre="{{ 'realisation.index.cta_titre'|trans }}" />
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% set fil_ariane = [
+    {libelle: 'nav.realisations'|trans, url: path('app_realisation_index')},
+    {libelle: realisation.titre},
+] %}
+
+{% block title %}{{ realisation.metaTitle ?: realisation.titre ~ ' | ' ~ site.nom }}{% endblock %}
+{% block meta_description %}{{ realisation.metaDescription ?: realisation.resume }}{% endblock %}
+
+{% block body %}
+    <div class="conteneur">
+        <header class="tete-page">
+            <h1>{{ realisation.titre }}</h1>
+            <p class="tete-page__chapeau">{{ realisation.resume }}</p>
+        </header>
+
+        {% if realisation.imageName %}
+            {% set dimensions = realisation.imageDimensions ?? [1200, 750] %}
+            <img class="visuel-principal"
+                 src="{{ vich_uploader_asset(realisation, 'imageFile') }}"
+                 alt="{{ realisation.imageAlt }}"
+                 width="{{ dimensions[0] }}" height="{{ dimensions[1] }}"
+                 fetchpriority="high">
+        {% endif %}
+
+        <div class="detail">
+            <div class="detail__principal prose">
+                {{ realisation.description|contenu_html }}
+            </div>
+
+            <aside class="detail__encart" aria-labelledby="encart-projet">
+                <h2 class="detail__encart-titre" id="encart-projet">{{ 'realisation.show.le_projet'|trans }}</h2>
+                <dl class="fiche">
+                    {% if realisation.client %}
+                        <div><dt>{{ 'realisation.show.client'|trans }}</dt><dd>{{ realisation.client }}</dd></div>
+                    {% endif %}
+                    {% if realisation.ville %}
+                        <div><dt>{{ 'realisation.show.ville'|trans }}</dt><dd>{{ realisation.ville }}</dd></div>
+                    {% endif %}
+                    {% if realisation.secteur and realisation.secteur.publie %}
+                        <div><dt>{{ 'realisation.show.secteur'|trans }}</dt><dd><a href="{{ path('app_secteur_show', {slug: realisation.secteur.slug}) }}">{{ realisation.secteur.nom }}</a></dd></div>
+                    {% endif %}
+                    {% if realisation.zone and realisation.zone.publie %}
+                        <div><dt>{{ 'realisation.show.zone'|trans }}</dt><dd><a href="{{ path('app_zone_show', {slug: realisation.zone.slug}) }}">{{ realisation.zone.nom }}</a></dd></div>
+                    {% endif %}
+                    {% if realisation.dateRealisation %}
+                        <div><dt>{{ 'realisation.show.date'|trans }}</dt><dd>{{ realisation.dateRealisation|format_date(pattern: 'MMMM yyyy', locale: 'fr')|capitalize }}</dd></div>
+                    {% endif %}
+                </dl>
+                {% if realisation.url %}
+                    <twig:Bouton href="{{ realisation.url }}" variante="secondaire" rel="noopener" target="_blank">
+                        {{ 'realisation.show.voir_site'|trans }}<span class="visuellement-cache"> {{ 'commun.nouvel_onglet'|trans }}</span>
+                    </twig:Bouton>
+                {% endif %}
+            </aside>
+        </div>
+
+        <div class="section">
+            <twig:AppelAction titre="{{ 'realisation.show.cta_titre'|trans }}" />
+        </div>
+    </div>
+{% endblock %}

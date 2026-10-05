@@ -10,6 +10,16 @@ parameters:
         rayon_km: 200
         telephone: '[À COMPLÉTER]'
         email: '[À COMPLÉTER]'
+        # Associés (page Qui sommes-nous, accueil). photo : chemin dans assets/images/, ex. 'equipe/prenom.webp'
+        associes:
+            -   prenom: '[À COMPLÉTER : prénom]'
+                role: 'Développement'
+                photo: null
+                presentation: '[À COMPLÉTER : quelques phrases de présentation, parcours, ce qui plaît dans le métier.]'
+            -   prenom: '[À COMPLÉTER : prénom]'
+                role: 'Gestion de projet et relation client'
+                photo: null
+                presentation: '[À COMPLÉTER : quelques phrases de présentation, parcours, ce qui plaît dans le métier.]'
 
 twig:
     globals:

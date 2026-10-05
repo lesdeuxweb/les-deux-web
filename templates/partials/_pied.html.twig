@@ -35,6 +35,30 @@
                 </ul>
             </nav>
 
+            {% set secteurs = secteurs_publies() %}
+            {% if secteurs is not empty %}
+                <nav aria-labelledby="pied-titre-secteurs">
+                    <p class="pied__titre" id="pied-titre-secteurs">{{ 'pied.titre_secteurs'|trans }}</p>
+                    <ul class="pied__liste">
+                        {% for secteur in secteurs %}
+                            <li><a href="{{ path('app_secteur_show', {slug: secteur.slug}) }}">{{ secteur.nom }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </nav>
+            {% endif %}
+
+            {% set zones = zones_publiees() %}
+            {% if zones is not empty %}
+                <nav aria-labelledby="pied-titre-zones">
+                    <p class="pied__titre" id="pied-titre-zones">{{ 'pied.titre_zones'|trans }}</p>
+                    <ul class="pied__liste">
+                        {% for zone in zones %}
+                            <li><a href="{{ path('app_zone_show', {slug: zone.slug}) }}">{{ zone.nom }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </nav>
+            {% endif %}
+
             <nav aria-labelledby="pied-titre-infos">
                 <p class="pied__titre" id="pied-titre-infos">{{ 'pied.titre_infos'|trans }}</p>
                 <ul class="pied__liste">

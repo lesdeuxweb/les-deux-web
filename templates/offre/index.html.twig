@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% set fil_ariane = [{libelle: 'nav.offres'|trans}] %}
+
+{% block title %}{{ 'offre.index.titre_page'|trans({'%nom%': site.nom}) }}{% endblock %}
+{% block meta_description %}{{ 'offre.index.description'|trans }}{% endblock %}
+
+{% block body %}
+    <div class="conteneur">
+        <header class="tete-page">
+            <h1>{{ 'offre.index.titre'|trans }}</h1>
+            <p class="tete-page__chapeau">{{ 'offre.index.chapeau'|trans }}</p>
+        </header>
+
+        {% if offres is empty %}
+            <p>{{ 'offre.index.aucune'|trans }}</p>
+        {% else %}
+            <ul class="grille-cartes{{ offres|length % 4 == 0 ? ' grille-cartes--4' }}" role="list">
+                {% for offre in offres %}
+                    <li><twig:CarteOffre :offre="offre" niveau="2" /></li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <div class="section">
+            <twig:AppelAction titre="{{ 'offre.index.cta_titre'|trans }}" />
+        </div>
+    </div>
+{% endblock %}

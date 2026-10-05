@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% set fil_ariane = [
+    {libelle: 'nav.offres'|trans, url: path('app_offre_index')},
+    {libelle: offre.nom},
+] %}
+
+{% block title %}{{ offre.metaTitle ?: offre.nom ~ ' | ' ~ site.nom }}{% endblock %}
+{% block meta_description %}{{ offre.metaDescription ?: offre.accroche }}{% endblock %}
+
+{% block body %}
+    <div class="conteneur">
+        <header class="tete-page">
+            <h1>{{ offre.nom }}</h1>
+            <p class="tete-page__chapeau">{{ offre.accroche }}</p>
+        </header>
+
+        <div class="detail">
+            <div class="detail__principal prose">
+                {{ offre.description|contenu_html }}
+            </div>
+
+            <aside class="detail__encart" aria-labelledby="encart-offre">
+                <h2 class="detail__encart-titre" id="encart-offre">{{ 'offre.show.en_bref'|trans }}</h2>
+                <twig:Prix :offre="offre" class="prix--grand" />
+                {% if offre.pointsForts is not empty %}
+                    <ul class="liste-coches">
+                        {% for point in offre.pointsForts %}
+                            <li>{{ point }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                <twig:Bouton href="{{ path('app_contact', {offre: offre.slug}) }}">{{ 'offre.show.demander'|trans }}</twig:Bouton>
+            </aside>
+        </div>
+
+        <div class="section">
+            <twig:AppelAction
+                titre="{{ 'offre.show.cta_titre'|trans({'%offre%': offre.nom|lower}) }}"
+                lien="{{ path('app_contact', {offre: offre.slug}) }}" />
+        </div>
+
+        {% if autres_offres is not empty %}
+            <section aria-labelledby="autres-offres">
+                <h2 id="autres-offres">{{ 'offre.show.autres'|trans }}</h2>
+                <ul class="grille-cartes{{ autres_offres|length % 4 == 0 ? ' grille-cartes--4' }}" role="list">
+                    {% for autre in autres_offres %}
+                        <li><twig:CarteOffre :offre="autre" /></li>
+                    {% endfor %}
+                </ul>
+            </section>
+        {% endif %}
+    </div>
+{% endblock %}

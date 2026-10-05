@@ -1,0 +1,15 @@
+# Assainissement du HTML saisi en back-office (TextEditorField) avant affichage en front.
+# Utilisé via le filtre Twig |contenu_html (src/Twig/ContenuExtension.php).
+framework:
+    html_sanitizer:
+        sanitizers:
+            app.contenu_sanitizer:
+                # Éléments de mise en forme courants (p, h2, ul, strong, a, blockquote...)
+                allow_safe_elements: true
+                allow_relative_links: true
+                allowed_link_schemes: ['https', 'http', 'mailto', 'tel']
+                # Pas d'images ni de médias insérés dans le texte : uniquement via les champs dédiés
+                drop_elements: ['img', 'figure', 'iframe', 'video', 'audio', 'form']
+                force_attributes:
+                    a:
+                        rel: 'noopener'
