@@ -29,9 +29,6 @@ pied:
     droits: '© %annee% %nom%'
     signature: 'Conçu à %ville% · Hébergé en France'
 
-commun:
-    a_completer: 'À compléter'
-
 accueil:
     hero:
         sur_titre: 'Studio web indépendant · %ville%'
@@ -43,7 +40,6 @@ accueil:
         garantie_interlocuteur: 'Un interlocuteur dédié'
         garantie_hebergement: 'Hébergé en France'
         garantie_engagement: 'Sans engagement caché'
-        photo_a_venir: 'Photo à venir'
         etiquette: 'Disponibles et proches de vous'
         zone_libelle: 'Zone d''intervention'
         zone_lieu: 'Autour de %ville%'
@@ -88,12 +84,12 @@ accueil:
     apropos:
         sur_titre: 'Qui sommes-nous ?'
         titre: 'Deux développeurs, et surtout deux interlocuteurs vraiment présents.'
-        photo: 'Photo associé %numero%'
         legende: 'Deux parcours, une même envie.'
         nous_sommes: 'Nous sommes'
         role_dev: 'en charge du développement'
         et: 'et'
         role_projet: 'votre contact pour la gestion de projet et la relation client'
+        sans_prenoms: 'Nous sommes deux : l’un en charge du développement, l’autre votre contact pour la gestion de projet et la relation client.'
         histoire: 'À 21 ans, diplôme bac+3 en poche, nous avons créé Les deux web à %ville% avec une conviction : la qualité numérique ne devrait pas être réservée aux grandes entreprises. Nous mettons notre technique au service des personnes qui font vivre nos territoires.'
         valeur_disponibilite: 'Disponibilité'
         valeur_clarte: 'Clarté'

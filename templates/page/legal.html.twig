@@ -1,6 +1,7 @@
 {#
  # Mentions légales (article 6 de la loi pour la confiance dans l'économie numérique).
- # Les informations de l'entreprise viennent de config/packages/site.yaml (site.legal, site.hebergeur).
+ # Les informations de l'entreprise viennent de config/packages/site.yaml (site.legal, site.hebergeur) ;
+ # une information vide n'est pas affichée (à renseigner avant la mise en ligne).
  # Texte juridique rédigé ici plutôt qu'en clés de traduction : une version anglaise
  # sera un gabarit distinct (legal.en.html.twig).
  #}
@@ -19,16 +20,22 @@
 
         <div class="prose">
             <h2>Éditeur du site</h2>
+            {% set adresse_complete = [site.adresse, (site.code_postal ? site.code_postal ~ ' ') ~ site.ville]|filter(v => v)|join(', ') %}
+            {% set editeur = {
+                'Raison sociale': site.legal.raison_sociale ?: site.nom,
+                'Forme juridique': site.legal.forme_juridique,
+                'SIRET': site.legal.siret,
+                'Immatriculation': site.legal.rcs,
+                'TVA': site.legal.tva ?: site.mention_tva,
+                'Adresse': adresse_complete,
+                'Téléphone': site.telephone,
+                'Email': site.email,
+                'Directeur de la publication': site.legal.directeur_publication,
+            } %}
             <dl class="fiche fiche--legale">
-                <div><dt>Raison sociale</dt><dd><twig:ACompleter :valeur="site.legal.raison_sociale" /> ({{ site.nom }})</dd></div>
-                <div><dt>Forme juridique</dt><dd><twig:ACompleter :valeur="site.legal.forme_juridique" /></dd></div>
-                <div><dt>SIRET</dt><dd><twig:ACompleter :valeur="site.legal.siret" /></dd></div>
-                <div><dt>Immatriculation</dt><dd><twig:ACompleter :valeur="site.legal.rcs" /></dd></div>
-                <div><dt>TVA intracommunautaire</dt><dd><twig:ACompleter :valeur="site.legal.tva" /></dd></div>
-                <div><dt>Adresse</dt><dd><twig:ACompleter :valeur="site.adresse" />, <twig:ACompleter :valeur="site.code_postal" /> {{ site.ville }}</dd></div>
-                <div><dt>Téléphone</dt><dd><twig:ACompleter :valeur="site.telephone" /></dd></div>
-                <div><dt>Email</dt><dd><twig:ACompleter :valeur="site.email" /></dd></div>
-                <div><dt>Directeur de la publication</dt><dd><twig:ACompleter :valeur="site.legal.directeur_publication" /></dd></div>
+                {% for libelle, valeur in editeur|filter(v => v) %}
+                    <div><dt>{{ libelle }}</dt><dd>{{ valeur }}</dd></div>
+                {% endfor %}
             </dl>
 
             <h2>Hébergeur</h2>

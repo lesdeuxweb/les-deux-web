@@ -1419,7 +1419,7 @@ strong {
     text-transform: uppercase;
 }
 
-/* --- Photos des associés (emplacements tant que les photos ne sont pas fournies) --- */
+/* --- Photos des associés (aplats de couleur tant que les photos ne sont pas fournies) --- */
 
 .photos-associes {
     position: relative;
@@ -1454,25 +1454,6 @@ strong {
     object-fit: cover;
 }
 
-.photo-associe__absente {
-    position: absolute;
-    inset: var(--e-5);
-    display: grid;
-    place-content: center;
-    gap: var(--e-1);
-    text-align: center;
-    border: 1px dashed var(--c-bordure-champ);
-    font-family: var(--f-titre);
-    font-size: 1.15rem;
-    color: var(--c-texte-doux);
-}
-
-.photo-associe__absente small {
-    font-family: var(--f-texte);
-    font-size: 0.7rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-}
 
 .photos-associes__legende {
     position: absolute;
@@ -1710,18 +1691,6 @@ strong {
     margin-top: var(--e-1);
 }
 
-/* --- Repère « à compléter » (placeholders visibles tant que le contenu n'est pas fourni) --- */
-
-.a-completer {
-    background: #FFF4D6;
-    color: var(--c-encre);
-    outline: 2px dashed var(--c-chataigne);
-    outline-offset: 1px;
-    padding: 0 0.25em;
-    font-family: var(--f-texte);
-    font-style: normal;
-}
-
 /* ========== 6. Utilitaires ========== */
 
 .visuellement-cache {
@@ -1797,25 +1766,6 @@ strong {
     object-fit: cover;
 }
 
-.hero__visuel-absent {
-    position: absolute;
-    inset: var(--e-6);
-    display: grid;
-    place-content: center;
-    gap: var(--e-1);
-    text-align: center;
-    border: 1px dashed var(--c-bordure-champ);
-    font-family: var(--f-titre);
-    font-size: 1.25rem;
-    color: var(--c-texte-doux);
-}
-
-.hero__visuel-absent small {
-    font-family: var(--f-texte);
-    font-size: 0.72rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-}
 
 .hero__etiquette {
     position: absolute;

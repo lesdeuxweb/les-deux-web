@@ -71,6 +71,14 @@ class LayoutTest extends WebTestCase
     }
 
     #[DataProvider('pagesPubliques')]
+    public function testAucunRepereACompleter(string $url): void
+    {
+        $this->client->request('GET', $url);
+
+        self::assertStringNotContainsString('COMPLÉTER', $this->client->getResponse()->getContent());
+    }
+
+    #[DataProvider('pagesPubliques')]
     public function testAucunCookieDepose(string $url): void
     {
         $this->client->request('GET', $url);

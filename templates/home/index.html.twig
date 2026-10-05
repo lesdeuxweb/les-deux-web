@@ -22,8 +22,6 @@
         <div class="hero__visuel">
             {% if site.photo_accueil %}
                 <img src="{{ asset('images/' ~ site.photo_accueil) }}" alt="" width="1200" height="1400" fetchpriority="high">
-            {% else %}
-                <p class="hero__visuel-absent">{{ 'accueil.hero.photo_a_venir'|trans }}<small>[À COMPLÉTER]</small></p>
             {% endif %}
             <p class="hero__etiquette">{{ 'accueil.hero.etiquette'|trans }}</p>
             <p class="hero__zone">
@@ -165,8 +163,6 @@
                     <figure class="photo-associe">
                         {% if associe.photo %}
                             <img src="{{ asset('images/' ~ associe.photo) }}" alt="{{ associe.prenom }}" width="600" height="800" loading="lazy">
-                        {% else %}
-                            <figcaption class="photo-associe__absente">{{ 'accueil.apropos.photo'|trans({'%numero%': loop.index}) }}<small>[À COMPLÉTER]</small></figcaption>
                         {% endif %}
                     </figure>
                 {% endfor %}
@@ -176,9 +172,13 @@
                 <twig:SurTitre>{{ 'accueil.apropos.sur_titre'|trans }}</twig:SurTitre>
                 <h2 id="titre-apropos">{{ 'accueil.apropos.titre'|trans }}</h2>
                 <p class="apropos__chapeau">
-                    {{ 'accueil.apropos.nous_sommes'|trans }}
-                    <strong><twig:ACompleter :valeur="site.associes[0].prenom" /></strong>, {{ 'accueil.apropos.role_dev'|trans }},
-                    {{ 'accueil.apropos.et'|trans }} <strong><twig:ACompleter :valeur="site.associes[1].prenom" /></strong>, {{ 'accueil.apropos.role_projet'|trans }}.
+                    {%- if site.associes[0].prenom and site.associes[1].prenom %}
+                        {{ 'accueil.apropos.nous_sommes'|trans }}
+                        <strong>{{ site.associes[0].prenom }}</strong>, {{ 'accueil.apropos.role_dev'|trans }},
+                        {{ 'accueil.apropos.et'|trans }} <strong>{{ site.associes[1].prenom }}</strong>, {{ 'accueil.apropos.role_projet'|trans }}.
+                    {%- else %}
+                        {{ 'accueil.apropos.sans_prenoms'|trans }}
+                    {%- endif %}
                 </p>
                 <p class="texte-doux">{{ 'accueil.apropos.histoire'|trans({'%ville%': site.ville}) }}</p>
                 <ul class="valeurs" role="list">

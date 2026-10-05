@@ -28,11 +28,13 @@ class RgpdTest extends WebTestCase
 
         self::assertResponseIsSuccessful();
         $texte = $crawler->filter('main')->text();
-        foreach (['Éditeur du site', 'SIRET', 'Directeur de la publication', 'Hébergeur', 'OVH SAS', '2 rue Kellermann, 59100 Roubaix, France', 'Propriété intellectuelle'] as $attendu) {
+        foreach (['Éditeur du site', 'Les deux web', 'bonjour@lesdeuxweb.fr', 'TVA non applicable', 'Hébergeur', 'OVH SAS', '2 rue Kellermann, 59100 Roubaix, France', 'Propriété intellectuelle'] as $attendu) {
             self::assertStringContainsString($attendu, $texte);
         }
-        // Informations de l'entreprise encore à fournir : repérées visuellement
-        self::assertGreaterThan(0, $crawler->filter('main .a-completer')->count());
+        // Les informations non renseignées dans site.yaml ne laissent aucune ligne vide
+        foreach ($crawler->filter('.fiche dd') as $valeur) {
+            self::assertNotSame('', trim($valeur->textContent));
+        }
         self::assertSelectorExists('main a[href="/confidentialite"]');
     }
 

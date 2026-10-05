@@ -1,44 +1,45 @@
 # Identité du site, utilisée dans le layout (en-tête, pied de page) et plus tard dans le JSON-LD.
 # Pour dupliquer le socle chez un client : modifier ce fichier et assets/styles/app.css (section 2).
-# Les valeurs entre crochets sont affichées comme « à compléter » sur le site.
+# Une valeur vide (~) n'est pas affichée sur le site : la ligne ou le bloc correspondant est masqué.
 parameters:
     site:
         nom: 'Les deux web'
         slogan: 'Création de sites internet à Limoges'
         devise: 'Sites d''ici, faits avec soin.'
         ville: 'Limoges'
-        # Adresse (mentions légales, données structurées). Les valeurs entre crochets sont omises du JSON-LD.
-        adresse: '[À COMPLÉTER : numéro et rue]'
-        code_postal: '[À COMPLÉTER]'
+        # Adresse (mentions légales, données structurées), ex. '12 rue Jean Jaurès' / '87000'
+        adresse: ~
+        code_postal: ~
         region: 'Nouvelle-Aquitaine'
         rayon_km: 100
         # Départements desservis en présentiel (données structurées pour Google)
         departements: ['Haute-Vienne', 'Dordogne', 'Charente', 'Corrèze', 'Creuse', 'Vienne', 'Indre']
-        telephone: '[À COMPLÉTER]'
+        telephone: ~            # ex. '05 55 00 00 00'
         email: 'bonjour@lesdeuxweb.fr'
         # Mention affichée sous les tarifs (franchise en base de TVA). Vide si les prix sont HT/TTC.
         mention_tva: 'TVA non applicable, art. 293 B du CGI'
         # Photo du hero de l'accueil (chemin dans assets/images/), null = emplacement « photo à venir »
         photo_accueil: null
-        # Associés (page Qui sommes-nous, accueil). photo : chemin dans assets/images/, ex. 'equipe/prenom.webp'
+        # Associés (section « Qui sommes-nous ? »). photo : chemin dans assets/images/, ex. 'equipe/prenom.webp'
         associes:
-            -   prenom: '[À COMPLÉTER : prénom]'
+            -   prenom: ~
                 role: 'Développement'
-                photo: null
-                presentation: '[À COMPLÉTER : quelques phrases de présentation, parcours, ce qui plaît dans le métier.]'
-            -   prenom: '[À COMPLÉTER : prénom]'
+                photo: ~
+            -   prenom: ~
                 role: 'Gestion de projet et relation client'
-                photo: null
-                presentation: '[À COMPLÉTER : quelques phrases de présentation, parcours, ce qui plaît dans le métier.]'
+                photo: ~
 
         # Mentions légales (page /mentions-legales et politique de confidentialité)
         legal:
-            raison_sociale: '[À COMPLÉTER : raison sociale]'
-            forme_juridique: '[À COMPLÉTER : forme juridique et capital, ex. SAS au capital de 1 000 €]'
-            siret: '[À COMPLÉTER : n° SIRET]'
-            rcs: '[À COMPLÉTER : immatriculation, ex. RCS Limoges 000 000 000 (si applicable)]'
-            tva: '[À COMPLÉTER : n° de TVA intracommunautaire (si applicable)]'
-            directeur_publication: '[À COMPLÉTER : prénom, nom et qualité, ex. gérant]'
+            # Obligatoires avant la mise en ligne (loi pour la confiance dans l'économie numérique)
+            raison_sociale: ~         # ex. 'Les deux web' ou nom de l'entrepreneur
+            forme_juridique: ~        # ex. 'Entrepreneur individuel (micro-entreprise)'
+            siret: ~
+            rcs: ~                    # ex. 'RCS Limoges 000 000 000' (si applicable)
+            tva: ~                    # n° de TVA intracommunautaire (si applicable)
+            directeur_publication: ~  # ex. 'Prénom Nom, gérant'
+            # Date de dernière mise à jour de la politique de confidentialité, ex. '1er novembre 2026'
+            politique_mise_a_jour: ~
         hebergeur:
             nom: 'OVH SAS'
             adresse: '2 rue Kellermann, 59100 Roubaix, France'

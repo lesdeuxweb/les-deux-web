@@ -2,14 +2,14 @@
  # Données structurées JSON-LD (schema.org).
  #   - ProfessionalService : l'entreprise, sur toutes les pages ;
  #   - BreadcrumbList : construit à partir de la variable fil_ariane (toutes les pages sauf l'accueil).
- # Les valeurs « [À COMPLÉTER] » de config/packages/site.yaml sont omises.
+ # Les valeurs vides de config/packages/site.yaml sont omises.
  #}
 {% set accueil = url('app_home') %}
 {% set options_json = constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_UNESCAPED_UNICODE') b-or constant('JSON_HEX_TAG') %}
 
 {% set adresse = {'@type': 'PostalAddress', addressLocality: site.ville, addressRegion: site.region, addressCountry: 'FR'} %}
-{% if site.adresse and not (site.adresse starts with '[') %}{% set adresse = adresse|merge({streetAddress: site.adresse}) %}{% endif %}
-{% if site.code_postal and not (site.code_postal starts with '[') %}{% set adresse = adresse|merge({postalCode: site.code_postal}) %}{% endif %}
+{% if site.adresse %}{% set adresse = adresse|merge({streetAddress: site.adresse}) %}{% endif %}
+{% if site.code_postal %}{% set adresse = adresse|merge({postalCode: site.code_postal}) %}{% endif %}
 
 {% set zones_desservies = [{'@type': 'City', name: site.ville}]|merge(site.departements|map(d => {'@type': 'AdministrativeArea', name: d})) %}
 
@@ -26,8 +26,8 @@
     areaServed: zones_desservies|merge([{'@type': 'Country', name: 'France'}]),
     knowsLanguage: ['fr'],
 } %}
-{% if site.telephone and not (site.telephone starts with '[') %}{% set entreprise = entreprise|merge({telephone: site.telephone}) %}{% endif %}
-{% if site.email and not (site.email starts with '[') %}{% set entreprise = entreprise|merge({email: site.email}) %}{% endif %}
+{% if site.telephone %}{% set entreprise = entreprise|merge({telephone: site.telephone}) %}{% endif %}
+{% if site.email %}{% set entreprise = entreprise|merge({email: site.email}) %}{% endif %}
 
 <script type="application/ld+json">{{ entreprise|json_encode(options_json)|raw }}</script>
 

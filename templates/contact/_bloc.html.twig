@@ -10,26 +10,18 @@
 
         <div class="contact-coordonnees">
             <dl>
-                <div>
-                    <dt>{{ 'contact.par_telephone'|trans }}</dt>
-                    <dd>
-                        {%- if site.telephone starts with '[' -%}
-                            <twig:ACompleter :valeur="site.telephone" />
-                        {%- else -%}
-                            <a href="tel:{{ site.telephone|replace({' ': '', '.': ''}) }}">{{ site.telephone }}</a>
-                        {%- endif -%}
-                    </dd>
-                </div>
-                <div>
-                    <dt>{{ 'contact.par_email'|trans }}</dt>
-                    <dd>
-                        {%- if site.email starts with '[' -%}
-                            <twig:ACompleter :valeur="site.email" />
-                        {%- else -%}
-                            <a href="mailto:{{ site.email }}">{{ site.email }}</a>
-                        {%- endif -%}
-                    </dd>
-                </div>
+                {% if site.telephone %}
+                    <div>
+                        <dt>{{ 'contact.par_telephone'|trans }}</dt>
+                        <dd><a href="tel:{{ site.telephone|replace({' ': '', '.': ''}) }}">{{ site.telephone }}</a></dd>
+                    </div>
+                {% endif %}
+                {% if site.email %}
+                    <div>
+                        <dt>{{ 'contact.par_email'|trans }}</dt>
+                        <dd><a href="mailto:{{ site.email }}">{{ site.email }}</a></dd>
+                    </div>
+                {% endif %}
             </dl>
             <p>{{ 'contact.deplacements'|trans({'%ville%': site.ville, '%rayon%': site.rayon_km}) }}</p>
         </div>
