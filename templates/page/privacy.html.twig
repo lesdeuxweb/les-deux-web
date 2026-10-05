@@ -1,0 +1,83 @@
+{#
+ # Politique de confidentialité (RGPD).
+ # À relire si le site évolue : nouveau formulaire, mesure d'audience, newsletter, etc.
+ # Texte juridique rédigé ici plutôt qu'en clés de traduction (voir legal.html.twig).
+ #}
+{% extends 'base.html.twig' %}
+
+{% set fil_ariane = [{libelle: 'pied.confidentialite'|trans}] %}
+{% set matomo_actif = matomo.url is not empty and matomo.site_id is not empty %}
+
+{% block title %}{{ 'pied.confidentialite'|trans }} | {{ site.nom }}{% endblock %}
+{% block meta_description %}Comment {{ site.nom }} traite vos données personnelles : données collectées, finalité, durée de conservation, vos droits. Aucun cookie publicitaire.{% endblock %}
+
+{% block body %}
+    <div class="conteneur">
+        <header class="tete-page">
+            <h1>{{ 'pied.confidentialite'|trans }}</h1>
+            <p class="tete-page__chapeau">En bref : nous collectons uniquement ce que vous nous envoyez par le formulaire de contact, pour vous répondre. Rien n'est revendu ni partagé à des fins commerciales, et le site ne dépose aucun cookie publicitaire.</p>
+        </header>
+
+        <div class="prose">
+            <h2>Responsable du traitement</h2>
+            <p>
+                <twig:ACompleter :valeur="site.legal.raison_sociale" /> ({{ site.nom }}),
+                <twig:ACompleter :valeur="site.adresse" />, <twig:ACompleter :valeur="site.code_postal" /> {{ site.ville }}.
+                Contact : <twig:ACompleter :valeur="site.email" />.
+            </p>
+
+            <h2>Données collectées</h2>
+            <p>Lorsque vous utilisez le <a href="{{ path('app_contact') }}">formulaire de contact</a>, nous recevons :</p>
+            <ul>
+                <li>votre nom et votre adresse email (obligatoires) ;</li>
+                <li>votre téléphone, le nom de votre entreprise ou commune et l'offre qui vous intéresse (facultatifs) ;</li>
+                <li>le message que vous rédigez ;</li>
+                <li>la date d'envoi.</li>
+            </ul>
+            <p>Votre adresse IP est utilisée de façon temporaire pour limiter le nombre d'envois et protéger le formulaire contre les robots : elle n'est pas enregistrée avec votre message et elle est effacée au bout d'une heure.</p>
+            <p>Nous ne collectons aucune autre donnée : pas de compte, pas de newsletter, pas de profilage.</p>
+
+            <h2>Pourquoi nous utilisons ces données</h2>
+            <p>Uniquement pour répondre à votre demande et, le cas échéant, préparer un devis et assurer le suivi de notre échange.</p>
+            <p>Base légale : votre consentement, donné en cochant la case prévue dans le formulaire. Vous pouvez le retirer à tout moment en nous écrivant.</p>
+
+            <h2>Qui a accès à vos données</h2>
+            <p>Seuls les deux associés de {{ site.nom }} ont accès à vos messages. Ils sont stockés sur les serveurs de notre hébergeur, {{ site.hebergeur.nom }}, en France, qui agit en tant que sous-traitant. Les emails transitent par le service de messagerie de ce même hébergeur.</p>
+            <p>Vos données ne sont ni vendues, ni louées, ni transférées en dehors de l'Union européenne.</p>
+
+            <h2>Durée de conservation</h2>
+            <p>Les messages sont conservés <strong>3 ans</strong> à compter de leur envoi, puis supprimés automatiquement. Si notre échange aboutit à un contrat, les documents correspondants sont conservés selon les durées légales applicables (comptabilité, facturation).</p>
+
+            <h2>Vos droits</h2>
+            <p>Conformément au Règlement général sur la protection des données (RGPD) et à la loi Informatique et Libertés, vous disposez des droits suivants sur vos données :</p>
+            <ul>
+                <li>droit d'accès et de rectification ;</li>
+                <li>droit à l'effacement ;</li>
+                <li>droit à la limitation du traitement et droit d'opposition ;</li>
+                <li>droit à la portabilité ;</li>
+                <li>droit de retirer votre consentement à tout moment ;</li>
+                <li>droit de définir des directives sur le sort de vos données après votre décès.</li>
+            </ul>
+            <p>Pour les exercer, écrivez-nous à <twig:ACompleter :valeur="site.email" />. Nous vous répondons dans un délai d'un mois au plus.</p>
+            <p>Si vous estimez que vos droits ne sont pas respectés, vous pouvez adresser une réclamation à la CNIL (<a href="https://www.cnil.fr" rel="noopener">www.cnil.fr</a>).</p>
+
+            <h2>Cookies</h2>
+            <p>Ce site ne dépose <strong>aucun cookie publicitaire, de réseau social ou de mesure d'audience</strong>. C'est pourquoi il n'affiche pas de bandeau de consentement.</p>
+            <p>Un seul cookie technique peut être déposé, dans deux cas précis :</p>
+            <ul>
+                <li>après l'envoi du formulaire de contact, pour afficher le message de confirmation ;</li>
+                <li>lors de la connexion à l'espace d'administration, réservé à notre équipe.</li>
+            </ul>
+            <p>Ce cookie de session, strictement nécessaire au fonctionnement du site, est supprimé à la fermeture de votre navigateur. Il est exempté de consentement (article 82 de la loi Informatique et Libertés).</p>
+            {% if matomo_actif %}
+                <p>Nous mesurons la fréquentation du site avec Matomo, configuré sans cookie et avec des adresses IP anonymisées, conformément aux recommandations de la CNIL. Ces statistiques anonymes ne servent qu'à améliorer le site.</p>
+            {% endif %}
+
+            <h2>Ressources externes</h2>
+            <p>Les polices de caractères, images et scripts sont hébergés sur notre propre serveur : votre navigateur ne contacte aucun service tiers (Google, réseaux sociaux...) lorsque vous consultez le site.</p>
+
+            <h2>Mise à jour</h2>
+            <p>Cette politique peut être modifiée pour suivre les évolutions du site ou de la réglementation. Dernière mise à jour : <span class="a-completer">[À COMPLÉTER : date de mise en ligne]</span>.</p>
+        </div>
+    </div>
+{% endblock %}

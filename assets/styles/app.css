@@ -878,6 +878,18 @@ a:hover {
     font-weight: 700;
 }
 
+/* Fiche des mentions légales : libellé et valeur côte à côte sur grand écran */
+.fiche--legale {
+    margin-bottom: var(--e-5);
+}
+
+@media (min-width: 40rem) {
+    .fiche--legale > div {
+        grid-template-columns: 14rem 1fr;
+        gap: var(--e-4);
+    }
+}
+
 .visuel-principal {
     width: 100%;
     max-height: 32rem;

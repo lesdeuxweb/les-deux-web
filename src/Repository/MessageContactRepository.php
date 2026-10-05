@@ -20,4 +20,25 @@ class MessageContactRepository extends ServiceEntityRepository
     {
         return $this->count(['traite' => false]);
     }
+
+    public function countAnterieursA(\DateTimeImmutable $date): int
+    {
+        return (int) $this->createQueryBuilder('m')
+            ->select('COUNT(m.id)')
+            ->andWhere('m.createdAt < :date')
+            ->setParameter('date', $date)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    /** @return int Nombre de messages supprimés */
+    public function supprimerAnterieursA(\DateTimeImmutable $date): int
+    {
+        return $this->createQueryBuilder('m')
+            ->delete()
+            ->andWhere('m.createdAt < :date')
+            ->setParameter('date', $date)
+            ->getQuery()
+            ->execute();
+    }
 }

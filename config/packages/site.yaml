@@ -24,6 +24,29 @@ parameters:
                 photo: null
                 presentation: '[À COMPLÉTER : quelques phrases de présentation, parcours, ce qui plaît dans le métier.]'
 
+        # Mentions légales (page /mentions-legales et politique de confidentialité)
+        legal:
+            raison_sociale: '[À COMPLÉTER : raison sociale]'
+            forme_juridique: '[À COMPLÉTER : forme juridique et capital, ex. SAS au capital de 1 000 €]'
+            siret: '[À COMPLÉTER : n° SIRET]'
+            rcs: '[À COMPLÉTER : immatriculation, ex. RCS Limoges 000 000 000 (si applicable)]'
+            tva: '[À COMPLÉTER : n° de TVA intracommunautaire (si applicable)]'
+            directeur_publication: '[À COMPLÉTER : prénom, nom et qualité, ex. gérant]'
+        hebergeur:
+            nom: 'OVH SAS'
+            adresse: '2 rue Kellermann, 59100 Roubaix, France'
+            telephone: '1007'
+            site: 'https://www.ovhcloud.com'
+
+    # Mesure d'audience Matomo (facultative) : rien n'est chargé si l'une des deux variables est vide.
+    # Valeurs par défaut : le site fonctionne même si les variables ne sont pas définies.
+    env(MATOMO_URL): ''
+    env(MATOMO_SITE_ID): ''
+    matomo:
+        url: '%env(MATOMO_URL)%'
+        site_id: '%env(MATOMO_SITE_ID)%'
+
 twig:
     globals:
         site: '%site%'
+        matomo: '%matomo%'

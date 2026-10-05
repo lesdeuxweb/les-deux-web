@@ -1,0 +1,57 @@
+{#
+ # Mentions légales (article 6 de la loi pour la confiance dans l'économie numérique).
+ # Les informations de l'entreprise viennent de config/packages/site.yaml (site.legal, site.hebergeur).
+ # Texte juridique rédigé ici plutôt qu'en clés de traduction : une version anglaise
+ # sera un gabarit distinct (legal.en.html.twig).
+ #}
+{% extends 'base.html.twig' %}
+
+{% set fil_ariane = [{libelle: 'pied.mentions_legales'|trans}] %}
+
+{% block title %}{{ 'pied.mentions_legales'|trans }} | {{ site.nom }}{% endblock %}
+{% block meta_description %}Mentions légales du site {{ site.nom }} : éditeur, directeur de la publication, hébergeur, propriété intellectuelle.{% endblock %}
+
+{% block body %}
+    <div class="conteneur">
+        <header class="tete-page">
+            <h1>{{ 'pied.mentions_legales'|trans }}</h1>
+        </header>
+
+        <div class="prose">
+            <h2>Éditeur du site</h2>
+            <dl class="fiche fiche--legale">
+                <div><dt>Raison sociale</dt><dd><twig:ACompleter :valeur="site.legal.raison_sociale" /> ({{ site.nom }})</dd></div>
+                <div><dt>Forme juridique</dt><dd><twig:ACompleter :valeur="site.legal.forme_juridique" /></dd></div>
+                <div><dt>SIRET</dt><dd><twig:ACompleter :valeur="site.legal.siret" /></dd></div>
+                <div><dt>Immatriculation</dt><dd><twig:ACompleter :valeur="site.legal.rcs" /></dd></div>
+                <div><dt>TVA intracommunautaire</dt><dd><twig:ACompleter :valeur="site.legal.tva" /></dd></div>
+                <div><dt>Adresse</dt><dd><twig:ACompleter :valeur="site.adresse" />, <twig:ACompleter :valeur="site.code_postal" /> {{ site.ville }}</dd></div>
+                <div><dt>Téléphone</dt><dd><twig:ACompleter :valeur="site.telephone" /></dd></div>
+                <div><dt>Email</dt><dd><twig:ACompleter :valeur="site.email" /></dd></div>
+                <div><dt>Directeur de la publication</dt><dd><twig:ACompleter :valeur="site.legal.directeur_publication" /></dd></div>
+            </dl>
+
+            <h2>Hébergeur</h2>
+            <dl class="fiche fiche--legale">
+                <div><dt>Société</dt><dd>{{ site.hebergeur.nom }}</dd></div>
+                <div><dt>Adresse</dt><dd>{{ site.hebergeur.adresse }}</dd></div>
+                <div><dt>Téléphone</dt><dd>{{ site.hebergeur.telephone }}</dd></div>
+                <div><dt>Site</dt><dd><a href="{{ site.hebergeur.site }}" rel="noopener">{{ site.hebergeur.site|replace({'https://': ''}) }}</a></dd></div>
+            </dl>
+            <p>Les données du site sont hébergées en France.</p>
+
+            <h2>Propriété intellectuelle</h2>
+            <p>L'ensemble du site (textes, logo, charte graphique, photographies, code) est la propriété de {{ site.nom }}, sauf mention contraire. Toute reproduction ou adaptation, totale ou partielle, sans autorisation écrite préalable est interdite.</p>
+            <p>Les captures des sites présentés dans la rubrique « Réalisations » sont reproduites avec l'accord des clients concernés, qui restent propriétaires de leurs contenus.</p>
+
+            <h2>Crédits</h2>
+            <ul>
+                <li>Polices de caractères : Bitter et Atkinson Hyperlegible, sous licence SIL Open Font License, hébergées sur notre serveur.</li>
+                <li>Conception et développement : {{ site.nom }}.</li>
+            </ul>
+
+            <h2>Données personnelles et cookies</h2>
+            <p>Le traitement des données envoyées par le formulaire de contact et l'utilisation des cookies sont détaillés dans notre <a href="{{ path('app_privacy') }}">politique de confidentialité</a>.</p>
+        </div>
+    </div>
+{% endblock %}

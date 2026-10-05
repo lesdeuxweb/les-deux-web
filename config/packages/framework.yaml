@@ -2,8 +2,14 @@
 framework:
     secret: '%env(APP_SECRET)%'
 
-    # Note that the session will be started ONLY if you read or write from it.
-    session: true
+    # La session n'est démarrée qu'en cas de besoin (connexion à l'admin, message flash du contact) :
+    # les pages publiques ne déposent aucun cookie (voir la politique de confidentialité).
+    session:
+        name: 'session'
+        cookie_lifetime: 0      # cookie supprimé à la fermeture du navigateur
+        cookie_secure: auto     # Secure dès que le site est en HTTPS
+        cookie_httponly: true
+        cookie_samesite: lax
 
     #esi: true
     #fragments: true

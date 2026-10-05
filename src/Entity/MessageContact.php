@@ -15,6 +15,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\HasLifecycleCallbacks]
 class MessageContact
 {
+    /** Durée de conservation annoncée dans la politique de confidentialité (purge : app:purger-messages). */
+    public const DUREE_CONSERVATION = '3 years';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

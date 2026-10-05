@@ -17,16 +17,15 @@ class PageController extends AbstractController
         return $this->render('page/about.html.twig');
     }
 
-    // Pages provisoires : contenu réel en phase 7 (légal et RGPD).
     #[Route('/mentions-legales', name: 'app_legal', methods: ['GET'])]
     public function legal(): Response
     {
-        return $this->render('page/provisoire.html.twig', ['cle_titre' => 'pied.mentions_legales']);
+        return $this->render('page/legal.html.twig');
     }
 
     #[Route('/confidentialite', name: 'app_privacy', methods: ['GET'])]
     public function privacy(): Response
     {
-        return $this->render('page/provisoire.html.twig', ['cle_titre' => 'pied.confidentialite']);
+        return $this->render('page/privacy.html.twig');
     }
 }
