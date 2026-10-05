@@ -6,81 +6,9 @@
 {% block meta_description %}{{ 'contact.description'|trans({'%ville%': site.ville}) }}{% endblock %}
 
 {% block body %}
-    <div class="conteneur">
-        <header class="tete-page">
-            <h1>{{ 'contact.titre'|trans }}</h1>
-            <p class="tete-page__chapeau">{{ 'contact.chapeau'|trans }}</p>
-        </header>
-
-        {% for message in app.flashes('succes') %}
-            <div class="alerte alerte--succes" role="status">
-                <p><strong>{{ message|trans }}</strong></p>
-            </div>
-        {% endfor %}
-
-        <div class="detail">
-            <div class="detail__principal">
-                {{ form_start(form, {attr: {class: 'formulaire'}}) }}
-                    {{ form_errors(form) }}
-
-                    {# Récapitulatif des erreurs de champ, avec liens vers chaque champ (RGAA 11.10) #}
-                    {% set champs_en_erreur = form.children|filter(champ => champ.vars.errors|length > 0) %}
-                    {% if champs_en_erreur is not empty %}
-                        <div class="alerte alerte--erreur" role="alert">
-                            <p>{{ 'contact.form.erreurs'|trans({'%count%': champs_en_erreur|length}) }}</p>
-                            <ul>
-                                {% for champ in champs_en_erreur %}
-                                    <li><a href="#{{ champ.vars.id }}">{{ champ.vars.label|trans|striptags }}</a></li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    {% endif %}
-
-                    <p class="formulaire__intro">{{ 'contact.form.intro'|trans }}</p>
-
-                    <div class="formulaire__ligne">
-                        {{ form_row(form.nom) }}
-                        {{ form_row(form.entreprise) }}
-                    </div>
-                    <div class="formulaire__ligne">
-                        {{ form_row(form.email) }}
-                        {{ form_row(form.telephone) }}
-                    </div>
-                    {{ form_row(form.offre) }}
-                    {{ form_row(form.message) }}
-                    {{ form_row(form.consentement) }}
-                    {{ form_row(form.site_web) }}
-
-                    <twig:Bouton type="submit">{{ 'contact.form.envoyer'|trans }}</twig:Bouton>
-                {{ form_end(form) }}
-            </div>
-
-            <aside class="detail__encart" aria-labelledby="titre-coordonnees">
-                <h2 class="detail__encart-titre" id="titre-coordonnees">{{ 'contact.coordonnees'|trans }}</h2>
-                <dl class="fiche">
-                    <div>
-                        <dt>{{ 'pied.telephone'|trans }}</dt>
-                        <dd>
-                            {%- if site.telephone starts with '[' -%}
-                                <twig:ACompleter :valeur="site.telephone" />
-                            {%- else -%}
-                                <a href="tel:{{ site.telephone|replace({' ': '', '.': ''}) }}">{{ site.telephone }}</a>
-                            {%- endif -%}
-                        </dd>
-                    </div>
-                    <div>
-                        <dt>{{ 'pied.email'|trans }}</dt>
-                        <dd>
-                            {%- if site.email starts with '[' -%}
-                                <twig:ACompleter :valeur="site.email" />
-                            {%- else -%}
-                                <a href="mailto:{{ site.email }}">{{ site.email }}</a>
-                            {%- endif -%}
-                        </dd>
-                    </div>
-                </dl>
-                <p>{{ 'contact.deplacements'|trans({'%ville%': site.ville, '%rayon%': site.rayon_km}) }}</p>
-            </aside>
+    <section class="section" id="contact" aria-labelledby="titre-contact">
+        <div class="conteneur">
+            {{ include('contact/_bloc.html.twig', {niveau_titre: 1}) }}
         </div>
-    </div>
+    </section>
 {% endblock %}

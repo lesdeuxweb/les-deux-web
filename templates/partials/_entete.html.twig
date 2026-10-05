@@ -13,10 +13,7 @@
 
 <header class="entete" data-controller="menu">
     <div class="conteneur entete__barre">
-        <a class="logo" href="{{ path('app_home') }}" aria-label="{{ 'layout.retour_accueil'|trans({'%nom%': site.nom}) }}"{% if route == 'app_home' %} aria-current="page"{% endif %}>
-            <img class="logo__embleme" src="{{ asset('images/logo/embleme-160.webp') }}" width="52" height="52" alt="">
-            <img class="logo__texte" src="{{ asset('images/logo/texte-96.webp') }}" width="89" height="44" alt="">
-        </a>
+        <twig:Logo :courant="route == 'app_home'" />
 
         <button class="menu-bouton" type="button" hidden
                 aria-expanded="false" aria-controls="nav-principale"
@@ -35,8 +32,8 @@
                     </li>
                 {% endfor %}
                 <li class="nav-principale__item--devis">
-                    <twig:Bouton href="{{ path('app_contact') }}" :aria-current="route == 'app_contact' ? 'page' : false">
-                        {{ 'nav.devis'|trans }}
+                    <twig:Bouton href="{{ path('app_contact') }}" variante="sombre" :aria-current="route == 'app_contact' ? 'page' : false">
+                        {{- 'nav.devis'|trans -}}
                     </twig:Bouton>
                 </li>
             </ul>

@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Offre;
+use App\Entity\OptionTarifaire;
 use App\Entity\Realisation;
 use App\Entity\Secteur;
 use App\Entity\User;
@@ -13,7 +14,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 /**
  * Données de démonstration (développement uniquement).
- * Les prix sont provisoires ; les réalisations et leurs clients sont fictifs.
+ * Offres et prix : grille tarifaire de lancement. Les réalisations et leurs clients sont fictifs.
  *
  *   php bin/console doctrine:fixtures:load
  *
@@ -41,51 +42,71 @@ class AppFixtures extends Fixture
 
     private function chargerOffres(ObjectManager $manager): void
     {
-        $offres = [
-            [
-                'nom' => 'Site vitrine',
-                'accroche' => 'Pour être trouvé sur internet et rassurer vos clients avant qu\'ils vous appellent.',
-                'prix' => 900,
-                'suffixe' => null,
-                'points' => ['Jusqu\'à 6 pages, rédigées avec vous', 'Adapté aux téléphones et tablettes', 'Formulaire de contact et plan d\'accès', 'Formation pour modifier vos textes et photos'],
-                'description' => '<p>Le site vitrine est l\'offre idéale pour présenter votre activité, vos services et vos coordonnées. On commence par un rendez-vous pour comprendre votre métier et vos clients, puis on construit ensemble l\'arborescence et les textes.</p><h2>Ce qui est compris</h2><ul><li>Un design à vos couleurs, sobre et lisible</li><li>Le référencement de base sur Google (titres, descriptions, fiche Google Business conseillée)</li><li>Un back-office simple pour faire vos mises à jour</li></ul><p>Comptez en général trois à cinq semaines entre le premier rendez-vous et la mise en ligne.</p>',
-            ],
-            [
-                'nom' => 'Boutique en ligne',
-                'accroche' => 'Vendez vos produits en ligne, avec paiement sécurisé et retrait sur place ou livraison.',
-                'prix' => 2500,
-                'suffixe' => null,
-                'points' => ['Catalogue produits facile à gérer', 'Paiement en ligne sécurisé', 'Retrait sur place, livraison ou les deux', 'Suivi des commandes par email'],
-                'description' => '<p>Pour les producteurs, artisans et commerçants qui veulent vendre en ligne sans dépendre d\'une place de marché. Vous gardez la relation avec vos clients et vos marges.</p><h2>Ce qui est compris</h2><ul><li>Mise en place du catalogue et des premiers produits</li><li>Paramétrage du paiement et des modes de livraison</li><li>Pages légales (CGV, mentions légales) à compléter avec vous</li></ul>',
-            ],
-            [
-                'nom' => 'Sur mesure',
-                'accroche' => 'Réservation en ligne, espace adhérents, démarches pour une mairie : on construit l\'outil dont vous avez besoin.',
-                'prix' => null,
-                'suffixe' => null,
-                'points' => ['Étude de votre besoin sans engagement', 'Développement sur mesure (Symfony)', 'Hébergement en France'],
-                'description' => '<p>Certains projets ne rentrent pas dans une case : un calendrier de réservation pour un gîte, un annuaire des associations pour une commune, un espace client... On étudie votre besoin et on vous propose un devis détaillé, poste par poste.</p>',
-            ],
-            [
-                'nom' => 'Hébergement et maintenance',
-                'accroche' => 'On s\'occupe de l\'hébergement, des mises à jour et des sauvegardes. Vous, vous gérez votre activité.',
-                'prix' => 39,
-                'suffixe' => '/mois',
-                'points' => ['Hébergement chez OVH, en France', 'Mises à jour de sécurité et sauvegardes', 'Petites modifications incluses', 'Un interlocuteur joignable'],
-                'description' => '<p>Un site internet a besoin d\'entretien : mises à jour de sécurité, sauvegardes, renouvellement du nom de domaine et du certificat. Avec cette formule, on s\'en occupe pour vous.</p><p>Sans engagement de durée : vous pouvez arrêter quand vous voulez, et on vous remet l\'ensemble de votre site.</p>',
-            ],
+        // Grille tarifaire de lancement (prix sans TVA : franchise en base, voir site.yaml)
+        $creations = [
+            ['Landing page', 'Pour une activité ou un événement', 'Une seule page claire et efficace pour présenter votre activité et recevoir des demandes.', 199, false,
+                ['1 page', 'Adaptée aux mobiles', 'Formulaire de contact'], false, null],
+            ['Site 3 pages', 'Pour démarrer simplement', 'Un site vitrine simple, avec un design personnalisé à vos couleurs.', 299, false,
+                ['3 pages', 'Design personnalisé', 'Adapté aux mobiles', 'Formulaire de contact'], false, null],
+            ['Site 5 pages', 'Pour bien démarrer', 'Une présence professionnelle et rassurante pour présenter votre activité et être trouvé localement.', 399, false,
+                ['5 pages', 'Design personnalisé et adapté aux mobiles', 'Formulaire de contact', 'Référencement local de base'], true, 'Notre conseil'],
+            ['Site 8 pages', 'Pour présenter toute votre activité', 'Un site plus complet, avec une structure avancée pour détailler vos services, réalisations et informations pratiques.', 549, false,
+                ['8 pages', 'Structure avancée', 'Design personnalisé et adapté aux mobiles', 'Référencement local de base'], false, null],
+            ['Site métier', 'Pour aller plus loin', 'Un site pensé autour de votre métier : réservation en ligne, espace client, catalogue... On construit l\'outil dont vous avez besoin.', 900, true,
+                ['Réservation en ligne', 'Espace client', 'Catalogue produits', 'Fonctionnalités sur mesure'], true, null],
         ];
 
-        foreach ($offres as $position => $donnees) {
+        $abonnements = [
+            ['Pack Essentiel', 'Pour être tranquille', 'Votre site hébergé, sécurisé et sauvegardé, avec une petite modification de contenu chaque mois.', 15,
+                ['Hébergement du site, SSL / HTTPS', 'Sauvegardes et surveillance technique', 'Mises à jour de sécurité', '1 petite modification de contenu par mois (texte, image ou coordonnées)'], false],
+            ['Pack Évolution', 'Pour rester serein', 'Nous veillons sur votre site et le faisons évoluer au rythme de votre activité.', 35,
+                ['Hébergement, SSL / HTTPS et sauvegardes', 'Surveillance et mises à jour techniques', 'Modifications de textes et d\'images', 'Modification des horaires, téléphone, adresse', 'Modification de boutons et liens', 'Petites modifications du design', 'Jusqu\'à 30 min d\'intervention par mois'], true],
+            ['Pack Sérénité', 'Pour être accompagné', 'Un accompagnement complet : nous faisons évoluer votre site et vous conseillons, en priorité.', 59,
+                ['Hébergement, SSL / HTTPS et sauvegardes', 'Surveillance et mises à jour techniques', 'Modifications de textes, d\'images et du design', 'Création de petites sections', 'Petites fonctionnalités et développements', 'Jusqu\'à 1 h d\'intervention par mois', 'Conseils et accompagnement', 'Traitement prioritaire des demandes'], false],
+        ];
+
+        $position = 0;
+        foreach ($creations as [$nom, $surTitre, $accroche, $prix, $aPartirDe, $points, $surAccueil, $badge]) {
             $manager->persist((new Offre())
-                ->setNom($donnees['nom'])
-                ->setAccroche($donnees['accroche'])
-                ->setDescription($donnees['description'])
-                ->setPrixAPartirDe($donnees['prix'])
-                ->setPrixSuffixe($donnees['suffixe'])
-                ->setPointsForts($donnees['points'])
-                ->setPosition($position)
+                ->setCategorie(Offre::CATEGORIE_CREATION)
+                ->setNom($nom)
+                ->setSurTitre($surTitre)
+                ->setAccroche($accroche)
+                ->setDescription('<p>'.htmlspecialchars($accroche).'</p><h2>Ce qui est compris</h2><ul><li>'.implode('</li><li>', array_map('htmlspecialchars', $points)).'</li></ul><p>Chaque projet commence par un échange pour comprendre votre activité. Des options peuvent compléter l\'offre (pages supplémentaires, rédaction, logo...).</p>')
+                ->setPrixAPartirDe($prix)
+                ->setAPartirDe($aPartirDe)
+                ->setPointsForts($points)
+                ->setSurAccueil($surAccueil)
+                ->setBadge($badge)
+                ->setPosition($position++)
                 ->setPublie(true));
+        }
+
+        foreach ($abonnements as [$nom, $surTitre, $accroche, $prix, $points, $surAccueil]) {
+            $manager->persist((new Offre())
+                ->setCategorie(Offre::CATEGORIE_ABONNEMENT)
+                ->setNom($nom)
+                ->setSurTitre($surTitre)
+                ->setAccroche($accroche)
+                ->setDescription('<p>'.htmlspecialchars($accroche).'</p><h2>Ce qui est compris</h2><ul><li>'.implode('</li><li>', array_map('htmlspecialchars', $points)).'</li></ul><p>Sans engagement de durée.</p>')
+                ->setPrixAPartirDe($prix)
+                ->setPrixSuffixe('/ mois')
+                ->setPointsForts($points)
+                ->setSurAccueil($surAccueil)
+                ->setPosition($position++)
+                ->setPublie(true));
+        }
+
+        $options = [
+            ['Page supplémentaire', '50 €'],
+            ['Logo / identité visuelle simple', '100 à 200 €'],
+            ['Rédaction d\'une page', '50 à 100 €'],
+            ['Réservation en ligne', '250 à 400 €'],
+            ['Catalogue produits', '200 à 500 €'],
+            ['Fonctionnalité spécifique', 'Sur devis'],
+        ];
+        foreach ($options as $i => [$nom, $prix]) {
+            $manager->persist((new OptionTarifaire())->setNom($nom)->setPrix($prix)->setPosition($i));
         }
     }
 

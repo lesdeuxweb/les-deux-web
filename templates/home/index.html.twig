@@ -1,64 +1,103 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {# --- Hero --- #}
-    <section class="hero">
-        <div class="conteneur hero__grille">
-            <div class="hero__texte">
-                <p class="hero__sur-titre">{{ 'accueil.hero.sur_titre'|trans({'%ville%': site.ville}) }}</p>
-                <h1>{{ 'accueil.hero.titre'|trans }}</h1>
-                <p class="hero__sous-titre">{{ 'accueil.hero.sous_titre'|trans({'%ville%': site.ville, '%region%': site.region}) }}</p>
-                <div class="groupe-boutons">
-                    <twig:Bouton href="{{ path('app_contact') }}">{{ 'nav.devis'|trans }}</twig:Bouton>
-                    <twig:Bouton href="{{ path('app_realisation_index') }}" variante="secondaire">{{ 'accueil.hero.voir_realisations'|trans }}</twig:Bouton>
-                </div>
+    {# --- Hero : accroche à gauche, photo à droite --- #}
+    <section class="hero" aria-labelledby="titre-accueil">
+        <div class="hero__texte">
+            <twig:SurTitre>{{ 'accueil.hero.sur_titre'|trans({'%ville%': site.ville}) }}</twig:SurTitre>
+            <h1 id="titre-accueil">{{ 'accueil.hero.titre'|trans }} <em>{{ 'accueil.hero.titre_accent'|trans }}</em></h1>
+            <p class="hero__sous-titre">{{ 'accueil.hero.sous_titre'|trans }}</p>
+            <div class="groupe-boutons">
+                <twig:Bouton href="#contact">{{ 'appel_action.bouton'|trans }}</twig:Bouton>
+                <twig:Bouton href="{{ path('app_offre_index') }}" variante="lien">{{ 'accueil.hero.voir_offres'|trans }}</twig:Bouton>
             </div>
+            <ul class="liste-coches liste-coches--ligne hero__garanties" role="list">
+                <li>{{ 'accueil.hero.garantie_interlocuteur'|trans }}</li>
+                <li>{{ 'accueil.hero.garantie_hebergement'|trans }}</li>
+                <li>{{ 'accueil.hero.garantie_engagement'|trans }}</li>
+            </ul>
+        </div>
 
-            {# Visages : rassurer dès le premier écran #}
-            <div class="hero__equipe">
-                <p class="hero__equipe-titre">{{ 'accueil.hero.vos_interlocuteurs'|trans }}</p>
-                <ul class="hero__associes" role="list">
-                    {% for associe in site.associes %}
-                        <li class="hero__associe">
-                            <twig:Portrait :associe="associe" />
-                            <span>
-                                <strong><twig:ACompleter :valeur="associe.prenom" /></strong>
-                                <span class="hero__associe-role">{{ associe.role }}</span>
-                            </span>
-                        </li>
-                    {% endfor %}
-                </ul>
-                <p class="hero__equipe-contact">
-                    {{ 'accueil.hero.appelez'|trans }}&nbsp;: <twig:ACompleter :valeur="site.telephone" />
-                </p>
-            </div>
+        <div class="hero__visuel">
+            {% if site.photo_accueil %}
+                <img src="{{ asset('images/' ~ site.photo_accueil) }}" alt="" width="1200" height="1400" fetchpriority="high">
+            {% else %}
+                <p class="hero__visuel-absent">{{ 'accueil.hero.photo_a_venir'|trans }}<small>[À COMPLÉTER]</small></p>
+            {% endif %}
+            <p class="hero__etiquette">{{ 'accueil.hero.etiquette'|trans }}</p>
+            <p class="hero__zone">
+                <span class="hero__zone-libelle">{{ 'accueil.hero.zone_libelle'|trans }}</span>
+                <span class="hero__zone-distance">≈&nbsp;{{ site.rayon_km }}&nbsp;km</span>
+                <span class="hero__zone-lieu">{{ 'accueil.hero.zone_lieu'|trans({'%ville%': site.ville}) }}</span>
+            </p>
         </div>
     </section>
 
-    {# --- Offres --- #}
+    {# --- Manifeste --- #}
+    <section class="section" aria-label="{{ 'accueil.manifeste.sur_titre'|trans }}">
+        <div class="conteneur manifeste">
+            <twig:SurTitre>{{ 'accueil.manifeste.sur_titre'|trans }}</twig:SurTitre>
+            <p class="manifeste__texte">{{ 'accueil.manifeste.texte'|trans }} <em>{{ 'accueil.manifeste.texte_accent'|trans }}</em></p>
+        </div>
+    </section>
+
+    {# --- Offres mises en avant --- #}
     {% if offres is not empty %}
         <section class="section" aria-labelledby="titre-offres">
             <div class="conteneur">
-                <div class="bloc__tete">
-                    <h2 id="titre-offres">{{ 'offre.nos_offres'|trans }}</h2>
-                    <a href="{{ path('app_offre_index') }}">{{ 'offre.toutes'|trans }}</a>
+                <div class="section-tete">
+                    <div>
+                        <twig:SurTitre>{{ 'offre.nos_offres'|trans }}</twig:SurTitre>
+                        <h2 id="titre-offres">{{ 'accueil.offres.titre'|trans }}</h2>
+                    </div>
+                    <p class="section-tete__intro">{{ 'accueil.offres.intro'|trans }}</p>
                 </div>
-                <ul class="grille-cartes{{ offres|length % 4 == 0 ? ' grille-cartes--4' }}" role="list">
+                <ul class="grille-cartes grille-offres" role="list">
                     {% for offre in offres %}
-                        <li><twig:CarteOffre :offre="offre" /></li>
+                        <li><twig:CarteOffre :offre="offre" :numero="loop.index" /></li>
                     {% endfor %}
                 </ul>
+                <div class="groupe-boutons pied-de-section">
+                    <twig:Bouton href="{{ path('app_offre_index') }}" variante="secondaire">{{ 'accueil.offres.toutes'|trans }}</twig:Bouton>
+                    {% if site.mention_tva %}<p class="mention-tva">{{ site.mention_tva }}</p>{% endif %}
+                </div>
             </div>
         </section>
     {% endif %}
 
+    {# --- Notre façon de faire (étapes) --- #}
+    <section class="section section--sombre" aria-labelledby="titre-methode">
+        <div class="conteneur deux-colonnes">
+            <div>
+                <twig:SurTitre>{{ 'accueil.methode.sur_titre'|trans }}</twig:SurTitre>
+                <h2 id="titre-methode">{{ 'accueil.methode.titre'|trans }}</h2>
+                <p class="texte-doux">{{ 'accueil.methode.texte'|trans }}</p>
+                <p><twig:Bouton href="{{ path('app_contact') }}" variante="lien">{{ 'accueil.methode.lien'|trans }}</twig:Bouton></p>
+            </div>
+            <ol class="etapes" role="list">
+                {% for i in 1..4 %}
+                    <li class="etape">
+                        <span class="etape__numero" aria-hidden="true">{{ '%02d'|format(i) }}</span>
+                        <div>
+                            <h3 class="etape__titre">{{ ('accueil.methode.etape' ~ i ~ '.titre')|trans }}</h3>
+                            <p>{{ ('accueil.methode.etape' ~ i ~ '.texte')|trans }}</p>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ol>
+        </div>
+    </section>
+
     {# --- Réalisations mises en avant --- #}
     {% if realisations is not empty %}
-        <section class="section section--alt" aria-labelledby="titre-realisations">
+        <section class="section" aria-labelledby="titre-realisations">
             <div class="conteneur">
-                <div class="bloc__tete">
-                    <h2 id="titre-realisations">{{ 'accueil.realisations'|trans }}</h2>
-                    <a href="{{ path('app_realisation_index') }}">{{ 'realisation.toutes'|trans }}</a>
+                <div class="section-tete">
+                    <div>
+                        <twig:SurTitre>{{ 'nav.realisations'|trans }}</twig:SurTitre>
+                        <h2 id="titre-realisations">{{ 'accueil.realisations.titre'|trans }}</h2>
+                    </div>
+                    <p class="section-tete__intro"><a href="{{ path('app_realisation_index') }}">{{ 'realisation.toutes'|trans }}</a></p>
                 </div>
                 <ul class="grille-cartes" role="list">
                     {% for realisation in realisations %}
@@ -69,58 +108,91 @@
         </section>
     {% endif %}
 
-    {# --- Pourquoi nous --- #}
-    <section class="section" aria-labelledby="titre-pourquoi">
-        <div class="conteneur">
-            <h2 id="titre-pourquoi">{{ 'accueil.pourquoi'|trans }}</h2>
-            <ul class="grille-arguments" role="list">
-                {% for cle in ['proximite', 'interlocuteurs', 'hebergement', 'propriete'] %}
-                    <li class="argument">
-                        <h3 class="argument__titre">{{ ('arguments.' ~ cle ~ '.titre')|trans }}</h3>
-                        <p>{{ ('arguments.' ~ cle ~ '.texte')|trans({'%ville%': site.ville, '%rayon%': site.rayon_km}) }}</p>
-                    </li>
+    {# --- Qui sommes-nous --- #}
+    <section class="section" aria-labelledby="titre-apropos">
+        <div class="conteneur deux-colonnes deux-colonnes--centre">
+            <div class="photos-associes">
+                {% for associe in site.associes %}
+                    <figure class="photo-associe">
+                        {% if associe.photo %}
+                            <img src="{{ asset('images/' ~ associe.photo) }}" alt="{{ associe.prenom }}" width="600" height="800" loading="lazy">
+                        {% else %}
+                            <figcaption class="photo-associe__absente">{{ 'accueil.apropos.photo'|trans({'%numero%': loop.index}) }}<small>[À COMPLÉTER]</small></figcaption>
+                        {% endif %}
+                    </figure>
                 {% endfor %}
-            </ul>
+                <p class="photos-associes__legende" aria-hidden="true">{{ 'accueil.apropos.legende'|trans }}</p>
+            </div>
+            <div>
+                <twig:SurTitre>{{ 'accueil.apropos.sur_titre'|trans }}</twig:SurTitre>
+                <h2 id="titre-apropos">{{ 'accueil.apropos.titre'|trans }}</h2>
+                <p class="apropos__chapeau">
+                    {{ 'accueil.apropos.nous_sommes'|trans }}
+                    <strong><twig:ACompleter :valeur="site.associes[0].prenom" /></strong>, {{ 'accueil.apropos.role_dev'|trans }},
+                    {{ 'accueil.apropos.et'|trans }} <strong><twig:ACompleter :valeur="site.associes[1].prenom" /></strong>, {{ 'accueil.apropos.role_projet'|trans }}.
+                </p>
+                <p class="texte-doux">{{ 'accueil.apropos.histoire'|trans({'%ville%': site.ville}) }}</p>
+                <ul class="valeurs" role="list">
+                    <li>{{ 'accueil.apropos.valeur_disponibilite'|trans }}</li>
+                    <li>{{ 'accueil.apropos.valeur_clarte'|trans }}</li>
+                    <li>{{ 'accueil.apropos.valeur_savoir_faire'|trans }}</li>
+                </ul>
+                <p class="marge-haut"><twig:Bouton href="{{ path('app_about') }}" variante="lien">{{ 'accueil.apropos.lien'|trans }}</twig:Bouton></p>
+            </div>
         </div>
     </section>
 
-    {# --- Secteurs et zones --- #}
-    {% set secteurs = secteurs_publies() %}
+    {# --- Ici et ailleurs : zones d'intervention --- #}
     {% set zones = zones_publiees() %}
-    {% if secteurs is not empty or zones is not empty %}
-        <section class="section section--alt" aria-labelledby="titre-maillage">
-            <div class="conteneur">
-                <h2 id="titre-maillage" class="visuellement-cache">{{ 'accueil.maillage'|trans }}</h2>
-                <div class="maillage">
-                    {% if secteurs is not empty %}
-                        <div>
-                            <h3>{{ 'accueil.secteurs'|trans }}</h3>
-                            <p>{{ 'accueil.secteurs_texte'|trans }}</p>
-                            <ul class="liste-liens" role="list">
-                                {% for secteur in secteurs %}
-                                    <li><a class="pastille-lien" href="{{ path('app_secteur_show', {slug: secteur.slug}) }}">{{ secteur.nom }}</a></li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    {% endif %}
-                    {% if zones is not empty %}
-                        <div>
-                            <h3>{{ 'accueil.zones'|trans }}</h3>
-                            <p>{{ 'accueil.zones_texte'|trans({'%ville%': site.ville, '%rayon%': site.rayon_km}) }}</p>
-                            <ul class="liste-liens" role="list">
-                                {% for zone in zones %}
-                                    <li><a class="pastille-lien" href="{{ path('app_zone_show', {slug: zone.slug}) }}">{{ zone.nom }}</a></li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    {% endif %}
+    <section class="section section--verte" aria-labelledby="titre-zones">
+        <div class="conteneur deux-colonnes">
+            <div>
+                <twig:SurTitre>{{ 'accueil.zones.sur_titre'|trans }}</twig:SurTitre>
+                <h2 id="titre-zones">{{ 'accueil.zones.titre'|trans }}</h2>
+            </div>
+            <div>
+                <p class="ici-ailleurs__texte">{{ 'accueil.zones.texte'|trans({'%ville%': site.ville, '%rayon%': site.rayon_km}) }}</p>
+                {% if zones is not empty %}
+                    <ul class="liste-liens" role="list">
+                        {% for zone in zones %}
+                            <li><a class="pastille-lien" href="{{ path('app_zone_show', {slug: zone.slug}) }}">{{ zone.nom }}</a></li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    {# --- Secteurs (métiers) --- #}
+    {% set secteurs = secteurs_publies() %}
+    {% if secteurs is not empty %}
+        <section class="section" aria-labelledby="titre-secteurs">
+            <div class="conteneur deux-colonnes">
+                <div>
+                    <twig:SurTitre>{{ 'accueil.secteurs.sur_titre'|trans }}</twig:SurTitre>
+                    <h2 id="titre-secteurs">{{ 'accueil.secteurs.titre'|trans }}</h2>
+                    <p class="texte-doux">{{ 'accueil.secteurs.texte'|trans }}</p>
                 </div>
+                <ul class="liste-editoriale" role="list">
+                    {% for secteur in secteurs %}
+                        <li>
+                            <a href="{{ path('app_secteur_show', {slug: secteur.slug}) }}">
+                                <span>
+                                    <span class="liste-editoriale__nom">{{ 'secteur.show.titre'|trans({'%cible%': secteur.libelleCible ?: secteur.nom|lower}) }}</span>
+                                    {% if secteur.accroche %}<span class="liste-editoriale__texte">{{ secteur.accroche|resume_meta(110) }}</span>{% endif %}
+                                </span>
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
             </div>
         </section>
     {% endif %}
 
-    {# --- Appel à l'action final --- #}
-    <div class="conteneur section">
-        <twig:AppelAction />
-    </div>
+    {# --- Contact : formulaire intégré --- #}
+    <section class="section" aria-labelledby="titre-contact" id="contact">
+        <div class="conteneur">
+            {{ include('contact/_bloc.html.twig', {niveau_titre: 2}) }}
+        </div>
+    </section>
 {% endblock %}

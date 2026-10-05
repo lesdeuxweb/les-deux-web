@@ -1,0 +1,13 @@
+{#
+ # Logo : emblème + « les deux web » + devise, en lien vers l'accueil.
+ #   <twig:Logo />                    en-tête (emblème vert)
+ #   <twig:Logo variante="jaune" />   pied de page (emblème jaune, fond sombre)
+ #}
+{% props variante = 'vert', courant = false %}
+<a {{ attributes.defaults({class: 'logo'}) }} href="{{ path('app_home') }}"{% if courant %} aria-current="page"{% endif %}>
+    <img class="logo__embleme" src="{{ asset(variante == 'jaune' ? 'images/logo/embleme-jaune-160.webp' : 'images/logo/embleme-160.webp') }}" width="56" height="56" alt="">
+    <span class="logo__texte">
+        <span class="logo__nom">{{ site.nom|lower }}</span>
+        <span class="logo__devise">{{ site.devise }}</span>
+    </span>
+</a>

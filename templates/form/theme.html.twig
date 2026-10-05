@@ -1,7 +1,7 @@
 {#
  # Thème des formulaires du site public (déclaré dans config/packages/twig.yaml).
  # - erreurs affichées SOUS le champ, reliées par aria-describedby, champ marqué aria-invalid ;
- # - mention « (obligatoire) » sur les libellés des champs requis.
+ # - astérisque sur les libellés des champs requis (« (obligatoire) » lu par les lecteurs d'écran).
  #}
 {% extends 'form_div_layout.html.twig' %}
 
@@ -36,7 +36,7 @@
 
 {%- block form_label_content -%}
     {{- parent() -}}
-    {%- if required %} <span class="champ__obligatoire">{{ 'formulaire.obligatoire'|trans({}, 'messages') }}</span>{% endif -%}
+    {%- if required %} <span class="champ__obligatoire" aria-hidden="true">*</span><span class="visuellement-cache"> {{ 'formulaire.obligatoire'|trans({}, 'messages') }}</span>{% endif -%}
 {%- endblock form_label_content -%}
 
 {%- block form_errors -%}

@@ -5,14 +5,19 @@ parameters:
     site:
         nom: 'Les deux web'
         slogan: 'Création de sites internet à Limoges'
+        devise: 'Sites d''ici, faits avec soin.'
         ville: 'Limoges'
         # Adresse (mentions légales, données structurées). Les valeurs entre crochets sont omises du JSON-LD.
         adresse: '[À COMPLÉTER : numéro et rue]'
         code_postal: '[À COMPLÉTER]'
         region: 'Nouvelle-Aquitaine'
-        rayon_km: 200
+        rayon_km: 100
         telephone: '[À COMPLÉTER]'
-        email: '[À COMPLÉTER]'
+        email: 'bonjour@lesdeuxweb.fr'
+        # Mention affichée sous les tarifs (franchise en base de TVA). Vide si les prix sont HT/TTC.
+        mention_tva: 'TVA non applicable, art. 293 B du CGI'
+        # Photo du hero de l'accueil (chemin dans assets/images/), null = emplacement « photo à venir »
+        photo_accueil: null
         # Associés (page Qui sommes-nous, accueil). photo : chemin dans assets/images/, ex. 'equipe/prenom.webp'
         associes:
             -   prenom: '[À COMPLÉTER : prénom]'

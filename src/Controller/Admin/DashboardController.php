@@ -90,6 +90,7 @@ class DashboardController extends AbstractDashboardController
 
         yield MenuItem::section('Contenus du site');
         yield MenuItem::linkTo(OffreCrudController::class, 'Offres', 'fa fa-tags');
+        yield MenuItem::linkTo(OptionTarifaireCrudController::class, 'Options en supplément', 'fa fa-puzzle-piece');
         yield MenuItem::linkTo(RealisationCrudController::class, 'Réalisations', 'fa fa-images');
         yield MenuItem::linkTo(SecteurCrudController::class, 'Secteurs (métiers)', 'fa fa-briefcase');
         yield MenuItem::linkTo(ZoneCrudController::class, 'Zones d\'intervention', 'fa fa-map-location-dot');

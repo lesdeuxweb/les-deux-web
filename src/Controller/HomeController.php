@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\MessageContact;
+use App\Form\ContactType;
 use App\Repository\OffreRepository;
 use App\Repository\RealisationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,8 +17,10 @@ class HomeController extends AbstractController
     {
         // Secteurs et zones : fournis par les fonctions Twig secteurs_publies() / zones_publiees().
         return $this->render('home/index.html.twig', [
-            'offres' => $offreRepository->findPublie(),
+            'offres' => $offreRepository->findSurAccueil(),
             'realisations' => $realisationRepository->findMisesEnAvant(3),
+            // Formulaire de contact intégré en bas de page, envoyé vers /contact
+            'form' => $this->createForm(ContactType::class, new MessageContact()),
         ]);
     }
 }

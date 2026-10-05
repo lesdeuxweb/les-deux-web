@@ -71,6 +71,6 @@ class ContactController extends AbstractController
     {
         $this->addFlash('succes', 'contact.succes');
 
-        return $this->redirectToRoute('app_contact', status: Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_contact', ['_fragment' => 'contact'], Response::HTTP_SEE_OTHER);
     }
 }

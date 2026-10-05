@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Offre;
 use App\Repository\OffreRepository;
+use App\Repository\OptionTarifaireRepository;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,10 +14,12 @@ use Symfony\Component\Routing\Attribute\Route;
 class OffreController extends AbstractController
 {
     #[Route('', name: 'app_offre_index', methods: ['GET'])]
-    public function index(OffreRepository $offreRepository): Response
+    public function index(OffreRepository $offreRepository, OptionTarifaireRepository $optionRepository): Response
     {
         return $this->render('offre/index.html.twig', [
-            'offres' => $offreRepository->findPublie(),
+            'creations' => $offreRepository->findPublieesParCategorie(Offre::CATEGORIE_CREATION),
+            'abonnements' => $offreRepository->findPublieesParCategorie(Offre::CATEGORIE_ABONNEMENT),
+            'options' => $optionRepository->findPublie(),
         ]);
     }
 

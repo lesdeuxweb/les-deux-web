@@ -1,23 +1,33 @@
 {#
- # Carte d'une offre (liste des offres, accueil, pages secteur et zone).
- #   <twig:CarteOffre :offre="offre" />
+ # Carte d'une offre (accueil, page Offres, pages secteur et zone).
+ #   <twig:CarteOffre :offre="offre" :numero="loop.index" />
  #
+ # numero : numéro affiché « 01 », « 02 »... (facultatif)
  # niveau : niveau du titre (3 par défaut ; 2 quand la carte est directement sous le <h1>).
+ # Variantes automatiques : fond encre si l'offre a un badge, fond sauge pour un abonnement.
  # Toute la carte est cliquable (lien étiré sur le titre), sans imbriquer de liens.
  #}
-{% props offre, niveau = 3 %}
-<article {{ attributes.defaults({class: 'carte carte--cliquable carte-offre'}) }}>
+{% props offre, numero = null, niveau = 3 %}
+{% set classes = 'carte carte--cliquable carte-offre'
+    ~ (offre.badge ? ' carte-offre--vedette')
+    ~ (offre.abonnement and not offre.badge ? ' carte-offre--abonnement') %}
+<article {{ attributes.defaults({class: classes}) }}>
+    {% if numero %}<p class="carte-offre__numero" aria-hidden="true">{{ '%02d'|format(numero) }}</p>{% endif %}
+    {% if offre.badge %}<p class="carte-offre__badge">{{ offre.badge }}</p>{% endif %}
+    {% if offre.surTitre %}<p class="carte-offre__sur-titre">{{ offre.surTitre }}</p>{% endif %}
     <h{{ niveau }} class="carte__titre">
         <a class="carte__lien" href="{{ path('app_offre_show', {slug: offre.slug}) }}">{{ offre.nom }}</a>
     </h{{ niveau }}>
     <p class="carte__texte">{{ offre.accroche }}</p>
-    <twig:Prix :offre="offre" />
     {% if offre.pointsForts is not empty %}
         <ul class="liste-coches">
-            {% for point in offre.pointsForts|slice(0, 3) %}
+            {% for point in offre.pointsForts|slice(0, 5) %}
                 <li>{{ point }}</li>
             {% endfor %}
         </ul>
     {% endif %}
-    <span class="carte__suite" aria-hidden="true">{{ 'offre.voir'|trans }}</span>
+    <div class="carte-offre__pied">
+        <twig:Prix :offre="offre" />
+        <span class="carte-offre__fleche" aria-hidden="true"></span>
+    </div>
 </article>

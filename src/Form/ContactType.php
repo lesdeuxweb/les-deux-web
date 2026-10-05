@@ -34,37 +34,38 @@ class ContactType extends AbstractType
         $builder
             ->add('nom', TextType::class, [
                 'label' => 'contact.form.nom',
-                'attr' => ['autocomplete' => 'name', 'maxlength' => 100],
+                'attr' => ['autocomplete' => 'name', 'maxlength' => 100, 'placeholder' => 'contact.form.nom_exemple'],
             ])
             ->add('email', EmailType::class, [
                 'label' => 'contact.form.email',
-                'attr' => ['autocomplete' => 'email', 'maxlength' => 180],
+                'attr' => ['autocomplete' => 'email', 'maxlength' => 180, 'placeholder' => 'contact.form.email_exemple'],
             ])
             ->add('telephone', TelType::class, [
                 'label' => 'contact.form.telephone',
                 'required' => false,
-                'attr' => ['autocomplete' => 'tel', 'maxlength' => 20],
+                'attr' => ['autocomplete' => 'tel', 'maxlength' => 20, 'placeholder' => 'contact.form.telephone_exemple'],
             ])
             ->add('entreprise', TextType::class, [
                 'label' => 'contact.form.entreprise',
                 'required' => false,
-                'attr' => ['autocomplete' => 'organization', 'maxlength' => 150],
+                'attr' => ['autocomplete' => 'organization', 'maxlength' => 150, 'placeholder' => 'contact.form.entreprise_exemple'],
             ])
             ->add('offre', EntityType::class, [
                 'label' => 'contact.form.offre',
                 'class' => Offre::class,
                 'choice_label' => 'nom',
                 'choice_value' => 'slug',
+                'group_by' => fn (Offre $o) => $o->isAbonnement() ? 'contact.form.groupe_abonnements' : 'contact.form.groupe_creations',
                 'required' => false,
                 'placeholder' => 'contact.form.offre_aucune',
                 'query_builder' => fn (EntityRepository $r) => $r->createQueryBuilder('o')
                     ->andWhere('o.publie = true')
-                    ->orderBy('o.position', 'ASC'),
+                    ->orderBy('o.categorie', 'DESC')
+                    ->addOrderBy('o.position', 'ASC'),
             ])
             ->add('message', TextareaType::class, [
                 'label' => 'contact.form.message',
-                'help' => 'contact.form.message_aide',
-                'attr' => ['rows' => 7, 'maxlength' => 5000],
+                'attr' => ['rows' => 6, 'maxlength' => 5000, 'placeholder' => 'contact.form.message_exemple'],
             ])
             ->add('consentement', CheckboxType::class, [
                 'mapped' => false,

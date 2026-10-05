@@ -1,0 +1,46 @@
+{#
+ # Bloc contact (accueil et page /contact) : texte et coordonnées à gauche, formulaire à droite.
+ # Variables : form (ContactType), niveau_titre (1 sur la page Contact, 2 sur l'accueil).
+ #}
+<div class="deux-colonnes">
+    <div>
+        <twig:SurTitre>{{ 'contact.sur_titre'|trans }}</twig:SurTitre>
+        <h{{ niveau_titre }} id="titre-contact">{{ 'contact.titre'|trans }}</h{{ niveau_titre }}>
+        <p class="texte-doux">{{ 'contact.chapeau'|trans }}</p>
+
+        <div class="contact-coordonnees">
+            <dl>
+                <div>
+                    <dt>{{ 'contact.par_telephone'|trans }}</dt>
+                    <dd>
+                        {%- if site.telephone starts with '[' -%}
+                            <twig:ACompleter :valeur="site.telephone" />
+                        {%- else -%}
+                            <a href="tel:{{ site.telephone|replace({' ': '', '.': ''}) }}">{{ site.telephone }}</a>
+                        {%- endif -%}
+                    </dd>
+                </div>
+                <div>
+                    <dt>{{ 'contact.par_email'|trans }}</dt>
+                    <dd>
+                        {%- if site.email starts with '[' -%}
+                            <twig:ACompleter :valeur="site.email" />
+                        {%- else -%}
+                            <a href="mailto:{{ site.email }}">{{ site.email }}</a>
+                        {%- endif -%}
+                    </dd>
+                </div>
+            </dl>
+            <p>{{ 'contact.deplacements'|trans({'%ville%': site.ville, '%rayon%': site.rayon_km}) }}</p>
+        </div>
+    </div>
+
+    <div class="formulaire-carte">
+        {% for message in app.flashes('succes') %}
+            <div class="alerte alerte--succes" role="status">
+                <p><strong>{{ message|trans }}</strong></p>
+            </div>
+        {% endfor %}
+        {{ include('contact/_formulaire.html.twig') }}
+    </div>
+</div>

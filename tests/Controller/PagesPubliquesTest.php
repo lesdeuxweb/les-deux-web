@@ -2,6 +2,7 @@
 
 namespace App\Tests\Controller;
 
+use App\Entity\Offre;
 use App\Entity\Zone;
 use App\Tests\Fabrique;
 use Doctrine\ORM\EntityManagerInterface;
@@ -178,17 +179,25 @@ class PagesPubliquesTest extends WebTestCase
         self::assertGreaterThan(0, $crawler->filter('a[href="/contact?offre=boutique-en-ligne"]')->count());
     }
 
-    public function testPrixSurDevisEtPrixMensuel(): void
+    public function testAffichageDesPrix(): void
     {
         $this->fabrique->offre('Sur mesure', prix: null);
-        $this->fabrique->offre('Maintenance', prix: 39)->setPrixSuffixe('/mois');
+        $this->fabrique->offre('Site 5 pages', prix: 399);
+        $this->fabrique->offre('Site métier', prix: 900)->setAPartirDe(true);
+        $this->fabrique->offre('Pack Évolution', prix: 35)->setCategorie(Offre::CATEGORIE_ABONNEMENT)->setPrixSuffixe('/ mois');
         $this->fabrique->flush();
 
         $crawler = $this->client->request('GET', '/offres');
 
-        $prix = $crawler->filter('.prix')->each(fn ($n) => preg_replace('/\s+/u', ' ', $n->text()));
+        $prix = $crawler->filter('.prix')->each(fn ($n) => trim(preg_replace('/\s+/u', ' ', $n->text())));
         self::assertContains('Sur devis', $prix);
-        self::assertContains('À partir de 39 € HT/mois', $prix);
+        self::assertContains('Forfait 399 €', $prix);
+        self::assertContains('À partir de 900 €', $prix);
+        self::assertContains('Abonnement 35 € / mois', $prix);
+
+        // Micro-entreprise : pas de « HT », mention de franchise de TVA sous les tarifs
+        self::assertStringNotContainsString('HT', implode(' ', $prix));
+        self::assertSelectorTextContains('main', 'TVA non applicable, art. 293 B du CGI');
     }
 
     public function testContenuHtmlAssainiEtSansSecondH1(): void
@@ -226,7 +235,7 @@ class PagesPubliquesTest extends WebTestCase
         $this->fabrique->flush();
 
         $crawler = $this->client->request('GET', '/offres/site-vitrine');
-        self::assertSame(['Accueil', 'Offres', 'Site vitrine'], $crawler->filter('.fil-ariane li')->each(fn ($n) => trim($n->text())));
+        self::assertSame(['Accueil', 'Nos offres', 'Site vitrine'], $crawler->filter('.fil-ariane li')->each(fn ($n) => trim($n->text())));
 
         $crawler = $this->client->request('GET', '/creation-site-internet/charente');
         self::assertSame(['Accueil', 'Zones d\'intervention', 'Charente'], $crawler->filter('.fil-ariane li')->each(fn ($n) => trim($n->text())));

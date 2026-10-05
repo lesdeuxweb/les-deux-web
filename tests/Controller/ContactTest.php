@@ -37,7 +37,7 @@ class ContactTest extends WebTestCase
             $id = 'contact_'.$champ;
             self::assertCount(1, $crawler->filter(sprintf('label[for="%s"]', $id)), sprintf('Label manquant pour %s.', $champ));
         }
-        self::assertSelectorTextContains('main', 'rayon d\'environ 200 km');
+        self::assertSelectorTextContains('main', 'rayon d\'environ 100 km');
     }
 
     public function testOffrePreselectionneeParParametre(): void
@@ -61,7 +61,7 @@ class ContactTest extends WebTestCase
         $this->soumettre(['contact[offre]' => 'site-vitrine']);
 
         self::assertResponseStatusCodeSame(303);
-        self::assertResponseRedirects('/contact');
+        self::assertResponseRedirects('/contact#contact');
 
         // Enregistré en base, avec l'offre choisie
         $messages = $this->repository()->findAll();
@@ -134,7 +134,7 @@ class ContactTest extends WebTestCase
         $this->soumettre(['contact[site_web]' => 'https://spam.example']);
 
         // Le robot voit un succès...
-        self::assertResponseRedirects('/contact');
+        self::assertResponseRedirects('/contact#contact');
         $this->client->followRedirect();
         self::assertSelectorExists('.alerte--succes');
 
@@ -147,7 +147,7 @@ class ContactTest extends WebTestCase
     {
         for ($i = 1; $i <= 5; ++$i) {
             $this->soumettre();
-            self::assertResponseRedirects('/contact', 303, sprintf('Envoi n°%d refusé.', $i));
+            self::assertResponseRedirects('/contact#contact', 303, sprintf('Envoi n°%d refusé.', $i));
         }
 
         $crawler = $this->soumettre();
@@ -166,7 +166,7 @@ class ContactTest extends WebTestCase
 
         $this->soumettre();
 
-        self::assertResponseRedirects('/contact');
+        self::assertResponseRedirects('/contact#contact');
     }
 
     public function testJetonCsrfDUnAutreSiteRefuse(): void

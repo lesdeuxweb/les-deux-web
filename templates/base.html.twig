@@ -32,7 +32,7 @@
         <title>{{ seo_titre }}</title>
         <meta name="description" content="{{ seo_description }}">
         {% if seo_canonical %}<link rel="canonical" href="{{ seo_canonical }}">{% endif %}
-        <meta name="theme-color" content="#2E5E4E">
+        <meta name="theme-color" content="#1F2623">
         {% if not seo_canonical %}<meta name="robots" content="noindex">{% endif %}
 
         {# Open Graph : aperçu lors d'un partage (Facebook, LinkedIn, WhatsApp...) #}
@@ -48,8 +48,8 @@
 
         <link rel="icon" href="{{ asset('images/logo/favicon-48.png') }}" type="image/png">
         <link rel="apple-touch-icon" href="{{ asset('images/logo/apple-touch-icon.png') }}">
-        <link rel="preload" href="{{ asset('fonts/atkinson-hyperlegible-latin-400-normal.woff2') }}" as="font" type="font/woff2" crossorigin>
-        <link rel="preload" href="{{ asset('fonts/bitter-latin-700-normal.woff2') }}" as="font" type="font/woff2" crossorigin>
+        <link rel="preload" href="{{ asset('fonts/nunito-sans-latin-400-normal.woff2') }}" as="font" type="font/woff2" crossorigin>
+        <link rel="preload" href="{{ asset('fonts/gelasio-latin-400-normal.woff2') }}" as="font" type="font/woff2" crossorigin>
 
         {% block stylesheets %}
             <link rel="stylesheet" href="{{ asset('styles/app.css') }}">

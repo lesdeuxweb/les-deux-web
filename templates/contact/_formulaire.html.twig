@@ -1,0 +1,33 @@
+{# Formulaire de contact (ContactType). Toujours envoyé vers /contact (Post/Redirect/Get). #}
+{{ form_start(form, {action: path('app_contact') ~ '#contact', attr: {class: 'formulaire'}}) }}
+    {{ form_errors(form) }}
+
+    {# Récapitulatif des erreurs de champ, avec liens vers chaque champ (RGAA 11.10) #}
+    {% set champs_en_erreur = form.children|filter(champ => champ.vars.errors|length > 0) %}
+    {% if champs_en_erreur is not empty %}
+        <div class="alerte alerte--erreur" role="alert">
+            <p>{{ 'contact.form.erreurs'|trans({'%count%': champs_en_erreur|length}) }}</p>
+            <ul>
+                {% for champ in champs_en_erreur %}
+                    <li><a href="#{{ champ.vars.id }}">{{ champ.vars.label|trans|striptags }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    <div class="formulaire__ligne">
+        {{ form_row(form.nom) }}
+        {{ form_row(form.email) }}
+    </div>
+    <div class="formulaire__ligne">
+        {{ form_row(form.telephone) }}
+        {{ form_row(form.entreprise) }}
+    </div>
+    {{ form_row(form.offre) }}
+    {{ form_row(form.message) }}
+    {{ form_row(form.consentement) }}
+    {{ form_row(form.site_web) }}
+
+    <p class="formulaire__intro">{{ 'contact.form.intro'|trans }}</p>
+    <twig:Bouton type="submit">{{ 'contact.form.envoyer'|trans }}</twig:Bouton>
+{{ form_end(form) }}

@@ -5,22 +5,70 @@
 {% block title %}{{ 'offre.index.titre_page'|trans({'%nom%': site.nom}) }}{% endblock %}
 {% block meta_description %}{{ 'offre.index.description'|trans }}{% endblock %}
 
+{% macro grille(offres, debut = 1) %}
+    <ul class="grille-cartes grille-offres grille-offres--blanches{{ offres|length % 4 == 0 ? ' grille-cartes--4' }}" role="list">
+        {% for offre in offres %}
+            <li><twig:CarteOffre :offre="offre" :numero="debut + loop.index0" /></li>
+        {% endfor %}
+    </ul>
+{% endmacro %}
+
 {% block body %}
     <div class="conteneur">
         <header class="tete-page">
-            <h1>{{ 'offre.index.titre'|trans }}</h1>
+            <twig:SurTitre>{{ 'offre.index.sur_titre'|trans }}</twig:SurTitre>
+            <h1>{{ 'offre.index.titre'|trans }} <em>{{ 'offre.index.titre_accent'|trans }}</em></h1>
             <p class="tete-page__chapeau">{{ 'offre.index.chapeau'|trans }}</p>
         </header>
 
-        {% if offres is empty %}
+        {% if creations is empty and abonnements is empty %}
             <p>{{ 'offre.index.aucune'|trans }}</p>
-        {% else %}
-            <ul class="grille-cartes{{ offres|length % 4 == 0 ? ' grille-cartes--4' }}" role="list">
-                {% for offre in offres %}
-                    <li><twig:CarteOffre :offre="offre" niveau="2" /></li>
-                {% endfor %}
-            </ul>
         {% endif %}
+
+        {% if creations is not empty %}
+            <section class="bloc" aria-labelledby="titre-creations">
+                <div class="section-tete">
+                    <h2 id="titre-creations">{{ 'offre.index.creations'|trans }}</h2>
+                    <p class="section-tete__intro">{{ 'offre.index.creations_intro'|trans }}</p>
+                </div>
+                {{ _self.grille(creations) }}
+            </section>
+        {% endif %}
+
+        {% if options is not empty %}
+            <section class="bloc" aria-labelledby="titre-options">
+                <div class="deux-colonnes">
+                    <div>
+                        <h2 id="titre-options">{{ 'offre.index.options'|trans }}</h2>
+                        <p class="texte-doux">{{ 'offre.index.options_intro'|trans }}</p>
+                    </div>
+                    <div class="tableau-defilant">
+                        <table class="tableau-prix">
+                            <thead>
+                                <tr><th scope="col">{{ 'offre.index.option'|trans }}</th><th scope="col">{{ 'offre.index.prix'|trans }}</th></tr>
+                            </thead>
+                            <tbody>
+                                {% for option in options %}
+                                    <tr><th scope="row">{{ option.nom }}</th><td>{{ option.prix }}</td></tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        {% endif %}
+
+        {% if abonnements is not empty %}
+            <section class="bloc" aria-labelledby="titre-abonnements">
+                <div class="section-tete">
+                    <h2 id="titre-abonnements">{{ 'offre.index.abonnements'|trans }}</h2>
+                    <p class="section-tete__intro">{{ 'offre.index.abonnements_intro'|trans }}</p>
+                </div>
+                {{ _self.grille(abonnements) }}
+            </section>
+        {% endif %}
+
+        {% if site.mention_tva %}<p class="mention-tva">{{ site.mention_tva }}</p>{% endif %}
 
         <div class="section">
             <twig:AppelAction titre="{{ 'offre.index.cta_titre'|trans }}" />

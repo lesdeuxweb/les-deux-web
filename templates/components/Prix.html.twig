@@ -1,6 +1,6 @@
 {#
- # Prix d'une offre : « À partir de 900 € HT », « À partir de 39 € HT/mois » ou « Sur devis ».
- # Le montant est mis en valeur (span .prix__montant). Version texte brut : offre.prixAffiche.
+ # Prix d'une offre : libellé (« À partir de », « Forfait », « Abonnement ») + montant.
+ # Version texte brut : offre.prixAffiche. Mention de TVA : site.mention_tva (sous les grilles).
  #   <twig:Prix :offre="offre" />
  #}
 {% props offre %}
@@ -8,6 +8,9 @@
     {%- if offre.prixAPartirDe is null -%}
         <span class="prix__montant">{{ 'offre.sur_devis'|trans }}</span>
     {%- else -%}
-        {{ 'offre.a_partir_de'|trans }} <span class="prix__montant">{{ offre.prixAPartirDe|number_format(0, ',', ' ') }}&nbsp;€</span>&nbsp;HT{{ offre.prixSuffixe }}
+        <span class="prix__libelle">
+            {{- (offre.aPartirDe ? 'offre.a_partir_de' : (offre.abonnement ? 'offre.abonnement' : 'offre.forfait'))|trans -}}
+        </span>
+        <span class="prix__montant">{{ offre.prixAPartirDe|number_format(0, ',', ' ') }}&nbsp;€{% if offre.prixSuffixe %}&nbsp;{{ offre.prixSuffixe }}{% endif %}</span>
     {%- endif -%}
 </p>
