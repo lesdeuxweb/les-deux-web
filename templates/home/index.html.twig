@@ -1,14 +1,6 @@
 {# Site en une page (maquette Figma) : hero, manifeste, offres, façon de faire, qui sommes-nous, zones, contact. #}
 {% extends 'base.html.twig' %}
 
-{% macro grille_offres(offres) %}
-    <ul class="grille-cartes grille-offres{{ offres|length % 4 == 0 ? ' grille-cartes--4' }}" role="list">
-        {% for offre in offres %}
-            <li><twig:CarteOffre :offre="offre" :numero="loop.index" /></li>
-        {% endfor %}
-    </ul>
-{% endmacro %}
-
 {% block body %}
     {# --- Hero : accroche à gauche, photo à droite --- #}
     <section class="hero" aria-labelledby="titre-accueil">
@@ -50,7 +42,7 @@
         </div>
     </section>
 
-    {# --- Nos offres : grille tarifaire complète --- #}
+    {# --- Nos offres : 3 cartes, puis grille complète dépliable (sans JavaScript : <details>) --- #}
     <section class="section" id="offres" aria-labelledby="titre-offres">
         <div class="conteneur">
             <div class="section-tete">
@@ -61,35 +53,88 @@
                 <p class="section-tete__intro">{{ 'accueil.offres.intro'|trans }}</p>
             </div>
 
-            {% if creations is not empty %}
-                <h3 class="titre-groupe">{{ 'accueil.offres.creations'|trans }}</h3>
-                {{ _self.grille_offres(creations) }}
+            {% if cartes is not empty %}
+                <ul class="grille-cartes grille-offres" role="list">
+                    {% for offre in cartes %}
+                        <li><twig:CarteOffre :offre="offre" :numero="loop.index" /></li>
+                    {% endfor %}
+                </ul>
             {% endif %}
 
-            {% if options is not empty %}
-                <div class="deux-colonnes bloc-options">
-                    <div>
-                        <h3 class="titre-groupe">{{ 'accueil.offres.options'|trans }}</h3>
-                        <p class="texte-doux">{{ 'accueil.offres.options_intro'|trans }}</p>
-                    </div>
-                    <div class="tableau-defilant">
-                        <table class="tableau-prix">
-                            <thead>
-                                <tr><th scope="col">{{ 'accueil.offres.option'|trans }}</th><th scope="col">{{ 'accueil.offres.prix'|trans }}</th></tr>
-                            </thead>
-                            <tbody>
-                                {% for option in options %}
-                                    <tr><th scope="row">{{ option.nom }}</th><td>{{ option.prix }}</td></tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            {% endif %}
+            {% if autres_creations is not empty or options is not empty or abonnements is not empty %}
+                <details class="grille-complete">
+                    <summary class="grille-complete__bouton">
+                        <span class="grille-complete__voir">{{ 'accueil.offres.voir_tout'|trans }}</span>
+                        <span class="grille-complete__masquer">{{ 'accueil.offres.masquer'|trans }}</span>
+                    </summary>
 
-            {% if abonnements is not empty %}
-                <h3 class="titre-groupe">{{ 'accueil.offres.abonnements'|trans }}</h3>
-                {{ _self.grille_offres(abonnements) }}
+                    <div class="grille-complete__contenu">
+                        {% if autres_creations is not empty %}
+                            <div class="tableau-defilant">
+                                <table class="tableau-offres">
+                                    <caption class="visuellement-cache">{{ 'accueil.offres.autres_creations'|trans }}</caption>
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">{{ 'accueil.offres.colonne_offre'|trans }}</th>
+                                            <th scope="col">{{ 'accueil.offres.colonne_contenu'|trans }}</th>
+                                            <th scope="col">{{ 'accueil.offres.colonne_prix'|trans }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for offre in autres_creations %}
+                                            <tr>
+                                                <th scope="row"><a href="{{ path('app_home', {offre: offre.slug}) }}#contact">{{ offre.nom }}</a></th>
+                                                <td>{{ offre.accroche }}</td>
+                                                <td class="tableau-offres__prix">{{ offre.prixAffiche }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% endif %}
+
+                        {% if options is not empty %}
+                            <div class="options-carte">
+                                <div>
+                                    <twig:SurTitre class="sur-titre--sans-trait">{{ 'accueil.offres.options_sur_titre'|trans }}</twig:SurTitre>
+                                    <h3 class="options-carte__titre">{{ 'accueil.offres.options'|trans }}</h3>
+                                </div>
+                                <ul class="options-liste" role="list">
+                                    {% for option in options %}
+                                        <li><span>{{ option.nom }}</span><strong>{{ option.prix }}</strong></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+
+                        {% if abonnements is not empty %}
+                            <div class="abonnements">
+                                <twig:SurTitre class="sur-titre--sans-trait">{{ 'accueil.offres.abonnements_sur_titre'|trans }}</twig:SurTitre>
+                                <h3 class="options-carte__titre">{{ 'accueil.offres.abonnements'|trans }}</h3>
+                                <div class="tableau-defilant">
+                                    <table class="tableau-offres">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">{{ 'accueil.offres.colonne_pack'|trans }}</th>
+                                                <th scope="col">{{ 'accueil.offres.colonne_compris'|trans }}</th>
+                                                <th scope="col">{{ 'accueil.offres.colonne_prix'|trans }}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for offre in abonnements %}
+                                                <tr>
+                                                    <th scope="row"><a href="{{ path('app_home', {offre: offre.slug}) }}#contact">{{ offre.nom }}</a></th>
+                                                    <td>{{ offre.pointsForts|join(', ') }}.</td>
+                                                    <td class="tableau-offres__prix">{{ offre.prixAffiche }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </details>
             {% endif %}
 
             {% if site.mention_tva %}<p class="mention-tva">{{ site.mention_tva }}</p>{% endif %}

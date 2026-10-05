@@ -42,6 +42,10 @@ class Offre
     #[Assert\Length(max: 60)]
     private ?string $surTitre = null;
 
+    /** Affichée en grande carte (3 conseillées) ; sinon dans la grille complète dépliable. */
+    #[ORM\Column]
+    private bool $enCarte = false;
+
     /** Pastille mise en évidence sur la carte, ex. « Notre conseil ». */
     #[ORM\Column(length: 30, nullable: true)]
     #[Assert\Length(max: 30)]
@@ -132,6 +136,18 @@ class Offre
     public function setSurTitre(?string $surTitre): static
     {
         $this->surTitre = $surTitre;
+
+        return $this;
+    }
+
+    public function isEnCarte(): bool
+    {
+        return $this->enCarte;
+    }
+
+    public function setEnCarte(bool $enCarte): static
+    {
+        $this->enCarte = $enCarte;
 
         return $this;
     }

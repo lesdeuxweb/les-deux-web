@@ -37,17 +37,18 @@ class AppFixtures extends Fixture
     private function chargerOffres(ObjectManager $manager): void
     {
         // Grille tarifaire de lancement (prix sans TVA : franchise en base, voir site.yaml)
+        // [nom, sur-titre, description, prix, « à partir de », points forts, en carte, badge]
         $creations = [
-            ['Landing page', 'Pour une activité ou un événement', 'Une seule page claire et efficace pour présenter votre activité et recevoir des demandes.', 199, false,
-                ['1 page', 'Adaptée aux mobiles', 'Formulaire de contact'], null],
-            ['Site 3 pages', 'Pour démarrer simplement', 'Un site vitrine simple, avec un design personnalisé à vos couleurs.', 299, false,
-                ['3 pages', 'Design personnalisé', 'Adapté aux mobiles', 'Formulaire de contact'], null],
-            ['Site 5 pages', 'Pour bien démarrer', 'Une présence professionnelle et rassurante pour présenter votre activité et être trouvé localement.', 399, false,
-                ['5 pages', 'Design personnalisé et adapté aux mobiles', 'Formulaire de contact', 'Référencement local de base'], 'Notre conseil'],
-            ['Site 8 pages', 'Pour présenter toute votre activité', 'Un site plus complet, avec une structure avancée pour détailler vos services, réalisations et informations pratiques.', 549, false,
-                ['8 pages', 'Structure avancée', 'Design personnalisé et adapté aux mobiles', 'Référencement local de base'], null],
-            ['Site métier', 'Pour aller plus loin', 'Un site pensé autour de votre métier : réservation en ligne, espace client, catalogue... On construit l\'outil dont vous avez besoin.', 900, true,
-                ['Réservation en ligne', 'Espace client', 'Catalogue produits', 'Fonctionnalités sur mesure'], null],
+            ['L’Essentiel', 'Pour lancer votre activité', 'Une page unique, claire et convaincante pour présenter l’essentiel et recevoir vos premiers contacts.', 199, false,
+                ['1 page complète', 'Adapté mobile & tablette', 'Formulaire de contact', 'Mise en ligne incluse'], true, null],
+            ['Site 3 pages', null, 'Site vitrine simple, design personnalisé', 299, false,
+                ['3 pages', 'Design personnalisé'], false, null],
+            ['La Vitrine', 'Pour présenter votre entreprise', 'Un site vitrine structuré pour détailler votre activité, rassurer vos clients et gagner en visibilité.', 399, false,
+                ['Jusqu’à 5 pages', 'Design personnalisé', 'Responsive & formulaire', 'SEO de base'], true, 'Notre conseil'],
+            ['Site 8 pages', null, 'Site plus complet avec une structure avancée', 549, false,
+                ['8 pages', 'Structure avancée'], false, null],
+            ['Site sur mesure', 'Pour vos besoins spécifiques', 'Une solution métier conçue autour de votre fonctionnement, de vos clients et de vos objectifs.', 900, true,
+                ['Réservation en ligne', 'Espace client', 'Catalogue ou fonctionnalités métier'], true, null],
         ];
 
         $abonnements = [
@@ -60,7 +61,7 @@ class AppFixtures extends Fixture
         ];
 
         $position = 0;
-        foreach ($creations as [$nom, $surTitre, $accroche, $prix, $aPartirDe, $points, $badge]) {
+        foreach ($creations as [$nom, $surTitre, $accroche, $prix, $aPartirDe, $points, $enCarte, $badge]) {
             $manager->persist((new Offre())
                 ->setCategorie(Offre::CATEGORIE_CREATION)
                 ->setNom($nom)
@@ -69,6 +70,7 @@ class AppFixtures extends Fixture
                 ->setPrixAPartirDe($prix)
                 ->setAPartirDe($aPartirDe)
                 ->setPointsForts($points)
+                ->setEnCarte($enCarte)
                 ->setBadge($badge)
                 ->setPosition($position++)
                 ->setPublie(true));
@@ -89,10 +91,10 @@ class AppFixtures extends Fixture
 
         $options = [
             ['Page supplémentaire', '50 €'],
-            ['Logo / identité visuelle simple', '100 à 200 €'],
-            ['Rédaction d\'une page', '50 à 100 €'],
-            ['Réservation en ligne', '250 à 400 €'],
-            ['Catalogue produits', '200 à 500 €'],
+            ['Logo / identité visuelle simple', '100–200 €'],
+            ['Rédaction d’une page', '50–100 €'],
+            ['Réservation en ligne', '250–400 €'],
+            ['Catalogue produits', '200–500 €'],
             ['Fonctionnalité spécifique', 'Sur devis'],
         ];
         foreach ($options as $i => [$nom, $prix]) {

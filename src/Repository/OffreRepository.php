@@ -28,6 +28,16 @@ class OffreRepository extends ServiceEntityRepository
         return $this->findBy(['publie' => true, 'categorie' => $categorie], ['position' => 'ASC', 'nom' => 'ASC']);
     }
 
+    /**
+     * Offres publiées d'une catégorie, affichées en carte ou non.
+     *
+     * @return Offre[]
+     */
+    public function findPublieesParCategorieEtCarte(string $categorie, bool $enCarte): array
+    {
+        return $this->findBy(['publie' => true, 'categorie' => $categorie, 'enCarte' => $enCarte], ['position' => 'ASC', 'nom' => 'ASC']);
+    }
+
     public function findOnePublieBySlug(string $slug): ?Offre
     {
         return $this->findOneBy(['slug' => $slug, 'publie' => true]);

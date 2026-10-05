@@ -47,13 +47,14 @@ class AccueilTest extends WebTestCase
         self::assertSame(['/#offres', '/#qui-sommes-nous', '/#contact'], $liens);
     }
 
-    public function testGrilleTarifaire(): void
+    public function testCartesPuisGrilleComplete(): void
     {
-        $this->fabrique->offre('Landing page', prix: 199);
-        $this->fabrique->offre('Site métier', prix: 900)->setAPartirDe(true);
-        $this->fabrique->offre('Site 5 pages', prix: 399)->setBadge('Notre conseil');
+        $this->fabrique->offre('L’Essentiel', prix: 199)->setEnCarte(true);
+        $this->fabrique->offre('La Vitrine', prix: 399)->setEnCarte(true)->setBadge('Notre conseil');
+        $this->fabrique->offre('Site sur mesure', prix: 900)->setEnCarte(true)->setAPartirDe(true);
+        $this->fabrique->offre('Site 3 pages', prix: 299);
         $this->fabrique->offre('Pack Évolution', prix: 35, categorie: Offre::CATEGORIE_ABONNEMENT)->setPrixSuffixe('/ mois');
-        $this->fabrique->offre('Brouillon', publie: false);
+        $this->fabrique->offre('Brouillon', publie: false)->setEnCarte(true);
         $this->fabrique->option('Page supplémentaire', '50 €');
         $this->fabrique->option('Option masquée', '1 €', publie: false);
         $this->fabrique->flush();
@@ -61,28 +62,36 @@ class AccueilTest extends WebTestCase
         $crawler = $this->client->request('GET', '/');
         $offres = $crawler->filter('#offres');
 
-        $prix = $offres->filter('.prix')->each(fn (Crawler $n) => trim(preg_replace('/\s+/u', ' ', $n->text())));
-        self::assertContains('Forfait 199 €', $prix);
-        self::assertContains('À partir de 900 €', $prix);
-        self::assertContains('Abonnement 35 € / mois', $prix);
-        self::assertStringNotContainsString('HT', implode(' ', $prix));
-        self::assertStringContainsString('TVA non applicable, art. 293 B du CGI', $offres->text());
+        // Trois cartes, numérotées, avec libellé de prix
+        $cartes = $offres->filter('.grille-offres .carte-offre');
+        self::assertCount(3, $cartes);
+        self::assertSame(['01', '02', '03'], $cartes->filter('.carte-offre__numero')->each(fn (Crawler $n) => $n->text()));
+        $prix = $cartes->filter('.prix')->each(fn (Crawler $n) => trim(preg_replace('/\s+/u', ' ', $n->text())));
+        self::assertSame(['Prix de lancement 199 €', 'Prix de lancement 399 €', 'À partir de 900 €'], $prix);
+        self::assertSelectorTextContains('.carte-offre--vedette .carte-offre__badge', 'Notre conseil');
 
-        // Brouillons masqués
+        // Grille complète repliée par défaut (<details> sans attribut open)
+        $grille = $offres->filter('details.grille-complete');
+        self::assertCount(1, $grille);
+        self::assertNull($grille->attr('open'));
+        self::assertStringContainsString('Voir toutes les offres', $grille->filter('summary')->text());
+
+        // Autres offres de création, options, abonnements
+        $lignes = $grille->filter('.tableau-offres tbody tr')->each(fn (Crawler $tr) => [$tr->filter('th')->text(), $tr->filter('.tableau-offres__prix')->text()]);
+        self::assertContains(['Site 3 pages', '299 €'], $lignes);
+        self::assertContains(['Pack Évolution', '35 € / mois'], $lignes);
+        self::assertSame(['Page supplémentaire', '50 €'], $grille->filter('.options-liste li')->first()->children()->each(fn (Crawler $n) => $n->text()));
+
+        // Brouillons masqués, pas de « HT », mention de TVA
         self::assertStringNotContainsString('Brouillon', $offres->text());
         self::assertStringNotContainsString('Option masquée', $offres->text());
-
-        // Options en supplément
-        self::assertSame('50 €', $offres->filter('.tableau-prix td')->text());
-
-        // Badge : carte mise en avant
-        self::assertSelectorTextContains('.carte-offre--vedette .carte-offre__badge', 'Notre conseil');
-        self::assertSelectorExists('.carte-offre--abonnement');
+        self::assertStringNotContainsString(' HT', $offres->text());
+        self::assertStringContainsString('TVA non applicable, art. 293 B du CGI', $offres->text());
     }
 
     public function testCarteOffreMeneAuFormulaireAvecLOffre(): void
     {
-        $this->fabrique->offre('Site 5 pages');
+        $this->fabrique->offre('Site 5 pages')->setEnCarte(true);
         $this->fabrique->flush();
 
         $crawler = $this->client->request('GET', '/');

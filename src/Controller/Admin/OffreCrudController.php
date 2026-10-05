@@ -42,7 +42,7 @@ class OffreCrudController extends AbstractCrudController
             ->setHelp('Petit texte au-dessus du nom sur la carte, ex. « Pour bien démarrer ».')
             ->hideOnIndex();
         yield TextareaField::new('accroche', 'Description courte')
-            ->setHelp('Une ou deux phrases affichées sur la carte.')
+            ->setHelp('Une ou deux phrases : texte de la carte, ou « Contenu principal » dans la grille complète.')
             ->setFormTypeOption('attr', ['maxlength' => 255, 'rows' => 3])
             ->hideOnIndex();
         yield ArrayField::new('pointsForts', 'Ce qui est compris')
@@ -66,6 +66,8 @@ class OffreCrudController extends AbstractCrudController
             ->setHelp('Décochée : l\'offre n\'apparaît pas sur le site.');
         yield IntegerField::new('position', 'Ordre d\'affichage')
             ->setHelp('Les plus petits nombres s\'affichent en premier.');
+        yield BooleanField::new('enCarte', 'Afficher en carte')
+            ->setHelp('Coché : grande carte dans la section « Nos offres » (3 conseillées). Décoché : ligne de la grille complète (« Voir toutes les offres »).');
         yield TextField::new('badge', 'Badge')
             ->setHelp('Pastille qui met la carte en avant (fond sombre), ex. « Notre conseil ». Vide : carte normale.');
     }

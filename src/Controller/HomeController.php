@@ -71,7 +71,9 @@ class HomeController extends AbstractController
         }
 
         return $this->render('home/index.html.twig', [
-            'creations' => $offreRepository->findPublieesParCategorie(Offre::CATEGORIE_CREATION),
+            // Section offres : 3 cartes, puis grille complète dépliable (autres offres, options, abonnements)
+            'cartes' => $offreRepository->findPublieesParCategorieEtCarte(Offre::CATEGORIE_CREATION, true),
+            'autres_creations' => $offreRepository->findPublieesParCategorieEtCarte(Offre::CATEGORIE_CREATION, false),
             'abonnements' => $offreRepository->findPublieesParCategorie(Offre::CATEGORIE_ABONNEMENT),
             'options' => $optionRepository->findPublie(),
             'form' => $form,
