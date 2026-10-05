@@ -1,0 +1,113 @@
+/*
+ * Habillage du back-office EasyAdmin aux couleurs du site (piste A « Bocage »).
+ * Seules les variables du thème EasyAdmin sont surchargées.
+ */
+:root {
+    --ea-primary: #2E5E4E;
+}
+
+.admin-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 700;
+    color: #2E5E4E;
+}
+
+.admin-logo__point {
+    width: 0.7rem;
+    height: 0.7rem;
+    border-radius: 50%;
+    background: #F2C14E;
+}
+
+/* --- Tableau de bord --- */
+
+.tdb {
+    display: grid;
+    gap: 2rem;
+    max-width: 60rem;
+}
+
+.tdb-titre {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+}
+
+.tdb-messages {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    border-radius: 8px;
+    background: #E6EEE9;
+    border-left: 6px solid #2E5E4E;
+}
+
+.tdb-messages--alerte {
+    background: #FFF4D6;
+    border-left-color: #F2C14E;
+}
+
+.tdb-messages__nombre {
+    margin: 0;
+    font-size: 3.5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #1C2623;
+    font-variant-numeric: tabular-nums;
+}
+
+.tdb-messages__titre {
+    font-size: 1.25rem;
+    margin: 0 0 0.75rem;
+}
+
+.tdb-messages p {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0;
+}
+
+.tdb-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.tdb-compteurs {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+    gap: 1rem;
+}
+
+.tdb-compteurs a {
+    display: grid;
+    gap: 0.25rem;
+    padding: 1rem 1.25rem;
+    border: 1px solid #DCE2DC;
+    border-top: 4px solid #F2C14E;
+    border-radius: 6px;
+    color: #1C2623;
+    text-decoration: none;
+}
+
+.tdb-compteurs a:hover {
+    border-color: #2E5E4E;
+}
+
+.tdb-compteurs__nombre {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.tdb-compteurs__brouillons {
+    font-size: 0.85rem;
+    color: #4E5C56;
+}

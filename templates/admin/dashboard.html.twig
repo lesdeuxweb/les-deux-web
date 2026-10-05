@@ -1,0 +1,49 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block page_title %}Tableau de bord{% endblock %}
+
+{% block main %}
+    <div class="tdb">
+        {# Messages non traités : l'information la plus importante, mise en évidence #}
+        <section class="tdb-messages{{ messages_non_traites > 0 ? ' tdb-messages--alerte' }}">
+            <p class="tdb-messages__nombre">{{ messages_non_traites }}</p>
+            <div>
+                <h2 class="tdb-messages__titre">
+                    {{ messages_non_traites == 0 ? 'Aucun message en attente' : (messages_non_traites == 1 ? 'message non traité' : 'messages non traités') }}
+                </h2>
+                <p>
+                    {% if messages_non_traites > 0 %}
+                        <a class="btn btn-primary" href="{{ url_messages_non_traites }}">Voir les messages à traiter</a>
+                    {% endif %}
+                    <a class="btn btn-secondary" href="{{ url_tous_messages }}">Tous les messages</a>
+                </p>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="tdb-titre">Actions rapides</h2>
+            <p class="tdb-actions">
+                <a class="btn btn-secondary" href="{{ url_nouvelle_realisation }}"><i class="fa fa-plus"></i> Ajouter une réalisation</a>
+                <a class="btn btn-secondary" href="{{ url_nouvelle_offre }}"><i class="fa fa-plus"></i> Ajouter une offre</a>
+                <a class="btn btn-secondary" href="{{ path('app_home') }}" target="_blank" rel="noopener"><i class="fa fa-arrow-up-right-from-square"></i> Voir le site</a>
+            </p>
+        </section>
+
+        <section>
+            <h2 class="tdb-titre">Contenus du site</h2>
+            <ul class="tdb-compteurs">
+                {% for compteur in compteurs %}
+                    <li>
+                        <a href="{{ compteur.url }}">
+                            <span class="tdb-compteurs__nombre">{{ compteur.publies }}</span>
+                            <span class="tdb-compteurs__libelle">{{ compteur.libelle }}</span>
+                            {% if compteur.total > compteur.publies %}
+                                <span class="tdb-compteurs__brouillons">+ {{ compteur.total - compteur.publies }} brouillon{{ compteur.total - compteur.publies > 1 ? 's' }}</span>
+                            {% endif %}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </section>
+    </div>
+{% endblock %}

@@ -1,0 +1,46 @@
+{# Page de connexion au back-office, aux couleurs du site (sans navigation publique). #}
+<!DOCTYPE html>
+<html lang="{{ app.request.locale }}">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noindex, nofollow">
+        <title>{{ 'admin.connexion.titre'|trans }} | {{ site.nom }}</title>
+        <link rel="icon" href="{{ asset('images/favicon.svg') }}" type="image/svg+xml">
+        <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
+        {{ importmap('app') }}
+    </head>
+    <body class="page-connexion">
+        <main id="contenu" class="connexion">
+            <a class="logo" href="{{ path('app_home') }}" aria-label="{{ 'layout.retour_accueil'|trans({'%nom%': site.nom}) }}">
+                <span class="logo__point" aria-hidden="true"></span>
+                <span>{{ site.nom }}</span>
+            </a>
+
+            <div class="connexion__carte">
+                <h1 class="connexion__titre">{{ 'admin.connexion.titre'|trans }}</h1>
+
+                {% if erreur %}
+                    <div class="alerte alerte--erreur" role="alert">
+                        <p>{{ erreur.messageKey|trans(erreur.messageData, 'security') }}</p>
+                    </div>
+                {% endif %}
+
+                <form method="post" action="{{ path('app_login') }}" class="formulaire">
+                    <div class="champ">
+                        <label for="email">{{ 'admin.connexion.email'|trans }}</label>
+                        <input type="email" id="email" name="email" value="{{ dernier_email }}" autocomplete="username" required autofocus>
+                    </div>
+                    <div class="champ">
+                        <label for="mot_de_passe">{{ 'admin.connexion.mot_de_passe'|trans }}</label>
+                        <input type="password" id="mot_de_passe" name="mot_de_passe" autocomplete="current-password" required>
+                    </div>
+                    <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
+                    <twig:Bouton type="submit">{{ 'admin.connexion.se_connecter'|trans }}</twig:Bouton>
+                </form>
+            </div>
+
+            <a class="connexion__retour" href="{{ path('app_home') }}">{{ 'admin.connexion.retour_site'|trans }}</a>
+        </main>
+    </body>
+</html>

@@ -1332,3 +1332,46 @@ a:hover {
     font-weight: 700;
     color: var(--c-chataigne);
 }
+
+/* --- Connexion au back-office --- */
+
+.page-connexion {
+    background: var(--c-bocage);
+}
+
+.connexion {
+    flex: 1;
+    display: grid;
+    align-content: center;
+    justify-items: center;
+    gap: var(--e-5);
+    padding: var(--e-7) var(--gouttiere);
+}
+
+.connexion .logo {
+    color: var(--c-blanc);
+    font-size: 1.6rem;
+}
+
+.connexion__carte {
+    width: 100%;
+    max-width: 26rem;
+    background: var(--c-blanc);
+    border-top: 4px solid var(--c-genet);
+    border-radius: var(--rayon);
+    padding: clamp(var(--e-5), 5vw, var(--e-6));
+    box-shadow: 0 12px 40px -12px rgb(0 0 0 / 0.45);
+}
+
+.connexion__titre {
+    font-size: var(--t-3);
+    color: var(--c-encre);
+}
+
+.connexion__carte .alerte {
+    margin-bottom: var(--e-5);
+}
+
+.connexion__retour {
+    color: var(--c-porcelaine);
+}

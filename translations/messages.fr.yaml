@@ -181,3 +181,12 @@ contact:
         consentement: 'J''accepte que les informations saisies soient utilisées pour me recontacter au sujet de ma demande. <a href="%url%">Politique de confidentialité</a>'
         piege: 'Ne pas remplir ce champ'
         envoyer: 'Envoyer ma demande'
+
+# Back-office
+admin:
+    connexion:
+        titre: 'Connexion à l''administration'
+        email: 'Adresse email'
+        mot_de_passe: 'Mot de passe'
+        se_connecter: 'Se connecter'
+        retour_site: '← Retour au site'

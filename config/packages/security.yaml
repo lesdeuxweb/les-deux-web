@@ -17,17 +17,28 @@ security:
             pattern: ^/(_profiler|_wdt|assets|build)/
             security: false
         main:
+            # lazy : la session n'est démarrée qu'en cas de besoin (connexion, message flash),
+            # les pages publiques ne déposent donc aucun cookie.
             lazy: true
             provider: app_user_provider
-
-            # Activate different ways to authenticate:
-            # https://symfony.com/doc/current/security.html#the-firewall
-
-            # https://symfony.com/doc/current/security/impersonating_user.html
-            # switch_user: true
+            form_login:
+                login_path: app_login
+                check_path: app_login
+                default_target_path: admin
+                enable_csrf: true
+                username_parameter: email
+                password_parameter: mot_de_passe
+            logout:
+                path: app_logout
+                target: app_home
+            # 5 tentatives de connexion par tranche de 15 minutes (par identifiant et par IP)
+            login_throttling:
+                max_attempts: 5
+                interval: '15 minutes'
 
     # Note: Only the *first* matching rule is applied
     access_control:
+        - { path: ^/admin/connexion, roles: PUBLIC_ACCESS }
         - { path: ^/admin, roles: ROLE_ADMIN }
 
 when@test:
