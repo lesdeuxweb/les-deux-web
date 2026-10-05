@@ -51,13 +51,14 @@ class AppFixtures extends Fixture
                 ['Réservation en ligne', 'Espace client', 'Catalogue ou fonctionnalités métier'], true, null],
         ];
 
+        // [nom, sur-titre, description, prix, points forts, badge] ; affichés sous la mention « Pack »
         $abonnements = [
-            ['Pack Essentiel', 'Pour être tranquille', 'Votre site hébergé, sécurisé et sauvegardé, avec une petite modification de contenu chaque mois.', 15,
-                ['Hébergement du site, SSL / HTTPS', 'Sauvegardes et surveillance technique', 'Mises à jour de sécurité', '1 petite modification de contenu par mois (texte, image ou coordonnées)']],
-            ['Pack Évolution', 'Pour rester serein', 'Nous veillons sur votre site et le faisons évoluer au rythme de votre activité.', 35,
-                ['Hébergement, SSL / HTTPS et sauvegardes', 'Surveillance et mises à jour techniques', 'Modifications de textes et d\'images', 'Modification des horaires, téléphone, adresse', 'Modification de boutons et liens', 'Petites modifications du design', 'Jusqu\'à 30 min d\'intervention par mois']],
-            ['Pack Sérénité', 'Pour être accompagné', 'Un accompagnement complet : nous faisons évoluer votre site et vous conseillons, en priorité.', 59,
-                ['Hébergement, SSL / HTTPS et sauvegardes', 'Surveillance et mises à jour techniques', 'Modifications de textes, d\'images et du design', 'Création de petites sections', 'Petites fonctionnalités et développements', 'Jusqu\'à 1 h d\'intervention par mois', 'Conseils et accompagnement', 'Traitement prioritaire des demandes']],
+            ['Essentiel', 'Pour être tranquille', 'Votre site hébergé, sécurisé et sauvegardé, avec une petite modification de contenu chaque mois.', 15,
+                ['Hébergement du site', 'SSL / HTTPS', 'Sauvegardes', 'Surveillance technique', 'Mises à jour de sécurité', '1 petite modification de contenu / mois', 'Texte, image ou coordonnées'], null],
+            ['Évolution', 'Pour rester serein', 'Nous veillons sur votre site et le faisons évoluer au rythme de votre activité.', 35,
+                ['Hébergement, SSL / HTTPS et sauvegardes', 'Surveillance et mises à jour techniques', 'Modifications de textes et images', 'Horaires, téléphone et adresse', 'Modification de boutons et liens', 'Petites modifications du design', 'Jusqu’à 30 min d’intervention / mois'], 'Le bon équilibre'],
+            ['Sérénité', 'Pour être accompagné', 'Un accompagnement complet : nous faisons évoluer votre site et vous conseillons, en priorité.', 59,
+                ['Hébergement, SSL / HTTPS et sauvegardes', 'Surveillance et mises à jour techniques', 'Modifications de textes, images et design', 'Création de petites sections', 'Petites fonctionnalités / développement', 'Jusqu’à 1 h d’intervention / mois', 'Conseils et traitement prioritaire'], null],
         ];
 
         $position = 0;
@@ -76,7 +77,7 @@ class AppFixtures extends Fixture
                 ->setPublie(true));
         }
 
-        foreach ($abonnements as [$nom, $surTitre, $accroche, $prix, $points]) {
+        foreach ($abonnements as [$nom, $surTitre, $accroche, $prix, $points, $badge]) {
             $manager->persist((new Offre())
                 ->setCategorie(Offre::CATEGORIE_ABONNEMENT)
                 ->setNom($nom)
@@ -85,6 +86,7 @@ class AppFixtures extends Fixture
                 ->setPrixAPartirDe($prix)
                 ->setPrixSuffixe('/ mois')
                 ->setPointsForts($points)
+                ->setBadge($badge)
                 ->setPosition($position++)
                 ->setPublie(true));
         }

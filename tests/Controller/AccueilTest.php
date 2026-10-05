@@ -53,7 +53,7 @@ class AccueilTest extends WebTestCase
         $this->fabrique->offre('La Vitrine', prix: 399)->setEnCarte(true)->setBadge('Notre conseil');
         $this->fabrique->offre('Site sur mesure', prix: 900)->setEnCarte(true)->setAPartirDe(true);
         $this->fabrique->offre('Site 3 pages', prix: 299);
-        $this->fabrique->offre('Pack Évolution', prix: 35, categorie: Offre::CATEGORIE_ABONNEMENT)->setPrixSuffixe('/ mois');
+        $this->fabrique->offre('Évolution', prix: 35, categorie: Offre::CATEGORIE_ABONNEMENT)->setPrixSuffixe('/ mois')->setBadge('Le bon équilibre');
         $this->fabrique->offre('Brouillon', publie: false)->setEnCarte(true);
         $this->fabrique->option('Page supplémentaire', '50 €');
         $this->fabrique->option('Option masquée', '1 €', publie: false);
@@ -80,11 +80,15 @@ class AccueilTest extends WebTestCase
         $lignes = $grille->filter('.tableau-offres tbody tr')->each(fn (Crawler $tr) => [$tr->filter('th')->text(), $tr->filter('.tableau-offres__prix')->text()]);
         self::assertSame([['Site 3 pages', '299 €']], $lignes);
 
-        // Abonnements : cartes dans la grille complète
-        $pack = $grille->filter('.abonnements .carte-offre');
+        // Abonnements : section à part, sous les offres (pas dans la grille dépliable)
+        self::assertCount(0, $grille->filter('.carte-pack'));
+        $pack = $crawler->filter('#suivi .carte-pack');
         self::assertCount(1, $pack);
-        self::assertStringContainsString('Pack Évolution', $pack->text());
-        self::assertSame('Abonnement 35 € / mois', trim(preg_replace('/\s+/u', ' ', $pack->filter('.prix')->text())));
+        self::assertSame('Pack', $pack->filter('.carte-pack__type')->text());
+        self::assertSame('Évolution', $pack->filter('.carte-pack__lien')->getNode(0)->firstChild->textContent);
+        self::assertSame("35\u{A0}€\u{A0}/ mois", $pack->filter('.carte-pack__prix')->text(null, false));
+        self::assertStringContainsString('carte-pack--vedette', $pack->attr('class'));
+        self::assertSelectorTextContains('#suivi h2', 'Votre site reste entre de bonnes mains.');
         self::assertSame(['Page supplémentaire', '50 €'], $grille->filter('.options-liste li')->first()->children()->each(fn (Crawler $n) => $n->text()));
 
         // Brouillons masqués, pas de « HT », mention de TVA

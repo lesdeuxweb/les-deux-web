@@ -53,7 +53,8 @@ class ContactType extends AbstractType
             ->add('offre', EntityType::class, [
                 'label' => 'contact.form.offre',
                 'class' => Offre::class,
-                'choice_label' => 'nom',
+                // « Pack Essentiel » plutôt que « Essentiel » (évite la confusion avec « L'Essentiel »)
+                'choice_label' => fn (Offre $o) => $o->isAbonnement() ? 'Pack '.$o->getNom() : $o->getNom(),
                 'choice_value' => 'slug',
                 'group_by' => fn (Offre $o) => $o->isAbonnement() ? 'contact.form.groupe_abonnements' : 'contact.form.groupe_creations',
                 'required' => false,

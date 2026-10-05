@@ -1,0 +1,33 @@
+{#
+ # Carte d'un pack d'abonnement (section « Après la mise en ligne » de l'accueil).
+ #   <twig:CartePack :offre="pack" :numero="loop.index" />
+ #
+ # Fond vert si le pack a un badge (« Le bon équilibre »). Toute la carte mène au formulaire
+ # avec le pack pré-sélectionné.
+ #}
+{% props offre, numero = null, niveau = 3 %}
+<article {{ attributes.defaults({class: 'carte-pack' ~ (offre.badge ? ' carte-pack--vedette')}) }}>
+    {% if offre.badge %}<p class="carte-pack__badge">{{ offre.badge }}</p>{% endif %}
+    <div class="carte-pack__tete">
+        {% if numero %}<span class="carte-pack__numero" aria-hidden="true">{{ '%02d'|format(numero) }}</span>{% endif %}
+        <h{{ niveau }} class="carte-pack__titre">
+            <span class="carte-pack__type">{{ 'accueil.packs.pack'|trans }}</span>
+            <a class="carte-pack__lien" href="{{ path('app_home', {offre: offre.slug}) }}#contact">{{ offre.nom }}<span class="visuellement-cache"> : {{ 'offre.demander'|trans }}</span></a>
+        </h{{ niveau }}>
+    </div>
+    <p class="carte-pack__prix">
+        {%- if offre.prixAPartirDe is null -%}
+            <span class="carte-pack__montant">{{ 'offre.sur_devis'|trans }}</span>
+        {%- else -%}
+            <span class="carte-pack__montant">{{ offre.prixAPartirDe|number_format(0, ',', ' ') }}&nbsp;€</span>
+            {%- if offre.prixSuffixe %}<span class="carte-pack__suffixe">&nbsp;{{ offre.prixSuffixe }}</span>{% endif -%}
+        {%- endif -%}
+    </p>
+    {% if offre.pointsForts is not empty %}
+        <ul class="liste-coches">
+            {% for point in offre.pointsForts %}
+                <li>{{ point }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</article>

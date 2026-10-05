@@ -42,7 +42,7 @@
         </div>
     </section>
 
-    {# --- Nos offres : 3 cartes, puis grille complète dépliable (sans JavaScript : <details>) --- #}
+    {# --- Nos offres : 3 cartes, puis grille complète dépliable (autres offres, options), sans JavaScript --- #}
     <section class="section" id="offres" aria-labelledby="titre-offres">
         <div class="conteneur">
             <div class="section-tete">
@@ -61,7 +61,7 @@
                 </ul>
             {% endif %}
 
-            {% if autres_creations is not empty or options is not empty or abonnements is not empty %}
+            {% if autres_creations is not empty or options is not empty %}
                 <details class="grille-complete">
                     <summary class="grille-complete__bouton">
                         <span class="grille-complete__voir">{{ 'accueil.offres.voir_tout'|trans }}</span>
@@ -107,17 +107,6 @@
                             </div>
                         {% endif %}
 
-                        {% if abonnements is not empty %}
-                            <div class="abonnements">
-                                <twig:SurTitre class="sur-titre--sans-trait">{{ 'accueil.offres.abonnements_sur_titre'|trans }}</twig:SurTitre>
-                                <h3 class="options-carte__titre">{{ 'accueil.offres.abonnements'|trans }}</h3>
-                                <ul class="grille-cartes grille-offres" role="list">
-                                    {% for offre in abonnements %}
-                                        <li><twig:CarteOffre :offre="offre" :numero="loop.index" niveau="4" /></li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
-                        {% endif %}
                     </div>
                 </details>
             {% endif %}
@@ -125,6 +114,25 @@
             {% if site.mention_tva %}<p class="mention-tva">{{ site.mention_tva }}</p>{% endif %}
         </div>
     </section>
+
+    {# --- Après la mise en ligne : packs d'abonnement --- #}
+    {% if abonnements is not empty %}
+        <section class="section section--packs" id="suivi" aria-labelledby="titre-packs">
+            <div class="conteneur">
+                <header class="section-centree">
+                    <twig:SurTitre>{{ 'accueil.packs.sur_titre'|trans }}</twig:SurTitre>
+                    <h2 id="titre-packs">{{ 'accueil.packs.titre'|trans }}</h2>
+                    <p class="section-tete__intro">{{ 'accueil.packs.intro'|trans }}</p>
+                </header>
+                <ul class="grille-cartes grille-packs" role="list">
+                    {% for pack in abonnements %}
+                        <li><twig:CartePack :offre="pack" :numero="loop.index" /></li>
+                    {% endfor %}
+                </ul>
+                {% if site.mention_tva %}<p class="mention-tva">{{ site.mention_tva }}</p>{% endif %}
+            </div>
+        </section>
+    {% endif %}
 
     {# --- Notre façon de faire (étapes) --- #}
     <section class="section section--sombre" aria-labelledby="titre-methode">

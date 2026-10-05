@@ -63,8 +63,11 @@ accueil:
         colonne_prix: 'Prix'
         options_sur_titre: 'À la carte'
         options: 'Options supplémentaires'
-        abonnements_sur_titre: 'Après la mise en ligne'
-        abonnements: 'Suivi et maintenance'
+    packs:
+        sur_titre: 'Après la mise en ligne'
+        titre: 'Votre site reste entre de bonnes mains.'
+        intro: 'Choisissez le niveau d’accompagnement qui correspond au rythme de votre activité.'
+        pack: 'Pack'
     methode:
         sur_titre: 'Notre façon de faire'
         titre: 'Vous n''êtes jamais seul face à votre projet.'
