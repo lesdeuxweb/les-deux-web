@@ -41,6 +41,7 @@ accueil:
         garantie_hebergement: 'Hébergé en France'
         garantie_engagement: 'Sans engagement caché'
         etiquette: 'Disponibles et proches de vous'
+        visio: 'visio partout en France'
         zone_libelle: 'Zone d''intervention'
         zone_lieu: 'Autour de %ville%'
     manifeste:

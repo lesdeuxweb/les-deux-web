@@ -36,7 +36,10 @@ class AccueilTest extends WebTestCase
             self::assertStringContainsString(mb_strtoupper($surTitre), mb_strtoupper($crawler->filter('main')->text()));
         }
         self::assertCount(4, $crawler->filter('.etape'));
-        self::assertSelectorTextContains('.hero__zone', "100\u{A0}km"); // espace insécable
+        // Sans photo : panneau sur la zone d'intervention (espace insécable dans « 100 km »)
+        self::assertSelectorTextContains('.hero__panneau-distance', "100\u{A0}km");
+        self::assertSelectorTextContains('.hero__panneau-departements', 'Dordogne');
+        self::assertSelectorNotExists('.hero__visuel img');
     }
 
     public function testMenuVersLesSections(): void
