@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+#
+# Déploiement / mise à jour du site sur l'hébergement OVH (à lancer en SSH, depuis le dossier du projet) :
+#
+#   cd ~/les-deux-web && bin/deployer
+#
+# Prérequis (première fois) : voir docs/DEPLOIEMENT-OVH.md
+#   - .env.local présent sur le serveur (jamais dans Git)
+#   - ~/.ovhconfig avec PHP 8.3
+#
+set -euo pipefail
+
+cd "$(dirname "$0")/.."
+
+PHP="${PHP:-php}"
+
+etape() { printf '\n\033[1;32m==> %s\033[0m\n' "$1"; }
+
+if [ ! -f .env.local ] && [ ! -f .env.local.php ]; then
+    echo "Erreur : .env.local est absent. Créez-le d'abord (voir docs/DEPLOIEMENT-OVH.md)." >&2
+    exit 1
+fi
+
+etape "Version de PHP"
+"$PHP" -v | head -n 1
+
+etape "Récupération du code (git pull)"
+git pull --ff-only
+
+etape "Composer"
+if command -v composer >/dev/null 2>&1; then
+    COMPOSER=(composer)
+else
+    # Composer n'est pas installé sur l'hébergement : téléchargement d'une copie locale (une seule fois)
+    if [ ! -f composer.phar ]; then
+        curl -sS https://getcomposer.org/installer | "$PHP" -- --quiet
+    fi
+    COMPOSER=("$PHP" composer.phar)
+fi
+APP_ENV=prod "${COMPOSER[@]}" install --no-dev --optimize-autoloader --no-interaction --no-progress
+
+etape "Variables d'environnement compilées (.env.local.php)"
+"${COMPOSER[@]}" dump-env prod
+
+etape "Assets (CSS, JS, polices, images)"
+"$PHP" bin/console importmap:install --env=prod
+"$PHP" bin/console asset-map:compile --env=prod
+
+etape "Base de données (migrations)"
+"$PHP" bin/console doctrine:migrations:migrate --env=prod --no-interaction --allow-no-migration
+
+etape "Cache"
+"$PHP" bin/console cache:clear --env=prod
+"$PHP" bin/console cache:warmup --env=prod
+
+etape "Terminé"
+echo "Le site est à jour."

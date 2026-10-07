@@ -1,0 +1,8 @@
+; Configuration de l'hébergement mutualisé OVH (offre Pro).
+; À copier à la racine de l'hébergement : cp .ovhconfig ~/.ovhconfig
+; (voir docs/DEPLOIEMENT-OVH.md). Le PHP en ligne de commande (SSH) suit aussi ce réglage.
+app.engine=php
+app.engine.version=8.3
+http.firewall=none
+environment=production
+container.image=stable64

@@ -29,3 +29,7 @@
 ###> Claude Code (réglages locaux) ###
 /.claude/settings.local.json
 ###< Claude Code ###
+
+###> déploiement OVH ###
+/composer.phar
+###< déploiement OVH ###
