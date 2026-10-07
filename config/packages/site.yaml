@@ -24,6 +24,9 @@ parameters:
         # Utiliser uniquement une photo dont vous avez les droits (la vôtre, ou libre de droits pour un usage commercial).
         photo_accueil: ~
         photo_accueil_alt: ~
+        # Sans photo : illustration (SVG dans assets/images/), alignée en bas de la colonne
+        illustration_accueil: 'accueil/limoges-illustration.svg'
+        illustration_accueil_alt: 'Illustration de Limoges : four des Casseaux, gare des Bénédictins, cathédrale Saint-Étienne, Halles centrales et pont Saint-Étienne sur la Vienne'
         # Associés (section « Qui sommes-nous ? »). photo : chemin dans assets/images/, ex. 'equipe/prenom.webp'
         associes:
             -   prenom: ~

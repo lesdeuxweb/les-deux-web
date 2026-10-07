@@ -36,10 +36,13 @@ class AccueilTest extends WebTestCase
             self::assertStringContainsString(mb_strtoupper($surTitre), mb_strtoupper($crawler->filter('main')->text()));
         }
         self::assertCount(4, $crawler->filter('.etape'));
-        // Sans photo : panneau sur la zone d'intervention (espace insécable dans « 100 km »)
-        self::assertSelectorTextContains('.hero__panneau-distance', "100\u{A0}km");
-        self::assertSelectorTextContains('.hero__panneau-departements', 'Dordogne');
-        self::assertSelectorNotExists('.hero__visuel img');
+        // Sans photo : illustration de Limoges + encadrés de la maquette (espace insécable dans « 100 km »)
+        $illustration = $crawler->filter('.hero__visuel--illustration img');
+        self::assertCount(1, $illustration);
+        self::assertStringContainsString('limoges-illustration', $illustration->attr('src'));
+        self::assertStringContainsString('gare des Bénédictins', $illustration->attr('alt'));
+        self::assertSelectorTextContains('.hero__zone', "100\u{A0}km");
+        self::assertSelectorTextContains('.hero__etiquette', 'Disponibles et proches de vous');
     }
 
     public function testMenuVersLesSections(): void

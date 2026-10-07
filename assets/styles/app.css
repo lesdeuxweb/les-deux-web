@@ -1848,75 +1848,36 @@ strong {
     }
 }
 
-/* Sans photo : panneau vert sur la zone d'intervention */
-.hero__panneau {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: var(--e-3);
-    padding: clamp(var(--e-6), 6vw, 6rem);
-    background: var(--c-bocage);
-    color: var(--c-blanc);
+/* Illustration (SVG) : fond beige du dessin prolongé, dessin calé en bas sans recadrage */
+.hero__visuel--illustration {
+    background: #EBE6DD;
 }
 
-.hero__panneau > * {
-    margin: 0;
+.hero__visuel--illustration img {
+    object-fit: contain;
+    object-position: center bottom;
 }
 
-.hero__panneau-libelle {
-    font-size: 0.8rem;
-    font-weight: 900;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--c-genet-clair);
+/* Les encadrés restent dans le ciel du dessin, au-dessus des monuments */
+.hero__visuel--illustration .hero__zone {
+    top: calc(var(--e-6) + 4.5rem);
+    bottom: auto;
+    left: var(--e-6);
+    right: auto;
 }
 
-.hero__panneau-distance {
-    font-family: var(--f-titre);
-    font-weight: 700;
-    font-size: clamp(3.5rem, 1.5rem + 5vw, 6.5rem);
-    line-height: 1;
-    letter-spacing: -0.03em;
-    white-space: nowrap;
-    color: var(--c-genet);  /* très grand texte : 4,3:1 (AA grand texte, minimum 3:1) */
+@media (max-width: 64rem) {
+    .hero__visuel--illustration {
+        min-height: 40rem;
+    }
 }
 
-.hero__panneau-lieu {
-    font-family: var(--f-titre);
-    font-style: italic;
-    font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2.4rem);
-    line-height: 1.2;
-}
-
-.hero__panneau-departements {
-    list-style: none;
-    padding: var(--e-5) 0 0;
-    margin-top: var(--e-4) !important;
-    border-top: 1px solid rgb(255 255 255 / 0.25);
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--e-2) var(--e-5);
-    font-family: var(--f-titre);
-    font-size: var(--t-2);
-}
-
-.hero__panneau-dispo {
-    display: flex;
-    align-items: center;
-    gap: var(--e-3);
-    margin-top: var(--e-4) !important;
-    font-size: var(--t-0);
-    font-weight: 700;
-}
-
-.hero__panneau-dispo::before {
-    content: "";
-    flex: none;
-    width: 0.5rem;
-    height: 0.5rem;
-    border-radius: 50%;
-    background: var(--c-genet);
-    box-shadow: 0 0 0 4px rgb(235 195 99 / 0.25);
+@media (max-width: 30rem) {
+    .hero__visuel--illustration .hero__zone {
+        top: calc(var(--e-4) + 4.5rem);
+        left: var(--e-4);
+        right: var(--e-4);
+    }
 }
 
 /* --- Accueil : manifeste --- */

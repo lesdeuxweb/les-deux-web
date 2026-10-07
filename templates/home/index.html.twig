@@ -19,31 +19,22 @@
             </ul>
         </div>
 
-        {% if site.photo_accueil %}
-            <div class="hero__visuel">
+        <div class="hero__visuel{{ not site.photo_accueil and site.illustration_accueil ? ' hero__visuel--illustration' }}">
+            {% if site.photo_accueil %}
                 <img src="{{ asset('images/' ~ site.photo_accueil ~ '-1600.webp') }}"
                      srcset="{{ asset('images/' ~ site.photo_accueil ~ '-900.webp') }} 900w, {{ asset('images/' ~ site.photo_accueil ~ '-1600.webp') }} 1600w"
                      sizes="(min-width: 64rem) 50vw, 100vw"
                      alt="{{ site.photo_accueil_alt }}" width="1600" height="1065" fetchpriority="high">
-                <p class="hero__etiquette">{{ 'accueil.hero.etiquette'|trans }}</p>
-                <p class="hero__zone">
-                    <span class="hero__zone-libelle">{{ 'accueil.hero.zone_libelle'|trans }}</span>
-                    <span class="hero__zone-distance">≈&nbsp;{{ site.rayon_km }}&nbsp;km</span>
-                    <span class="hero__zone-lieu">{{ 'accueil.hero.zone_lieu'|trans({'%ville%': site.ville}) }}</span>
-                </p>
-            </div>
-        {% else %}
-            {# Sans photo : panneau typographique sur la zone d'intervention #}
-            <div class="hero__panneau">
-                <p class="hero__panneau-libelle">{{ 'accueil.hero.zone_libelle'|trans }}</p>
-                <p class="hero__panneau-distance">≈&nbsp;{{ site.rayon_km }}&nbsp;km</p>
-                <p class="hero__panneau-lieu">{{ 'accueil.hero.zone_lieu'|trans({'%ville%': site.ville}) }}</p>
-                <ul class="hero__panneau-departements" role="list">
-                    {% for departement in site.departements %}<li>{{ departement }}</li>{% endfor %}
-                </ul>
-                <p class="hero__panneau-dispo">{{ 'accueil.hero.etiquette'|trans }} · {{ 'accueil.hero.visio'|trans }}</p>
-            </div>
-        {% endif %}
+            {% elseif site.illustration_accueil %}
+                <img src="{{ asset('images/' ~ site.illustration_accueil) }}" alt="{{ site.illustration_accueil_alt }}" width="600" height="540" fetchpriority="high">
+            {% endif %}
+            <p class="hero__etiquette">{{ 'accueil.hero.etiquette'|trans }}</p>
+            <p class="hero__zone">
+                <span class="hero__zone-libelle">{{ 'accueil.hero.zone_libelle'|trans }}</span>
+                <span class="hero__zone-distance">≈&nbsp;{{ site.rayon_km }}&nbsp;km</span>
+                <span class="hero__zone-lieu">{{ 'accueil.hero.zone_lieu'|trans({'%ville%': site.ville}) }}</span>
+            </p>
+        </div>
     </section>
 
     {# --- Manifeste --- #}
