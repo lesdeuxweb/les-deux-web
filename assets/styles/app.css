@@ -111,9 +111,9 @@
     --e-8: clamp(3.5rem, 2rem + 6vw, 7.5rem);           /* entre deux sections */
 
     /* Divers */
-    --largeur-max: 90rem;
+    --largeur-max: 120rem;
     --largeur-texte: 68ch;
-    --gouttiere: clamp(1rem, -0.5rem + 6vw, 8.75rem);
+    --gouttiere: clamp(1.25rem, 5vw, 6rem);
     --ombre: 0 30px 60px -30px rgb(31 38 35 / 0.25);
 }
 
@@ -1731,7 +1731,7 @@ strong {
     padding-inline: var(--gouttiere) var(--e-6);
 }
 
-@media (min-width: 90rem) {
+@media (min-width: 120rem) {
     .hero__texte {
         padding-left: calc((100cqw - var(--largeur-max)) / 2 + var(--gouttiere));
     }
