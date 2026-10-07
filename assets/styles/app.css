@@ -1712,6 +1712,8 @@ strong {
 .hero {
     display: grid;
     border-bottom: 1px solid var(--c-filet);
+    /* 100cqw = largeur du hero, barre de défilement exclue (contrairement à 100vw sous Windows). */
+    container-type: inline-size;
 }
 
 @media (min-width: 64rem) {
@@ -1731,7 +1733,7 @@ strong {
 
 @media (min-width: 90rem) {
     .hero__texte {
-        padding-left: calc((100vw - var(--largeur-max)) / 2 + var(--gouttiere));
+        padding-left: calc((100cqw - var(--largeur-max)) / 2 + var(--gouttiere));
     }
 }
 
