@@ -18,8 +18,12 @@ parameters:
         email: 'bonjour@lesdeuxweb.fr'
         # Mention affichée sous les tarifs (franchise en base de TVA). Vide si les prix sont HT/TTC.
         mention_tva: 'TVA non applicable, art. 293 B du CGI'
-        # Photo du hero de l'accueil (chemin dans assets/images/), null = emplacement « photo à venir »
-        photo_accueil: null
+        # Photo du hero de l'accueil : deux fichiers WebP dans assets/images/, suffixés -900 et -1600
+        # (ex. 'accueil/gare-benedictins' => gare-benedictins-900.webp et gare-benedictins-1600.webp).
+        # ~ : aplat de couleur à la place.
+        # Utiliser uniquement une photo dont vous avez les droits (la vôtre, ou libre de droits pour un usage commercial).
+        photo_accueil: ~
+        photo_accueil_alt: ~
         # Associés (section « Qui sommes-nous ? »). photo : chemin dans assets/images/, ex. 'equipe/prenom.webp'
         associes:
             -   prenom: ~
